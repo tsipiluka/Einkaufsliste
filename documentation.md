@@ -2,7 +2,6 @@
 
 | Vorlesung | Advanced Social Engineering |
 | Dozent | Hr. Fachat |
-|--------|------------|
 | Gruppenname | Festplattenarm |
 | Projektname | Einkaufsliste |
 | Mitglieder | Niclas Dauster, David Kneller, Mortz Reufsteck, Hendrik Spieß, Luka Tsipitsoudis |
