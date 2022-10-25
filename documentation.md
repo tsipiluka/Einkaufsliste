@@ -1,5 +1,6 @@
 # Advanced Social Engineering
 | Index | Name |
+|-------|------|
 | Vorlesung | Advanced Social Engineering |
 | Dozent | Hr. Fachat |
 | Gruppenname | Festplattenarm |
