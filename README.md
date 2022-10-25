@@ -1,7 +1,7 @@
 # Einkaufsliste
 
 ## Requirements
-Make sure to have [Docker](https://www.docker.com/) installed
+Make sure to have [Docker](https://www.docker.com/) installed.
 Check by running
 ```bash
 docker --version
@@ -14,7 +14,9 @@ After locally cloning the repository
 
 ## How to use
 
-Build the application docker image
+Make sure you navigated into the project folder which has ```docker-compose.yml```, ```dockerfile``` and ```manage.py``` in it.
+
+Build the application docker image:
 ```bash
 $ docker build .
 [+] Building 9.1s (10/10) FINISHED
@@ -22,7 +24,7 @@ $ docker build .
 ...
 => => writing image sha256:89ede1...
 ```
-Run the container
+Run the container:
 ```bash
 $ docker-compose up
 Starting einkaufsliste_backend_db_1 ... done
