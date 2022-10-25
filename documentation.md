@@ -11,9 +11,9 @@
 
 ## Anforderungen
 
-* [ ] Web Application
-* [ ] Runnable in Docker
-* [ ] Using a database (e.g. postgres in docker)
+* [X] Web Application
+* [X] Runnable in Docker
+* [X] Using a database (e.g. postgres in docker)
 * [ ] Integration with 1-2 services
   * [ ] Login (e.g. login with Google or other IAM provider with 2FA)
   * [ ] Other cloud service where appropriate
