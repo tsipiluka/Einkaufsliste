@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getGoogleOAuthURL()  {
+    return 'https://www.google.com'
   }
 
 }
