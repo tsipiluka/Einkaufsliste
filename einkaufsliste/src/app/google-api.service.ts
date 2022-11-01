@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
+import { GoogleUserInfo } from './entities/google-user-info.model';
 
 const oAuthConfig: AuthConfig = {
   issuer: 'https://accounts.google.com',
@@ -10,23 +11,12 @@ const oAuthConfig: AuthConfig = {
   scope: 'openid profile email'
 }
 
-export interface UserInfo {
-  info: {
-    sub: string,
-    email: string, 
-    name: string, 
-    picture: string
-  }
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleApiService {
 
-  userProfileSubject = new Subject<UserInfo>()
-
-  static loggedInToken: GoogleApiService
+  userProfileSubject = new Subject<GoogleUserInfo>()
 
   constructor(private readonly oAuthService: OAuthService) {}
 
@@ -39,9 +29,12 @@ export class GoogleApiService {
         }else{
           this.oAuthService.loadUserProfile().then((userProfile)=>{
             console.log(JSON.stringify(userProfile))
-            this.userProfileSubject.next(userProfile as UserInfo)
+            this.userProfileSubject.next(userProfile as GoogleUserInfo)
           })
         }
+      },
+      err => {
+        console.log(err)
       })
     })
    }
