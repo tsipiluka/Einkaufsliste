@@ -1,10 +1,20 @@
-<div *ngIf="isLoggedIn()">
-    <div class="container">Hallo und Willkommen bei der Einkaufsliste</div>
-    <div class="container">Name: {{userInfo?.info?.name}}</div>
-    <div class="container">E-Mail: {{userInfo?.info?.email}}</div>
-    <div class="container"><img src="{{userInfo?.info?.picture}}"></div>
+<section class="min-vh-100 gradient-custom">
     <div class="container">
-        <button (click)="logout()">Logout from Google</button>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 main-component ">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    
+                    <div class="card-body p-5 text-center">
+        
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            
+                            <h1>Ihre Einkaufslisten</h1>
+                            
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
+</section>
