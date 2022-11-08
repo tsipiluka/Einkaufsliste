@@ -4,8 +4,8 @@ import { EinkaufslistenOverviewComponent } from './einkaufslisten-overview/einka
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/einkaufslisten-overview', pathMatch: 'full' },
-  { path: 'einkaufslisten-overview', component: EinkaufslistenOverviewComponent},
+  // { path: '', redirectTo: '/einkaufslisten-overview', pathMatch: 'full' },
+  // { path: 'einkaufslisten-overview', component: EinkaufslistenOverviewComponent},
   { path: 'login', component: LoginComponent},
 ];
 
