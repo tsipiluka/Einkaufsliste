@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { GoogleApiService } from './google-api.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { GoogleApiService } from './google-api.service';
 })
 export class AppComponent {
   
-  constructor(private readonly googleApi: GoogleApiService){}
+  constructor(private router: Router,private readonly googleApi: GoogleApiService){}
 
   isLoggedIn(): boolean {
     return this.googleApi.isLoggedIn()
@@ -16,6 +17,7 @@ export class AppComponent {
 
   signOut() {
     this.googleApi.signOut()
+    this.router.navigate(['/'])
   }
 
   
