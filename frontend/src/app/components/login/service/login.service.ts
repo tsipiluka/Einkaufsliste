@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TokenAuthentication } from '../entities/token-authentication.model';
+import { TokenAuthentication } from '../../../entities/token-authentication.model';
 
 @Injectable({
   providedIn: 'root'
