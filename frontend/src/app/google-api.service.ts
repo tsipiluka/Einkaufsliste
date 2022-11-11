@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService} from 'angular-oauth2-oidc'
 import { ITokenAuthentication, TokenAuthentication } from './entities/token-authentication.model';
-import { LoginService } from './services/login.service';
+import { LoginService } from './components/login/service/login.service';
 
 const oAuthConfig: AuthConfig = {
   issuer: "https://accounts.google.com",
@@ -30,8 +30,8 @@ export class GoogleApiService {
             token: oAuthService.getAccessToken(),
             backend: 'google-oauth2',
             grant_type: 'convert_token',
-            client_id: 'opFrE4YfUwlkxKvaU6fhg3jz63IS3U3wlhUgP2T6',
-            client_secret: '1YG4vugpspDcAXQ7bVPhVb9hQsCmEEPsaV0teWXhkAaee6EdNGJteAL2I8m5MWKbQ4IhpsjFPZJ2VSwxKmgC2uDBpwhUMIK9fXEH3pcTPSZbpFsFSgkvCX19L5vjFsJq'
+            client_id: 'zfXK2KHKGn8iipzs9myh1nhnE8O3MKK3jzSsJOuL',
+            client_secret: 'RjaxKiT2xFT1bBA1XMstlI7avllm4YlsAwIoFDaGbhiObb20KADeqYf7yI8E0bBNKzDaiVUomEsddNPqOnaBx7p6r2ICS5u1wTgT31F2XdV6CAXSEIJGRgQEt1blM93m'
           }
           console.log('provided Data: '+JSON.stringify(authenticationData))
           this.loginService.loginUser(authenticationData).subscribe((res: any) => {
