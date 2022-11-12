@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService} from 'angular-oauth2-oidc'
 import { ITokenAuthentication, TokenAuthentication } from './entities/token-authentication.model';
 import { LoginService } from './components/login/service/login.service';
-import pkg from './secrets.json';
+import pkg from '../../secrets.json';
 
 
 
