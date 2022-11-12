@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService} from 'angular-oauth2-oidc'
 import { ITokenAuthentication, TokenAuthentication } from './entities/token-authentication.model';
 import { LoginService } from './components/login/service/login.service';
+import pkg from './secrets.json';
+
+
+
 
 const oAuthConfig: AuthConfig = {
   issuer: "https://accounts.google.com",
   strictDiscoveryDocumentValidation: false,
   redirectUri: window.location.origin,
-  clientId: '698434053829-sd79mav27p4ao35kcbm4bar3fjl4cslp.apps.googleusercontent.com',
+  clientId: pkg.GOOGLE_API_KEY_CLIENT_ID,
   scope: 'openid profile email'
 }
 
@@ -30,8 +34,8 @@ export class GoogleApiService {
             token: oAuthService.getAccessToken(),
             backend: 'google-oauth2',
             grant_type: 'convert_token',
-            client_id: 'gjS1l709g6TgXEcs9Q9UufRj4gn4f0HVyf9zOv8r',
-            client_secret: 'i8MoZaDwzOkUWZ7vZjlXLTXLCMNNOeuTL7B58fTw53RlVj1fYpxeLwJaAYOxRBQqpLgNdABUfbIzMsE3LlnT8Xunn1zJrqEvHnL0CpZzDLYTtrZTepSm7pPYSwfytSTZ'
+            client_id: pkg.CLIENT_ID,
+            client_secret: pkg.CLIENT_SECRET
           }
           console.log('provided Data: '+JSON.stringify(authenticationData))
           this.loginService.loginUser(authenticationData).subscribe((res: any) => {

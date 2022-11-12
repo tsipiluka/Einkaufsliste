@@ -426,3 +426,6 @@ baseline.json
 
 # ignore .anular folder
 .angular/
+
+# ignore secrets json
+secrets.json
