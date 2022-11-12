@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+# import read_secrets from read_secrets.py
+from .read_secrets import read_secrets
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@2_d*&n_jbtc9-^8m)xp*6iote6-0n!4x@&7(6f6ljvb-a9-1="
+SECRET_KEY = "auttJUzLR#BLaLYW8QUHws*kA&ikzmAfik&x8^aADfL8Wv*@Xm37u$M!2LtbikPsLV"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -86,11 +89,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
+        "NAME": read_secrets("DB_NAME"),
+        "USER": read_secrets("DB_USER"),
+        "PASSWORD": read_secrets("DB_PASSWORD"),
+        "HOST": read_secrets("DB_HOST"),
+        "PORT": read_secrets("DB_PORT"),
     }
 }
 
