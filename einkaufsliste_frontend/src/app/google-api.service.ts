@@ -30,8 +30,8 @@ export class GoogleApiService {
             token: oAuthService.getAccessToken(),
             backend: 'google-oauth2',
             grant_type: 'convert_token',
-            client_id: 'zfXK2KHKGn8iipzs9myh1nhnE8O3MKK3jzSsJOuL',
-            client_secret: 'RjaxKiT2xFT1bBA1XMstlI7avllm4YlsAwIoFDaGbhiObb20KADeqYf7yI8E0bBNKzDaiVUomEsddNPqOnaBx7p6r2ICS5u1wTgT31F2XdV6CAXSEIJGRgQEt1blM93m'
+            client_id: 'gjS1l709g6TgXEcs9Q9UufRj4gn4f0HVyf9zOv8r',
+            client_secret: 'i8MoZaDwzOkUWZ7vZjlXLTXLCMNNOeuTL7B58fTw53RlVj1fYpxeLwJaAYOxRBQqpLgNdABUfbIzMsE3LlnT8Xunn1zJrqEvHnL0CpZzDLYTtrZTepSm7pPYSwfytSTZ'
           }
           console.log('provided Data: '+JSON.stringify(authenticationData))
           this.loginService.loginUser(authenticationData).subscribe((res: any) => {
