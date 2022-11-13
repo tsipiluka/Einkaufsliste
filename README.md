@@ -41,7 +41,7 @@ Check by running `docker --version` in your terminal. If the command is not foun
 
 The Django Application files are mounted into the container, so you can edit them on your local machine and see the changes in the container. Therefore there is no need to rebuild the container after every change. The development can fully be done in the container.+
 
-For the angular 
+For the angular application this needs to be done manually. The angular application is build and copied into the nginx container. Therefore you need to rebuild the container after every change. The development should therefore be done on your local machine and the container is only used for testing.
 
 ## How to use
 1. Clone this repository
@@ -103,7 +103,6 @@ docker-compose up --build
 After that the database should be cleared. Migrations should now work properly. Make sure to create a superuser and register the app for Django OAuth Tooklkit again. You can find the instructions above. 
 
 ### Usefull docker commands
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 | Command | Description |
 | --- | --- |
 | ```docker-compose up --build``` | Builds and starts the containers |
