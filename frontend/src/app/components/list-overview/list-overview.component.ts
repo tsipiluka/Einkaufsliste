@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GoogleApiService } from 'src/app/google-api.service';
 
 @Component({
   selector: 'app-list-overview',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListOverviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router,private readonly googleApi: GoogleApiService) {
+    console.log(this.isLoggedIn())
+    // if (!this.isLoggedIn()){
+    //   this.router.navigate(['login'])
+    // }
+   }
 
   ngOnInit(): void {
+  }
+
+  logout() {
+    this.googleApi.signOut()
+    this.router.navigate(['login'])
+  }
+
+  isLoggedIn(): boolean{
+    return this.googleApi.isLoggedIn()
   }
 
 }
