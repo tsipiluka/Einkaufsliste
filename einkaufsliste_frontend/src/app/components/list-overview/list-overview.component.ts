@@ -11,9 +11,9 @@ export class ListOverviewComponent implements OnInit {
 
   constructor(private router: Router,private readonly googleApi: GoogleApiService) {
     console.log(this.isLoggedIn())
-    // if (!this.isLoggedIn()){
-    //   this.router.navigate(['login'])
-    // }
+    if (!this.isLoggedIn()){
+      this.router.navigate(['login'])
+    }
    }
 
   ngOnInit(): void {

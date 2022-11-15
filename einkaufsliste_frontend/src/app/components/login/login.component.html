@@ -6,7 +6,7 @@
         <h4><span>Einkaufsliste</span></h4>
         <p>Willkommen zurück zu deinen Einkaufslisten!</p>
       <div class="floating-label">
-        <input placeholder="Email" type="email" name="email" id="email" autocomplete="off">
+        <input placeholder="Email" type="email" id="email" autocomplete="off">
         <label for="email">Email:</label>
         <div class="icon">
           <svg enable-background="new 0 0 20 20" version="1.1" viewBox="0 0 20 20" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="bi bi-envelope">
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="floating-label">
-        <input placeholder="Password" type="password" name="password" id="password" autocomplete="off">
+        <input placeholder="Password" type="password" id="password" autocomplete="off">
         <label for="password">Password:</label>
         <div class="icon">
           <svg enable-background="new 0 0 20 20" version="1.1" viewBox="0 0 20 20" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="bi bi-shield-lock">
@@ -25,8 +25,8 @@
         </div>
       </div>
       <div class="loginButtons">
-        <button class="googleButton" type="submit" (click)="login()"><i class="bi bi-google"></i> Sign in with Google</button>
-        <button class="login" type="submit">Log in</button>
+        <button class="googleButton" (click)="login()"><i class="bi bi-google"></i> Sign in with Google</button>
+        <button class="login" onClick="return false;">Log in</button>
       </div> 
         <a href="http://localhost:4200/registration" class="discrete" >or Sign Up</a>
       </form>
