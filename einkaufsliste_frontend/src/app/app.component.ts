@@ -9,16 +9,6 @@ import { GoogleApiService } from './google-api.service';
 })
 export class AppComponent {
   
-  constructor(private router: Router,private readonly googleApi: GoogleApiService){}
-
-  isLoggedIn(): boolean {
-    return this.googleApi.isLoggedIn()
-  }
-
-  signOut() {
-    this.googleApi.signOut()
-    this.router.navigate(['/'])
-  }
-
+  constructor(){}
   
 }
