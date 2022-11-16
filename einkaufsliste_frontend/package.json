@@ -23,6 +23,8 @@
     "angular-oauth2-oidc": "^13.0.1",
     "bootstrap": "^5.2.2",
     "bootstrap-icons": "^1.9.1",
+    "primeicons": "^6.0.1",
+    "primeng": "^14.2.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
