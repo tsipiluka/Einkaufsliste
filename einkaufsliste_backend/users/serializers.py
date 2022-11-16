@@ -23,3 +23,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class WholeUserSerializer(serializers.ModelSerializer):
+    """
+    This serializer is used to return the whole user object.
+    """
+    class Meta:
+        model = NewUser
+        fields = ('id', 'email', 'username', 'first_name', 'start_date', 'about', 'is_active', 'is_active')
