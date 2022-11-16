@@ -20,11 +20,10 @@ schema_view = swagger_get_schema_view(
 urlpatterns =  [
     path('auth/', include('drf_social_oauth2.urls', namespace='drf')), #OAuth
     path("admin/", admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    path('auth/', include('rest_framework.urls')),
     # path('api/user/', include('users.urls', namespace='users')), # User
     path('api/', include('shoppinglist.urls', namespace='shoppinglist')), # Shoppinglist
     path('api/', include('friends.urls', namespace='friends')), # Shoppinglist
-
     path('swagger/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
     path('user/', include('users.urls', namespace='users')),
 ]

@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 
 # import read_secrets from read_secrets.py
-from .read_secrets import read_secrets
+from .read_secrets import ReadSecrets as rs
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -69,7 +69,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -93,11 +93,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": read_secrets("DB_NAME"),
-        "USER": read_secrets("DB_USER"),
-        "PASSWORD": read_secrets("DB_PASSWORD"),
-        "HOST": read_secrets("DB_HOST"),
-        "PORT": read_secrets("DB_PORT"),
+        "NAME": rs.read_secrets("DB_NAME"),
+        "USER": rs.read_secrets("DB_USER"),
+        "PASSWORD": rs.read_secrets("DB_PASSWORD"),
+        "HOST": rs.read_secrets("DB_HOST"),
+        "PORT": rs.read_secrets("DB_PORT"),
     }
 }
 
