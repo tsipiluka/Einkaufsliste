@@ -19,6 +19,6 @@ export class LoginService {
   }
 
   login(user_credentials: UserLogin): Observable<any>{
-    return this.http.post(this.APIUrl + '/user/login', user_credentials);
+    return this.http.post(this.APIUrl + '/auth/token/', user_credentials);
   }
 }

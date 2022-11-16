@@ -12,6 +12,10 @@ import { ListOverviewComponent } from './components/list-overview/list-overview.
 import { ShoppinglistComponent } from './components/shoppinglist/shoppinglist.component'
 import { FormsModule } from '@angular/forms';
 
+// PrimeNG
+import {CardModule} from 'primeng/card';
+import {ButtonModule} from 'primeng/button';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,8 +30,10 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     OAuthModule.forRoot(),
     NgbModule,
-    FormsModule
+    FormsModule,
 
+    CardModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

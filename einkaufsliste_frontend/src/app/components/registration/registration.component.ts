@@ -14,7 +14,11 @@ export class RegistrationComponent implements OnInit {
   username: string = ''
   password: string = ''
 
-  constructor(private router: Router,private registrationService: RegistrationService) { }
+  constructor(private router: Router,private registrationService: RegistrationService) { 
+    if(localStorage.getItem('access_token')){
+      this.router.navigate(['list-overview'])
+    }
+  }
 
   ngOnInit(): void {
   }
@@ -22,10 +26,9 @@ export class RegistrationComponent implements OnInit {
   signUp() {
     const user_credentials = {... new UserRegistration(this.email, this.username, this.password)}
     this.registrationService.signUpUser(user_credentials).subscribe((res: any) => {
-      // localStorage.setItem('access_token', res.access_token)
-      // localStorage.setItem('refresh_token', res.refresh_token)
-      // this.router.navigate(['list-overview'])
-      this.router.navigate(['login'])
+      localStorage.setItem('access_token', res.access_token)
+      localStorage.setItem('refresh_token', res.refresh_token)
+      this.router.navigate(['list-overview'])
     },
     err => {
       console.log(err)

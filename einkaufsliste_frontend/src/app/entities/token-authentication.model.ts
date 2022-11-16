@@ -6,7 +6,6 @@ export interface ITokenAuthentication {
     client_secret: string
 }
    
-
 export class TokenAuthentication implements ITokenAuthentication{
     constructor(
         public token: string,
