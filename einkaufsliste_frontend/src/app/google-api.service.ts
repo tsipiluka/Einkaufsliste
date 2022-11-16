@@ -43,7 +43,7 @@ export class GoogleApiService {
       client_id: pkg.CLIENT_ID,
       client_secret: pkg.CLIENT_SECRET
     }
-    this.loginService.loginUser(authenticationData).subscribe((res: any) => {
+    this.loginService.googleLogin(authenticationData).subscribe((res: any) => {
       sessionStorage.clear()
       localStorage.setItem('access_token', res.access_token)
       localStorage.setItem('refresh_token', res.refresh_token)
