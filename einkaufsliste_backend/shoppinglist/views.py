@@ -7,7 +7,8 @@ from shoppinglist.models import ShoppingList
 from users.models import NewUser
 from rest_framework.response import Response
 from rest_framework import status
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 def get_user_from_token(request):
     header = request.headers
@@ -19,8 +20,11 @@ def get_user_from_token(request):
     except AccessToken.DoesNotExist:
         return None
 
-@api_view(['GET', 'POST'])      
+@api_view(['GET', 'POST'])
 def shoppingLists(request):
+    """
+    An endpoint used
+    """
     user = get_user_from_token(request)
     
     if user is None:
