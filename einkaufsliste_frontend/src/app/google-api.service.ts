@@ -20,18 +20,18 @@ export class GoogleApiService {
 
   constructor(private router: Router,private readonly oAuthService: OAuthService, private loginService: LoginService) {
     this.oAuthService.configure(oAuthConfig)
-    this.oAuthService.loginUrl = "https://www.google.com/accounts/Logout"
+    this.oAuthService.loadDiscoveryDocumentAndTryLogin();
+    this.oAuthService.tryLoginImplicitFlow()
+    this.checkWithBackend()
   }
 
-  loginWithGoogle(){
-    this.oAuthService.loadDiscoveryDocument().then(() => {
-      this.oAuthService.tryLoginImplicitFlow().then(() => {
-        console.log("user has no valid access token: ", this.oAuthService.hasValidAccessToken())
-        if (!this.oAuthService.hasValidAccessToken()){
-          this.oAuthService.initLoginFlow()
-        }
-        this.checkWithBackend()
-      })
+  loginWithGoogle() {
+    this.oAuthService.configure(oAuthConfig)
+    this.oAuthService.loadDiscoveryDocumentAndTryLogin();
+    this.oAuthService.tryLoginImplicitFlow().then(() => {
+      if (!this.oAuthService.hasValidAccessToken()){
+        this.oAuthService.initLoginFlow()
+      }
     })
   }
 
@@ -44,21 +44,13 @@ export class GoogleApiService {
       client_secret: pkg.CLIENT_SECRET
     }
     this.loginService.loginUser(authenticationData).subscribe((res: any) => {
+      sessionStorage.clear()
       localStorage.setItem('access_token', res.access_token)
       localStorage.setItem('refresh_token', res.refresh_token)
-      sessionStorage.clear()
       this.router.navigate(['list-overview'])
     },
     err => {
       console.log(err)
     })
-  }
-
-  isLoggedIn(): boolean {
-    return this.oAuthService.hasValidAccessToken()
-  }
-
-  signOut(){
-    return this.oAuthService.logOut()
   }
 }
