@@ -24,6 +24,6 @@ class ShoppingListEntry(models.Model):
     def __str__(self):
         return self.name
 
-class Contributor(models.Model):
+class ShoppingListContributor(models.Model):
     contributor = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE)
