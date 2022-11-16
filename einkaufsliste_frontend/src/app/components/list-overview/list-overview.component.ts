@@ -9,9 +9,11 @@ import { GoogleApiService } from 'src/app/google-api.service';
 })
 export class ListOverviewComponent implements OnInit {
 
-  constructor(private router: Router,private readonly googleApi: GoogleApiService) {
-    console.log(this.isLoggedIn())
-    if (!this.isLoggedIn()){
+  events: string[] = [];
+  opened: boolean = false;
+
+  constructor(private router: Router, ) {
+    if(!localStorage.getItem('access_token')){
       this.router.navigate(['login'])
     }
    }
@@ -20,12 +22,7 @@ export class ListOverviewComponent implements OnInit {
   }
 
   logout() {
-    this.googleApi.signOut()
+    localStorage.clear()
     this.router.navigate(['login'])
   }
-
-  isLoggedIn(): boolean{
-    return this.googleApi.isLoggedIn()
-  }
-
 }

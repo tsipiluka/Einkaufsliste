@@ -9,10 +9,11 @@ import { GoogleApiService } from 'src/app/google-api.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router,private readonly googleApi: GoogleApiService) { 
-    console.log(this.isLoggedIn())
-    if (this.isLoggedIn()){
-      this.router.navigate(['/list-overview'])
+  constructor(private router: Router,private googleApi: GoogleApiService) { 
+    if(localStorage.getItem('access_token')){
+      this.router.navigate(['list-overview'])
+    }else{
+      this.googleApi.checkWithBackend()
     }
   }
 
@@ -21,9 +22,5 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.googleApi.loginWithGoogle()
-  }
-
-  isLoggedIn(): boolean{
-    return this.googleApi.isLoggedIn()
   }
 }
