@@ -44,8 +44,17 @@ class UserInformation(APIView):
 
 class CustomUserCreate(APIView):
     permission_classes = [AllowAny]
-
+    
     def post(self, request, format='json'):
+        '''
+        Implements an endpoint to create a new user apart from login with Google.
+
+        The endpoint expects a JSON object containing:
+        * email: The email of the user.
+        * username: The username of the user.
+        * Password: The password of the user.
+
+        '''
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
