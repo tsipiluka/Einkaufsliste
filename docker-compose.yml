@@ -4,7 +4,7 @@ services:
   web:
     build: 'einkaufsliste_backend/'
     command: >
-      sh -c "python /code/manage.py migrate &&
+      sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate &&
              python /code/manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./einkaufsliste_backend/:/code
@@ -15,7 +15,7 @@ services:
   frontend:
     build: 'einkaufsliste_frontend/'
     ports:
-      - 80:80
+      - 4200:80
   db:
     image: postgres:13
     volumes:

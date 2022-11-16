@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # import read_secrets from read_secrets.py
@@ -43,9 +44,12 @@ INSTALLED_APPS = [
     "corsheaders",
     "users",
     "rest_framework",
-    'oauth2_provider',
-    'social_django',
-    'drf_social_oauth2',
+    'oauth2_provider', 
+    'social_django', 
+    'drf_social_oauth2', 
+    'shoppinglist',
+    'friends',
+    'drf_yasg', # Swagger
 ]
 
 MIDDLEWARE = [
@@ -65,7 +69,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
