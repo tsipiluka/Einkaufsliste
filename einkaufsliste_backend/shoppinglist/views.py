@@ -6,6 +6,7 @@ from shoppinglist.models import ShoppingList
 from users.models import NewUser
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 def get_user_from_token(request):
     header = request.headers
@@ -17,49 +18,84 @@ def get_user_from_token(request):
     except AccessToken.DoesNotExist:
         return None
 
-@api_view(['GET', 'POST'])
-def shoppingLists(request):
-    user = get_user_from_token(request)
-    
-    if user is None:
-        return JsonResponse({'error': 'Unauthorized'}, status=401 )
+class ShoppingLists(APIView):
+        
+        def get(self, request):
+            '''
+            Implements the GET method for the ShoppingLists API. Returns all shopping lists of the user.
+            '''
+            user = get_user_from_token(request)
 
-    if request.method == 'GET':
+            shopping_lists = ShoppingList.objects.filter(owner=user)
+            serializer = ShoppingListSerializer(shopping_lists, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        
+        def post(self, request):
+            """
+            Implements an endpoint to create a new shopping list in the context of the currently logged in user.
+
+            The endpoint expects a JSON object containing:
+
+            * name: The name of the shopping list.
+            * description: The description of the shopping list.
+            """
+            user = get_user_from_token(request)
+            if user is None:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            serializer = ShoppingListSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ShoppingListDetails(APIView):
+      
+    def get(self, request, id):
         '''
-        Returns all shopping lists of the user
+        Implements an endpoint to get a specific shopping list of the currently logged in user.
         '''
-        shopping_lists = ShoppingList.objects.filter(owner=user)
-        serializer = ShoppingListSerializer(shopping_lists, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    elif request.method == 'POST':
-        serializer = ShoppingListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET', 'PUT', 'DELETE'])      
-def shoppingListDetails(request, id):
+        user = get_user_from_token(request)
+        if user is None:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+                shopping_list = ShoppingList.objects.get(id=id, owner=user)
+        except ShoppingList.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ShoppingListSerializer(shopping_list)
+        return Response(serializer.data)
     
-    user = get_user_from_token(request)
-    if user is None:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    def put(self, request, id):
+        '''
+        Implements an endpoint to update a specific shopping list of the currently logged in user.
 
-    try:
-        shoppingList = ShoppingList.objects.get(pk=id)
-    except ShoppingList.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        The endpoint expects a JSON object containing at least one of the following fields:
 
-    if request.method == 'GET':
-        serializer = ShoppingListSerializer(shoppingList)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = ShoppingListSerializer(shoppingList, data=request.data)
+        * name: The name of the shopping list
+        * description: The description of the shopping list
+        '''
+        user = get_user_from_token(request)
+        if user is None:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+                shopping_list = ShoppingList.objects.get(id=id, owner=user)
+        except ShoppingList.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ShoppingListSerializer(shopping_list, data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+                serializer.save()
+                return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        shoppingList.delete()
+    
+    def delete(self, request, id):
+        '''
+        Implements an endpoint to delete a specific shopping list of the currently logged in user.
+        '''
+        user = get_user_from_token(request)
+        if user is None:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+                shopping_list = ShoppingList.objects.get(id=id, owner=user)
+        except ShoppingList.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        shopping_list.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-

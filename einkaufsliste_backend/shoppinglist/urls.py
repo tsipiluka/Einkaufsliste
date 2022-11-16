@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import shoppingLists, shoppingListDetails
+from .views import ShoppingLists, ShoppingListDetails
 
 app_name = 'shoppinglist'
 
 urlpatterns = [
-    path('shoppinglists/', shoppingLists, name='shoppingLists'),
-    path('shoppinglist_details/<int:id>/', shoppingListDetails, name='shoppingList'),
+    path('shoppinglists/', ShoppingLists.as_view(), name='shoppinglists'),
+    path('shoppinglists/<int:id>/', ShoppingListDetails.as_view(), name='shoppinglists_details'),
 ]
