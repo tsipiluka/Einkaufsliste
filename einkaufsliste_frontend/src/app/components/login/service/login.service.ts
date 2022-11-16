@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UserLogin } from 'src/app/entities/user-login.model';
 import { TokenAuthentication } from '../../../entities/token-authentication.model';
 
 @Injectable({
@@ -13,10 +14,11 @@ export class LoginService {
 
   constructor(private http: HttpClient){}
 
-  loginUser(val:TokenAuthentication):Observable<any>{
-    const headers = new HttpHeaders();
+  googleLogin(val:TokenAuthentication):Observable<any>{
     return this.http.post(this.APIUrl + '/auth/convert-token', val);
   }
 
-  //TODO - create service for normal user login
+  login(user_credentials: UserLogin): Observable<any>{
+    return this.http.post(this.APIUrl + '/user/login', user_credentials);
+  }
 }
