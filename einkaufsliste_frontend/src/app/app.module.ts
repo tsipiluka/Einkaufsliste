@@ -8,21 +8,25 @@ import { OAuthModule} from 'angular-oauth2-oidc';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { ListOverviewComponent } from './components/list-overview/list-overview.component'
+import { ListOverviewComponent } from './components/list-overview/list-overview.component';
+import { ShoppinglistComponent } from './components/shoppinglist/shoppinglist.component'
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    ListOverviewComponent
+    ListOverviewComponent,
+    ShoppinglistComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     OAuthModule.forRoot(),
-    NgbModule
+    NgbModule,
+    FormsModule
 
   ],
   providers: [],
