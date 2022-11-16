@@ -24,7 +24,7 @@ const routes: Routes = [
     component: ListOverviewComponent
   },
   {
-    path: 'shoppinglist',
+    path: 'shoppinglist/:id',
     component: ShoppinglistComponent
   }
 ];
