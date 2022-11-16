@@ -1,14 +1,11 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-import json
 from oauth2_provider.models import AccessToken
 from shoppinglist.serializers import ShoppingListSerializer
 from shoppinglist.models import ShoppingList
 from users.models import NewUser
 from rest_framework.response import Response
 from rest_framework import status
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
 
 def get_user_from_token(request):
     header = request.headers
@@ -22,15 +19,15 @@ def get_user_from_token(request):
 
 @api_view(['GET', 'POST'])
 def shoppingLists(request):
-    """
-    An endpoint used
-    """
     user = get_user_from_token(request)
     
     if user is None:
         return JsonResponse({'error': 'Unauthorized'}, status=401 )
 
     if request.method == 'GET':
+        '''
+        Returns all shopping lists of the user
+        '''
         shopping_lists = ShoppingList.objects.filter(owner=user)
         serializer = ShoppingListSerializer(shopping_lists, many=True)
         return JsonResponse(serializer.data, safe=False)
@@ -42,7 +39,7 @@ def shoppingLists(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])      
-def shoppingList(request, id):
+def shoppingListDetails(request, id):
     
     user = get_user_from_token(request)
     if user is None:
@@ -65,6 +62,4 @@ def shoppingList(request, id):
     elif request.method == 'DELETE':
         shoppingList.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 
