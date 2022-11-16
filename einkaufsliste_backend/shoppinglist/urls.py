@@ -5,5 +5,5 @@ app_name = 'shoppinglist'
 
 urlpatterns = [
     path('shoppinglists/', shoppingLists, name='shoppingLists'),
-    path('shoppinglist/<str:shoppingListId>/', shoppingList, name='shoppingList'),
+    path('shoppinglist/<int:id>/', shoppingList, name='shoppingList'),
 ]
