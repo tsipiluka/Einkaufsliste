@@ -8,11 +8,12 @@ from drf_yasg.views import get_schema_view as swagger_get_schema_view
 
 schema_view = swagger_get_schema_view(
     openapi.Info(
-        title="Einkaufsliste API",
+        title="Einkaufsliste API Documentation",
         default_version='v1',
         description="API for the Einkaufsliste app",
     ),
     public=True,
+
 )
 
 
