@@ -2,7 +2,7 @@
     <div class="row">
         <div class="menubar header">
             <div class="col-2 menuBtn">
-                <button pButton pRipple type="button" routerLink="/list-overview"  style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-angle-left" style="color:white"></i></button>
+                <button pButton pRipple type="button" routerLink="/list-overview" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-angle-left" style="color:white"></i></button>
             </div>
             <div class="col-8 shoppinglistName">
                 <h1>WG</h1>
@@ -13,7 +13,25 @@
         </div>
         <div class="col-12 activeCard">
             <p-card header="Active">
-                Banana
+                <div class="row">
+                    <div *ngFor="let entry of this.getEntryKeys(entryMap)">
+                        <div *ngIf="this.entryMap[entry].assignee" class="entry">
+                            <div class="field-checkbox">
+                                <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                            </div>
+                            <p>{{this.entryMap[entry].name}}</p>
+                            <p>{{this.entryMap[entry].assignee}}</p>
+                        </div>
+
+                        <div *ngIf="this.entryMap[entry].assignee === null" class="entry">
+                            <div class="field-checkbox">
+                                <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                            </div>
+                            <p>{{this.entryMap[entry].name}}</p>
+                            <button pButton pRipple type="button" icon="pi pi-plus" style="height:30px; width: 30px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
+                        </div>
+                    </div>
+                </div>
             </p-card>   
         </div>
         <div class="col-12 recentCard">
