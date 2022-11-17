@@ -26,3 +26,19 @@
     color: white;
     display: flex;
 }
+
+.entrylist {
+    display:flex;
+    overflow:visible;
+    text-align: center;
+}
+
+.entry {
+    display:flex;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.field-checkbox{
+    margin-right: 20px
+}
