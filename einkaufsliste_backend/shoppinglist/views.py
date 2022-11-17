@@ -77,15 +77,19 @@ class ShoppingListDetails(APIView):
         '''
         user = get_user_from_token(request)
         if user is None:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
-                shopping_list = ShoppingList.objects.get(id=id, owner=user)
+            shopping_list = ShoppingList.objects.get(id=id, owner=user)
         except ShoppingList.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = ShoppingListSerializer(shopping_list, data=request.data)
+        # for every field that is not set in the request, set it to the value of the existing shopping list
+        for field in serializer.initial_data:
+            if field not in request.data:
+                serializer.initial_data[field] = getattr(shopping_list, field)
         if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+            serializer.save()
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, id):
@@ -201,6 +205,10 @@ class ShoppingListEntryDetails(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = ShoppingListEntrySerializer(entry, data=request.data)
+        # TESTING NEEDED
+        for field in serializer.fields:
+            if field not in serializer.initial_data:
+                serializer.initial_data[field] = getattr(entry, field)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -250,7 +258,6 @@ class ShoppingListContributors(APIView):
         contributors = ShoppingListContributor.objects.filter(shopping_list=shopping_list)
         serializer = ShoppingListContributorSerializer(contributors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
     def post(self, request, shopping_list_id):
         '''
