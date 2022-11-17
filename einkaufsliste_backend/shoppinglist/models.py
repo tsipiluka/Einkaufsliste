@@ -14,13 +14,15 @@ class ShoppingList(models.Model):
         return self.name
 
 class ShoppingListEntry(models.Model):
-    STATUS = [("1" ,"open"), ("2", "closed"), ("3", "in_progess")]
+    # STATUS = [("1" ,"open"), ("2", "closed"), ("3", "in_progess")]
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=20, choices=STATUS, default="1")
+
+    status = models.BooleanField(default=False)
     shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE)
     creator = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    assignee = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name="assignee", null=True, blank=True)
     def __str__(self):
         return self.name
 

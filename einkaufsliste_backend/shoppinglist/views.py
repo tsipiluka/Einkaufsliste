@@ -43,6 +43,8 @@ class ShoppingLists(APIView):
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = ShoppingListSerializer(data=request.data)
+        # set the owner of the shopping list to the currently logged in user
+        serializer.initial_data['owner'] = user.id
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -101,7 +103,7 @@ class ShoppingListDetails(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ShoppingListEntries(APIView):        
-    def get(self, request, shopping_list_id):
+    def get(self, request, id):
         '''
         Implements the GET method for the ShoppingListEntries API. Returns all shopping list entries for the given shopping list id.
         '''
@@ -109,12 +111,12 @@ class ShoppingListEntries(APIView):
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list_id)
+        entries = ShoppingListEntry.objects.filter(shopping_list=id)
         serializer = ShoppingListEntrySerializer(entries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ShoppingListEntryAdd(APIView):
-    def post(self, request, shopping_list_id):
+    def post(self, request, id):
         """
         Implements an endpoint to create a new shopping list entry in the context of the currently logged in user if he is the owner of the shopping list or a contributor.
 
@@ -130,7 +132,7 @@ class ShoppingListEntryAdd(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         try:
-            shopping_list = ShoppingList.objects.get(id=shopping_list_id)
+            shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -138,6 +140,8 @@ class ShoppingListEntryAdd(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListEntrySerializer(data=request.data)
+        # set the creator of the shopping list entry to the currently logged in user
+        serializer.initial_data['creator'] = user.id
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
