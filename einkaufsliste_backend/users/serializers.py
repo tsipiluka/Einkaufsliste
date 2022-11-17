@@ -32,3 +32,11 @@ class WholeUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewUser
         fields = ('id', 'email', 'username', 'first_name', 'start_date', 'about', 'is_active', 'is_active')
+
+class LightUserSerializer(serializers.ModelSerializer):
+    """
+    This serializer is used to return the id and username of a user.
+    """
+    class Meta:
+        model = NewUser
+        fields = ('id', 'username')

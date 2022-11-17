@@ -2,7 +2,7 @@ import requests
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import CustomUserSerializer, WholeUserSerializer
+from .serializers import CustomUserSerializer, WholeUserSerializer, LightUserSerializer
 from rest_framework.permissions import AllowAny
 
 from oauth2_provider.models import AccessToken
@@ -43,6 +43,29 @@ class UserInformation(APIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
         except NewUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class UserInformationLight(APIView):
+    permission_classes = (AllowAny,)
+    
+    def get(self, request, id):
+        '''
+        Implements an endpoint to get the information of the user with the given id.
+
+        The endpoint returns a JSON object containing:
+        * id: The id of the user.
+        * username: The email of the user.
+        '''
+        user = user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            try:
+                user = NewUser.objects.get(id=id)
+                serializer = LightUserSerializer(user)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except NewUser.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 class CustomUserCreate(APIView):
     permission_classes = [AllowAny]
