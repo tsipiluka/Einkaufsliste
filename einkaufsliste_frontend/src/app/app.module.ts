@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 // PrimeNG
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
+import {CheckboxModule} from 'primeng/checkbox';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import {ButtonModule} from 'primeng/button';
     FormsModule,
 
     CardModule,
-    ButtonModule
+    ButtonModule,
+    CheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
