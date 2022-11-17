@@ -142,6 +142,8 @@ class ShoppingListEntryAdd(APIView):
         serializer = ShoppingListEntrySerializer(data=request.data)
         # set the creator of the shopping list entry to the currently logged in user
         serializer.initial_data['creator'] = user.id
+        # set the shopping list of the shopping list entry to the given shopping list id
+        serializer.initial_data['shopping_list'] = id
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
