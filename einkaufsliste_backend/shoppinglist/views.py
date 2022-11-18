@@ -267,11 +267,11 @@ class ShoppingListContributors(APIView):
 
         contributors = ShoppingListContributor.objects.filter(shopping_list=shopping_list)
         serializer = ShoppingListContributorSerializer(contributors, many=True)
-
+        
         # get the user objects of the contributors
         users = []
         for contributor in contributors:
-            users.append(contributor.user)
+            users.append(contributor.contributor)
         
         # serialize the user objects
         try:
