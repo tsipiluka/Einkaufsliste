@@ -242,7 +242,7 @@ class ShoppingListEntryDetails(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ShoppingListContributors(APIView):
-    def get(self, request, shopping_list_id):
+    def get(self, request, id):
         '''
         Implements an endpoint to get all contributors of a specific shopping list if the currently logged in user is the owner of the shopping list or a contributor.
         '''
@@ -251,7 +251,7 @@ class ShoppingListContributors(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
         try:
-            shopping_list = ShoppingList.objects.get(id=shopping_list_id)
+            shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
