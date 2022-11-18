@@ -11,13 +11,30 @@
                 <button pButton pRipple type="button" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-cog" style="color:white"></i></button>
             </div>
         </div>
-        <div class="col-12 activeCard" *ngFor="let list of this.lists">
-            <p-card header="{{this.list.name}}">Erstellt von: {{this.list.owner}}</p-card>   
-        </div>
         <div class="col-12 activeCard">
             <p-card header="Neue Einkaufsliste erstellen">
-                <button pButton pRipple type="button" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-plus"></i></button>
+                <p-dialog header="Neue Einkaufsliste:" [(visible)]="display">
+                        <div class="col-12 md:col-4">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-pencil"></i></span>
+                                <input type="text" pInputText placeholder="Name" id="name">         
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-4 dialog-element">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon"><i class="pi pi-tag"></i></span>
+                                <input type="text" pInputText placeholder="Beschreibung" id="description">         
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-4 dialog-element">
+                                <button pButton type="button" (click)="createShoppinglist()" label="Erstellen" icon="pi pi-check"></button>
+                        </div>
+                </p-dialog>
+                <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-plus"></i></button>
             </p-card>   
+        </div>
+        <div class="col-12 activeCard" *ngFor="let list of this.lists">
+            <p-card header="{{this.list.name}}">Erstellt von: {{this.list.owner}}</p-card>   
         </div>
     </div>
 </div>

@@ -30,3 +30,7 @@
 .activeCard {
     text-align: center;
 }
+
+.dialog-element {
+    margin-top: 10px;
+}

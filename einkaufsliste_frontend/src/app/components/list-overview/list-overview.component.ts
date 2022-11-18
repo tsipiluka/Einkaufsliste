@@ -14,16 +14,34 @@ export class ListOverviewComponent implements OnInit {
   events: string[] = [];
   opened: boolean = false;
   lists: Shoppinglist[] = [];
+  display: boolean = false;
 
   constructor(private router: Router, private listOverviewService: ListOverviewService) {
     if (!localStorage.getItem('access_token')) {
       this.router.navigate(['login']);
     }
+    this.getShoppinglists();
+  }
+
+  getShoppinglists() {
+    console.log('Einkaufslisten werden geladen');
     this.listOverviewService.getShoppinglists().subscribe((res: any) => {
       for (let entry of res) {
         this.lists.push(entry);
       }
     });
+    console.log(this.lists);
+  }
+
+  createShoppinglist() {
+    console.log('Neue Einkaufsliste wird erstellt');
+    this.listOverviewService.postShoppinglist(
+      (<HTMLInputElement>document.getElementById('name')).value,
+      (<HTMLInputElement>document.getElementById('description')).value
+    );
+    this.lists = [];
+    this.getShoppinglists();
+    this.display = false;
   }
 
   ngOnInit(): void {}
@@ -33,7 +51,7 @@ export class ListOverviewComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  test() {
-    console.log('test');
+  showDialog() {
+    this.display = true;
   }
 }

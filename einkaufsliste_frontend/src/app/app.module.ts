@@ -2,32 +2,31 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component'; 
-import {HttpClientModule} from '@angular/common/http'
-import { OAuthModule} from 'angular-oauth2-oidc';
+import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ListOverviewComponent } from './components/list-overview/list-overview.component';
-import { ShoppinglistComponent } from './components/shoppinglist/shoppinglist.component'
+import { ShoppinglistComponent } from './components/shoppinglist/shoppinglist.component';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // PrimeNG
-import {CardModule} from 'primeng/card';
-import {ButtonModule} from 'primeng/button';
-import {CheckboxModule} from 'primeng/checkbox';
-
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegistrationComponent,
-    ListOverviewComponent,
-    ShoppinglistComponent
-  ],
+  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     OAuthModule.forRoot(),
@@ -36,9 +35,12 @@ import {CheckboxModule} from 'primeng/checkbox';
 
     CardModule,
     ButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    ConfirmPopupModule,
+    DialogModule,
+    InputTextModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ConfirmationService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
