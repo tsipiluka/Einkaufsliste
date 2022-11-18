@@ -7,6 +7,7 @@ from users.models import NewUser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from users.serializers import LightUserSerializer
 
 def get_user_from_token(request):
     header = request.headers
@@ -32,7 +33,8 @@ class ShoppingLists(APIView):
     
     def post(self, request):
         """
-        Implements an endpoint to create a new shopping list in the context of the currently logged in user and adds the user as a contributor.
+        Implements an endpoint to create a new shopping list in the context of the currently
+        logged in user and adds the user as a contributor.
 
         The endpoint expects a JSON object containing:
 
@@ -248,7 +250,8 @@ class ShoppingListEntryDetails(APIView):
 class ShoppingListContributors(APIView):
     def get(self, request, id):
         '''
-        Implements an endpoint to get all contributors of a specific shopping list if the currently logged in user is the owner of the shopping list or a contributor.
+        Implements an endpoint to get all contributors of a specific shopping list if
+        the currently logged in user is the owner of the shopping list or a contributor.
         '''
         user = get_user_from_token(request)
         if user is None:
@@ -264,7 +267,20 @@ class ShoppingListContributors(APIView):
 
         contributors = ShoppingListContributor.objects.filter(shopping_list=shopping_list)
         serializer = ShoppingListContributorSerializer(contributors, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # get the user objects of the contributors
+        users = []
+        for contributor in contributors:
+            users.append(contributor.user)
+        
+        # serialize the user objects
+        try:
+            user_serializer = LightUserSerializer(users, many=True)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(user_serializer.data, status=status.HTTP_200_OK)
+        
 
     def post(self, request, shopping_list_id):
         '''
@@ -295,7 +311,8 @@ class ShoppingListContributors(APIView):
     
     def delete(self, request, shopping_list_id):
         '''
-        Implements an endpoint to remove a contributor from a specific shopping list of the currently logged in user if he is the owner of the shopping list.
+        Implements an endpoint to remove a contributor from a specific shopping list of the currently 
+        logged in user if he is the owner of the shopping list.
 
         The endpoint expects a JSON object containing:
 
