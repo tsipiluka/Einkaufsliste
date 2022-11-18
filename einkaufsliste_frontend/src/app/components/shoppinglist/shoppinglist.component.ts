@@ -29,7 +29,9 @@ export class ShoppinglistComponent implements OnInit {
 
   shoppinglistID: number = -1
   shoppinglistEntries: ShoppinglistEntry[] = []
-  contributorlist: User[] = []
+
+  contributorlist: User[] = [new User(1, 'tetet', 'david', 'david', new Date, 'dad')]
+  selectedContributor: any
   
   entryMap: EntryMap = {}
 
@@ -75,11 +77,19 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   showDialogForAssigneeModify() {
+    // this.contributorlist = []
     this.shoppinglistService.loadContributors(this.shoppinglistID).subscribe((res: any)=>{
       for(let contributor of res){
         this.contributorlist.push(contributor)
       }
       this.displayContribAtAssigneeModify = true;
+    })
+  }
+
+  modifyEntry(entry: ShoppinglistEntry){
+    const entryChanges = {'assignee': this.selectedContributor.id, 'status': entry.status}
+    this.shoppinglistService.changeEntry(this.shoppinglistID,entry.id,entryChanges).subscribe(()=>{
+      this.loadEntries()
     })
   }
 }

@@ -30,10 +30,10 @@ export class ShoppinglistService {
     return this.http.delete(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', {'headers': headers} );
   }
 
-  changeEntry(shoppinglistID:number, entryID:number, val: any): Observable<any>{
+  changeEntry(shoppinglistID:number, entryID:number, body: any): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.put(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', {'body': val,'headers': headers} );
+    return this.http.put(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', body,{'headers': headers} );
   }
 
   loadContributors(shoppinglistID:number): Observable<any>{

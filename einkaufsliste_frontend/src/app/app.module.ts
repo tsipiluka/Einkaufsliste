@@ -24,6 +24,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import {TooltipModule} from 'primeng/tooltip';
 import {AvatarModule} from 'primeng/avatar';
 import {ToggleButtonModule} from 'primeng/togglebutton';
+import {ListboxModule} from 'primeng/listbox';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -44,7 +45,8 @@ import {ToggleButtonModule} from 'primeng/togglebutton';
     InputTextModule,
     TooltipModule,
     AvatarModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    ListboxModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent],
