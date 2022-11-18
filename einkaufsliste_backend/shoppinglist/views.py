@@ -32,7 +32,7 @@ class ShoppingLists(APIView):
     
     def post(self, request):
         """
-        Implements an endpoint to create a new shopping list in the context of the currently logged in user.
+        Implements an endpoint to create a new shopping list in the context of the currently logged in user and adds the user as a contributor.
 
         The endpoint expects a JSON object containing:
 
@@ -47,6 +47,10 @@ class ShoppingLists(APIView):
         serializer.initial_data['owner'] = user.id
         if serializer.is_valid():
             serializer.save()
+            # add the user to the contributors of the shopping list
+            shopping_list = ShoppingList.objects.get(id=serializer.data['id'])
+            shopping_list_contributor = ShoppingListContributor(shopping_list=shopping_list, contributor=user)
+            shopping_list_contributor.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
