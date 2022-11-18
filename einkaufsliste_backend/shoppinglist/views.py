@@ -281,7 +281,6 @@ class ShoppingListContributors(APIView):
 
         return Response(user_serializer.data, status=status.HTTP_200_OK)
         
-
     def post(self, request, shopping_list_id):
         '''
         Implements an endpoint to add a new contributor to a specific shopping list of the currently logged in user if he is the owner of the shopping list.
@@ -304,6 +303,8 @@ class ShoppingListContributors(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListContributorSerializer(data=request.data)
+        # set serializer data shopping_list as shopping_list_id
+        serializer.initial_data['shopping_list'] = shopping_list_id
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
