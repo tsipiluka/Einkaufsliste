@@ -20,35 +20,35 @@
         </div>
         <div class="col-12 activeCard">
             <p-card header="Active">
-                <div *ngFor="let entry of this.getEntryKeys(entryMap)" class="row">
-                    <div *ngIf="this.entryMap[entry].assignee && !this.entryMap[entry].checked" class="entry">
+                <div *ngFor="let entry of this.shoppinglistEntries" class="row">
+                    <div *ngIf="entry.assignee && !entry.status" class="entry">
                         <div class="col-1 field-checkbox">
-                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                            <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{this.entryMap[entry].name}}</b>
+                            <b>{{entry.name}}</b>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
-                            <p-avatar label="{{this.getFirstCharFromString(this.entryMap[entry].assignee.username)}}" shape="circle" class="p-avatar p-component p-avatar-circle"
-                            pTooltip="{{this.entryMap[entry].assignee.username}}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"></p-avatar>
-                            <button pButton pRipple type="button" icon="pi pi-user-edit" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
+                            <p-avatar label="{{this.getFirstCharFromString(entry.assignee.username)}}" shape="circle" class="p-avatar p-component p-avatar-circle"
+                            pTooltip="{{entry.assignee.username}}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"></p-avatar>
+                            <button pButton pRipple type="button" icon="pi pi-user-edit" (click)="showDialogForAssigneeModify()" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
                         </div>     
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
                             <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
                         </div>
                     </div>
-                    <div *ngIf="this.entryMap[entry].assignee === null && !this.entryMap[entry].checked" class="entry">
+                    <div *ngIf="entry.assignee === null && !entry.status" class="entry">
                         <div class="col-1 field-checkbox">
-                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                            <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{this.entryMap[entry].name}}</b>
+                            <b>{{entry.name}}</b>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
-                            <button pButton pRipple type="button" icon="pi pi-plus" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
+                            <button pButton pRipple type="button" icon="pi pi-plus" (click)="showDialogForAssigneeModify()" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
                         </div>  
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
-                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry.id)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
                         </div>    
                     </div>
                 </div>
@@ -56,35 +56,35 @@
         </div>
         <div class="col-12 recentCard">
             <p-card header="Recent">
-                <div *ngFor="let entry of this.getEntryKeys(entryMap)" class="row">
-                    <div *ngIf="this.entryMap[entry].assignee && this.entryMap[entry].checked" class="entry">
+                <div *ngFor="let entry of this.shoppinglistEntries" class="row">
+                    <div *ngIf="entry.assignee && entry.status" class="entry">
                         <div class="col-1 field-checkbox">
-                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                            <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{this.entryMap[entry].name}}</b>
+                            <b>{{entry.name}}</b>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
-                            <p-avatar label="{{this.getFirstCharFromString(this.entryMap[entry].assignee.username)}}" shape="circle" class="p-avatar p-component p-avatar-circle"
-                            pTooltip="{{this.entryMap[entry].assignee.username}}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"></p-avatar>
-                            <button pButton pRipple type="button" icon="pi pi-user-edit" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
+                            <p-avatar label="{{this.getFirstCharFromString(entry.assignee.username)}}" shape="circle" class="p-avatar p-component p-avatar-circle"
+                            pTooltip="{{entry.assignee.username}}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"></p-avatar>
+                            <button pButton pRipple type="button" icon="pi pi-user-edit" (click)="showDialogForAssigneeModify()" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
                         </div>     
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
                             <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
                         </div>   
                     </div>
-                    <div *ngIf="this.entryMap[entry].assignee === null && this.entryMap[entry].checked" class="entry">
+                    <div *ngIf="entry.assignee === null && entry.status" class="entry">
                         <div class="col-1 field-checkbox">
-                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                            <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{this.entryMap[entry].name}}</b>
+                            <b>{{entry.name}}</b>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
-                            <button pButton pRipple type="button" icon="pi pi-plus" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
+                            <button pButton pRipple type="button" icon="pi pi-plus" (click)="showDialogForAssigneeModify()" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
                         </div>  
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
-                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry.id)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
                         </div>       
                     </div>
                 </div>
@@ -92,3 +92,21 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Teilnehmerliste" [(visible)]="displayContribAtAssigneeModify" [modal]="true">
+    <div class="col-12 md:col-4">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-pencil"></i></span>
+            <input type="text" pInputText placeholder="Name" id="name">         
+        </div>
+    </div>
+    <div class="col-12 md:col-4 dialog-element">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-tag"></i></span>
+            <input type="text" pInputText placeholder="Beschreibung" id="description">         
+        </div>
+    </div>
+    <div class="col-12 md:col-4 dialog-element">
+            <button pButton type="button"  label="Erstellen" icon="pi pi-check"></button>
+    </div>
+</p-dialog>
