@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="menubar header">
+        <div class="menuBar">
             <div class="col-2 menuBtn">
                 <button pButton pRipple type="button" routerLink="/list-overview" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-angle-left" style="color:white"></i></button>
             </div>
@@ -11,32 +11,83 @@
                 <button pButton pRipple type="button" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-cog" style="color:white"></i></button>
             </div>
         </div>
+        <div class="col-8">
+            <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="addEntry()" class="p-button-sm p-button-rounded  editBtn"></button>
+        </div>
+        <div class="editField col-4">
+            <!-- <button pButton label="Edit" [ngClass]="{editBtn_on: edit_checked,editBtn_off: !edit_checked}" icon="pi pi-file-edit"(click)="changeEditBtn()" class="p-button-sm p-button-rounded"></button> -->
+            <p-toggleButton onLabel="Edit" offLabel="Edit" onIcon="pi pi-check" offIcon="pi pi-times" [(ngModel)]="edit_checked"></p-toggleButton>
+        </div>
         <div class="col-12 activeCard">
             <p-card header="Active">
-                <div class="row">
-                    <div *ngFor="let entry of this.getEntryKeys(entryMap)">
-                        <div *ngIf="this.entryMap[entry].assignee" class="entry">
-                            <div class="field-checkbox">
-                                <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
-                            </div>
-                            <p>{{this.entryMap[entry].name}}</p>
-                            <p>{{this.entryMap[entry].assignee}}</p>
+                <div *ngFor="let entry of this.getEntryKeys(entryMap)" class="row">
+                    <div *ngIf="this.entryMap[entry].assignee && !this.entryMap[entry].checked" class="entry">
+                        <div class="col-1 field-checkbox">
+                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
-
-                        <div *ngIf="this.entryMap[entry].assignee === null" class="entry">
-                            <div class="field-checkbox">
-                                <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
-                            </div>
-                            <p>{{this.entryMap[entry].name}}</p>
-                            <button pButton pRipple type="button" icon="pi pi-plus" style="height:30px; width: 30px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
+                        <div class="col">
+                            <b>{{this.entryMap[entry].name}}</b>
                         </div>
+                        <div *ngIf="!edit_checked" class="col-4 assigneeField">
+                            <p-avatar label="{{this.getFirstCharFromString(this.entryMap[entry].assignee.username)}}" shape="circle" class="p-avatar p-component p-avatar-circle"
+                            pTooltip="{{this.entryMap[entry].assignee.username}}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"></p-avatar>
+                            <button pButton pRipple type="button" icon="pi pi-user-edit" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
+                        </div>     
+                        <div *ngIf="edit_checked" class="col-4 assigneeField">
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                        </div>
+                    </div>
+                    <div *ngIf="this.entryMap[entry].assignee === null && !this.entryMap[entry].checked" class="entry">
+                        <div class="col-1 field-checkbox">
+                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                        </div>
+                        <div class="col">
+                            <b>{{this.entryMap[entry].name}}</b>
+                        </div>
+                        <div *ngIf="!edit_checked" class="col-4 assigneeField">
+                            <button pButton pRipple type="button" icon="pi pi-plus" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
+                        </div>  
+                        <div *ngIf="edit_checked" class="col-4 assigneeField">
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                        </div>    
                     </div>
                 </div>
             </p-card>   
         </div>
         <div class="col-12 recentCard">
             <p-card header="Recent">
-                Lauch
+                <div *ngFor="let entry of this.getEntryKeys(entryMap)" class="row">
+                    <div *ngIf="this.entryMap[entry].assignee && this.entryMap[entry].checked" class="entry">
+                        <div class="col-1 field-checkbox">
+                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                        </div>
+                        <div class="col">
+                            <b>{{this.entryMap[entry].name}}</b>
+                        </div>
+                        <div *ngIf="!edit_checked" class="col-4 assigneeField">
+                            <p-avatar label="{{this.getFirstCharFromString(this.entryMap[entry].assignee.username)}}" shape="circle" class="p-avatar p-component p-avatar-circle"
+                            pTooltip="{{this.entryMap[entry].assignee.username}}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"></p-avatar>
+                            <button pButton pRipple type="button" icon="pi pi-user-edit" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
+                        </div>     
+                        <div *ngIf="edit_checked" class="col-4 assigneeField">
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                        </div>   
+                    </div>
+                    <div *ngIf="this.entryMap[entry].assignee === null && this.entryMap[entry].checked" class="entry">
+                        <div class="col-1 field-checkbox">
+                            <p-checkbox [(ngModel)]="this.entryMap[entry].checked" [binary]="true" inputId="binary"></p-checkbox>
+                        </div>
+                        <div class="col">
+                            <b>{{this.entryMap[entry].name}}</b>
+                        </div>
+                        <div *ngIf="!edit_checked" class="col-4 assigneeField">
+                            <button pButton pRipple type="button" icon="pi pi-plus" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
+                        </div>  
+                        <div *ngIf="edit_checked" class="col-4 assigneeField">
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                        </div>       
+                    </div>
+                </div>
             </p-card>   
         </div>
     </div>

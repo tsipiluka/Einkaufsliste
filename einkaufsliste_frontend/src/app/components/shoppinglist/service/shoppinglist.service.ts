@@ -17,4 +17,16 @@ export class ShoppinglistService {
     .set('Authorization', ''+localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/api/shoppinglist/'+ id + "/entries/", {'headers': headers} );
   }
+
+  getUserInformationByID(id: number): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/user/information/' + id + '/', {'headers': headers} );
+  }
+
+  deleteEntry(shoppinglistID:number, entryID:number): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', {'headers': headers} );
+  }
 }

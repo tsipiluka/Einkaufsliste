@@ -27,25 +27,57 @@ export class ShoppinglistComponent implements OnInit {
 
   private routeSub: Subscription = new Subscription;
 
+  shoppinglistID: number = -1
   shoppinglistEntries: ShoppinglistEntry[] = []
   
   entryMap: EntryMap = {}
 
-  checked: boolean = false
+  edit_checked: boolean = false;
 
   constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
-      this.shoppinglistService.getShoppinglistEntries(params['id']).subscribe((res: any) => {
+      this.shoppinglistID = params['id']
+      this.loadEntries()
+    })
+  }
+
+  loadEntries(){
+    this.entryMap = {}
+      this.shoppinglistService.getShoppinglistEntries(this.shoppinglistID).subscribe((res: any) => {
         for(let entry of res){
-          this.entryMap[entry.id] = new Entry(entry.status, entry.name, entry.assignee)
+          if(entry.assignee){
+            this.shoppinglistService.getUserInformationByID(entry.assignee).subscribe((userData: any) => {
+              this.entryMap[entry.id] = new Entry(entry.status, entry.name, userData)
+            })
+          }else{
+            this.entryMap[entry.id] = new Entry(entry.status, entry.name, entry.assignee)
+          }
         }
       })
+  }
+
+  addEntry(){
+    const a = 1
+  }
+
+  deleteEntry(entryID: number) {
+    this.shoppinglistService.deleteEntry(this.shoppinglistID,entryID).subscribe((res:any)=>{
+      console.log(res)
+      this.loadEntries()
     })
+  }
+
+  changeEditBtn(){
+    this.edit_checked = !this.edit_checked
   }
 
   getEntryKeys(obj: EntryMap): any[]{
     return Object.keys(obj)
+  }
+
+  getFirstCharFromString(input: string) {
+    return Array.from(input)[0]
   }
 }

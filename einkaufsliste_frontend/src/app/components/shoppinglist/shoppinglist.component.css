@@ -1,6 +1,5 @@
-.menubar {
-    margin-bottom: 40px;
-    display: flex;
+.container {
+    background-color: rgb(229, 234, 250);
 }
 
 .shoppinglistName {
@@ -19,12 +18,12 @@
     margin-bottom: 20px;
 }
 
-.header {
+.menuBar {
     background-color: #185265;
-    margin-bottom: 1rem;
     text-align: center;
     color: white;
     display: flex;
+    margin-bottom: 5px
 }
 
 .entrylist {
@@ -36,9 +35,55 @@
 .entry {
     display:flex;
     margin-bottom: 10px;
-    width: 100%;
+    border:1px solid#185265;
+    border-radius: 10px;
+    align-items: center;
+    height: 60px;
 }
 
 .field-checkbox{
-    margin-right: 20px
+    margin-right: 20px;
+    margin-left: 5px
+}
+
+.assigneeField {
+    text-align: right;
+}
+
+p-avatar {
+    margin-right: 5px;
+}
+
+.editBtn_off {
+    margin-bottom: 10px;
+    background-color: grey;
+}
+
+.editBtn_on {
+    margin-bottom: 10px;
+    background-color: #1f4ca0;
+}
+
+.editEntryIcon {
+    margin-right: 10px;
+}
+
+div.editField.col-4 {
+    text-align: right;
+}
+
+.p-avatar.p-avatar-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+    background: #0b4279;
+    border-color: #2669ac;
+    color: #266fb8;
 }
