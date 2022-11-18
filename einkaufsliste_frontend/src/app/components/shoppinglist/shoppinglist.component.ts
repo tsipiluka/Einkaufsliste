@@ -29,10 +29,13 @@ export class ShoppinglistComponent implements OnInit {
 
   shoppinglistID: number = -1
   shoppinglistEntries: ShoppinglistEntry[] = []
+  contributorlist: User[] = []
   
   entryMap: EntryMap = {}
 
   edit_checked: boolean = false;
+
+  displayContribAtAssigneeModify: boolean = false
 
   constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute) { }
 
@@ -47,13 +50,7 @@ export class ShoppinglistComponent implements OnInit {
     this.entryMap = {}
       this.shoppinglistService.getShoppinglistEntries(this.shoppinglistID).subscribe((res: any) => {
         for(let entry of res){
-          if(entry.assignee){
-            this.shoppinglistService.getUserInformationByID(entry.assignee).subscribe((userData: any) => {
-              this.entryMap[entry.id] = new Entry(entry.status, entry.name, userData)
-            })
-          }else{
-            this.entryMap[entry.id] = new Entry(entry.status, entry.name, entry.assignee)
-          }
+          this.shoppinglistEntries.push(<ShoppinglistEntry>entry)
         }
       })
   }
@@ -64,7 +61,6 @@ export class ShoppinglistComponent implements OnInit {
 
   deleteEntry(entryID: number) {
     this.shoppinglistService.deleteEntry(this.shoppinglistID,entryID).subscribe((res:any)=>{
-      console.log(res)
       this.loadEntries()
     })
   }
@@ -73,11 +69,17 @@ export class ShoppinglistComponent implements OnInit {
     this.edit_checked = !this.edit_checked
   }
 
-  getEntryKeys(obj: EntryMap): any[]{
-    return Object.keys(obj)
+  getFirstCharFromString(input: string) {
+    // return Array.from(input)[0]
+    return "hi"
   }
 
-  getFirstCharFromString(input: string) {
-    return Array.from(input)[0]
+  showDialogForAssigneeModify() {
+    this.shoppinglistService.loadContributors(this.shoppinglistID).subscribe((res: any)=>{
+      for(let contributor of res){
+        this.contributorlist.push(contributor)
+      }
+      this.displayContribAtAssigneeModify = true;
+    })
   }
 }
