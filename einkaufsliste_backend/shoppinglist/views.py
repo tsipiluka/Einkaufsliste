@@ -305,11 +305,16 @@ class ShoppingListContributors(APIView):
         serializer = ShoppingListContributorSerializer(data=request.data)
         # set serializer data shopping_list as shopping_list_id
         serializer.initial_data['shopping_list'] = shopping_list_id
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+        # check if user is already a contributor
+        if not ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=serializer.initial_data['contributor']).exists():
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
     def delete(self, request, shopping_list_id):
         '''
         Implements an endpoint to remove a contributor from a specific shopping list of the currently 
