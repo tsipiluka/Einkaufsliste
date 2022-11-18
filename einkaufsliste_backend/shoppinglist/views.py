@@ -130,6 +130,9 @@ class ShoppingListEntryAdd(APIView):
         * status: The status of the shopping list entry.
         * shopping_list: The shopping list the entry belongs to.
         * creator: The creator of the shopping list entry.
+        
+        Optional fields:
+        * assignee: The assignee of the shopping list entry.
         """
         user = get_user_from_token(request)
         if user is None:
