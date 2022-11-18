@@ -21,6 +21,9 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import {TooltipModule} from 'primeng/tooltip';
+import {AvatarModule} from 'primeng/avatar';
+import {ToggleButtonModule} from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -39,6 +42,9 @@ import { InputTextModule } from 'primeng/inputtext';
     ConfirmPopupModule,
     DialogModule,
     InputTextModule,
+    TooltipModule,
+    AvatarModule,
+    ToggleButtonModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent],
