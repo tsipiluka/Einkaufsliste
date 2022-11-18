@@ -29,4 +29,16 @@ export class ShoppinglistService {
     .set('Authorization', ''+localStorage.getItem('access_token'));
     return this.http.delete(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', {'headers': headers} );
   }
+
+  changeEntry(shoppinglistID:number, entryID:number, val: any): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.put(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', {'body': val,'headers': headers} );
+  }
+
+  loadContributors(shoppinglistID:number): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/', {'headers': headers} );
+  }
 }
