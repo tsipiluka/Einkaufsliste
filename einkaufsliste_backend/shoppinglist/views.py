@@ -248,6 +248,8 @@ class ShoppingListEntryDetails(APIView):
         serializer = ShoppingListEntrySerializer(entry, data=request.data)
         # set the shoppinglist field in serializer.data to the given shopping list id
         serializer.initial_data['shopping_list'] = shopping_list_id
+        # set the creator field in serializer.data to the id of the currently logged in user
+        serializer.initial_data['creator'] = user.id
         # TESTING NEEDED
         for field in serializer.fields:
             if field not in serializer.initial_data:
