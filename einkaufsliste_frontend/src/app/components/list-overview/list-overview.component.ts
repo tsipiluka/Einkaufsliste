@@ -49,6 +49,7 @@ export class ListOverviewComponent implements OnInit {
       (<HTMLInputElement>document.getElementById('description')).value
     );
     this.getShoppinglists();
+    window.location.reload();
     this.display = false;
   }
 
@@ -74,6 +75,7 @@ export class ListOverviewComponent implements OnInit {
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
         this.listOverviewService.deleteShoppinglist(id);
         this.getShoppinglists();
+        window.location.reload();
       },
       reject: () => {
         //reject action
