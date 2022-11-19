@@ -139,22 +139,22 @@ class ShoppingListEntries(APIView):
         '''
         user = get_user_from_token(request)
         if user is None:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
+            return Response(status=status.HTTP_401_UNAUTHORIZED)        
         try:
             shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        
+        # return the shopping list entries only if the user is a contributor of the shopping list
+        if shopping_list.owner == user or shopping_list.contributors.filter(id=user.id).exists():
+            shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)
+            serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
+            
+            for entry in serializer.data:
+                if entry['assignee'] is not None:
+                    entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
+        else:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)
-        serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
-        # use LightUserSerializer to serialize the user of the shopping list entry
-        for entry in serializer.data:
-            # if assignee not user not set
-            if entry['assignee'] is not None:
-                entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ShoppingListEntryAdd(APIView):
     def post(self, request, id):
