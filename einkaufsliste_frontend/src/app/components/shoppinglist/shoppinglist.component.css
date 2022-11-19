@@ -23,7 +23,9 @@
     text-align: center;
     color: white;
     display: flex;
-    margin-bottom: 5px
+    margin-bottom: 5px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .entrylist {
