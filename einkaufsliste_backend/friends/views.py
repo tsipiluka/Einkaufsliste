@@ -41,10 +41,15 @@ class Friends(APIView):
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = FriendSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # check if friendship already exists
+        if not Friend.objects.filter(initiator=user, friend=request.data['friend']).exists():
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 class FriendDetails(APIView):
  
