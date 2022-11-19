@@ -19,6 +19,15 @@ def get_user_from_token(request):
     except AccessToken.DoesNotExist:
         return None
 
+def check_user_owner_contribution(user, shopping_list):
+    if user == shopping_list.owner:
+        return True
+    try:
+        ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user)
+        return True
+    except ShoppingListContributor.DoesNotExist:
+        return False
+
 class ShoppingLists(APIView):
         
     def get(self, request):
@@ -77,7 +86,7 @@ class ShoppingListDetails(APIView):
             shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if shopping_list.owner == user or ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
+        if check_user_owner_contribution(user, shopping_list):
             serializer = ShoppingListSerializer(shopping_list)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
