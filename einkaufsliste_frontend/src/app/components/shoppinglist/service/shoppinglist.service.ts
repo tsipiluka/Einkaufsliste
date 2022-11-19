@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,12 @@ export class ShoppinglistService {
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/user/information/' + id + '/', {'headers': headers} );
+  }
+
+  addEntry(shoppinglistID:number, val: ShoppinglistEntry): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entries/add/',val, {'headers': headers} );
   }
 
   deleteEntry(shoppinglistID:number, entryID:number): Observable<any>{

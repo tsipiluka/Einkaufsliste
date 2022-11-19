@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="col-8">
-            <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="addEntry()" class="p-button-sm p-button-rounded  editBtn"></button>
+            <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="displayAddEntry()" class="p-button-sm p-button-rounded  editBtn"></button>
         </div>
         <div class="editField col-4">
             <!-- <button pButton label="Edit" [ngClass]="{editBtn_on: edit_checked,editBtn_off: !edit_checked}" icon="pi pi-file-edit"(click)="changeEditBtn()" class="p-button-sm p-button-rounded"></button> -->
@@ -48,7 +48,7 @@
                             <button pButton pRipple type="button" icon="pi pi-plus" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
                         </div>  
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
-                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry.id)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry.id!)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
                         </div>    
                     </div>      
                 </div>
@@ -84,7 +84,7 @@
                             <button pButton pRipple type="button" icon="pi pi-plus" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
                         </div>  
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
-                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry.id)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
+                            <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="deleteEntry(entry.id!)" class="p-button-rounded p-button-danger assigneeAddBtn"></button> 
                         </div>       
                     </div>
                 </div>   
@@ -92,8 +92,31 @@
         </div>
     </div>
 </div>
-<p-dialog header="Teilnehmerliste" [(visible)]="displayContribAtAssigneeModify" [modal]="true" class="contributorDialog">
+<p-dialog header="Teilnehmerliste" [(visible)]="displayContribAtAssigneeModify" [modal]="true" class="dialog">
     <div *ngFor="let contributor of this.contributorlist" class="col-12 md:col-4 dialog-element">
        <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="modifyEntry(contributor.id!)" class="p-button-outlined"></button>
+    </div>
+</p-dialog>
+<p-dialog header="Add Entry" [(visible)]="displayAddEntrySwitch" [modal]="true" class="dialog">
+    <div class="col-12 md:col-4">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-pencil"></i></span>
+            <input type="text" [(ngModel)]="addEntryName" pInputText placeholder="Name" id="name">         
+        </div>
+    </div>
+    <div class="col-12 md:col-4 dialog-element">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" disabled="true"  [(ngModel)]="addEntryAssignee!.username" pInputText placeholder="Assignee" id="Assignee">         
+            <button type="button" pButton pRipple icon="pi pi-plus" (click)="displayAddEntryAssignee()" styleClass="p-button-success"></button>     
+        </div>
+    </div>
+    <div class="col-12 md:col-4 dialog-element">
+            <button pButton type="button" (click)="addEntry()" label="Create" icon="pi pi-check"></button>
+    </div>
+</p-dialog>
+<p-dialog header="Select" [(visible)]="displayContribForAddEntry" [modal]="true" class="dialog">
+    <div *ngFor="let contributor of this.contributorlist" class="col-12 md:col-4 dialog-element">
+       <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="selectUserForAddEntry(contributor.id!, contributor.username!)" class="p-button-outlined"></button>
     </div>
 </p-dialog>
