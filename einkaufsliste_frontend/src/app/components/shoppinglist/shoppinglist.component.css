@@ -87,3 +87,11 @@ div.editField.col-4 {
     border-color: #2669ac;
     color: #266fb8;
 }
+
+.contributorDialog {
+    text-align: center;
+}
+
+.dialog-element {
+    margin-top: 10px;
+}

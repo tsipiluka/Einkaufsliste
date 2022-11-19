@@ -29,9 +29,10 @@ export class ShoppinglistComponent implements OnInit {
 
   shoppinglistID: number = -1
   shoppinglistEntries: ShoppinglistEntry[] = []
+  selectedEntry: ShoppinglistEntry | undefined;
 
-  contributorlist: User[] = [new User(1, 'tetet', 'david', 'david', new Date, 'dad')]
-  selectedContributor: any
+  contributorlist: User[] = []
+  selectedContributor: User | undefined
   
   entryMap: EntryMap = {}
 
@@ -49,7 +50,7 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   loadEntries(){
-    this.entryMap = {}
+    this.shoppinglistEntries = []
       this.shoppinglistService.getShoppinglistEntries(this.shoppinglistID).subscribe((res: any) => {
         for(let entry of res){
           this.shoppinglistEntries.push(<ShoppinglistEntry>entry)
@@ -76,19 +77,20 @@ export class ShoppinglistComponent implements OnInit {
     return "hi"
   }
 
-  showDialogForAssigneeModify() {
-    // this.contributorlist = []
-    this.shoppinglistService.loadContributors(this.shoppinglistID).subscribe((res: any)=>{
+  loadContributors(entry: ShoppinglistEntry) {
+    this.selectedEntry = entry
+    this.contributorlist = []
+    this.shoppinglistService.getContributors(this.shoppinglistID).subscribe((res: User[])=>{
       for(let contributor of res){
         this.contributorlist.push(contributor)
       }
-      this.displayContribAtAssigneeModify = true;
+      this.displayContribAtAssigneeModify = true
     })
   }
 
-  modifyEntry(entry: ShoppinglistEntry){
-    const entryChanges = {'assignee': this.selectedContributor.id, 'status': entry.status}
-    this.shoppinglistService.changeEntry(this.shoppinglistID,entry.id,entryChanges).subscribe(()=>{
+  modifyEntry(contributor: number){
+    const entryChanges = { 'name':this.selectedEntry!.name,'status': this.selectedEntry!.status, 'assignee': contributor,}
+    this.shoppinglistService.changeEntry(this.shoppinglistID!,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
       this.loadEntries()
     })
   }

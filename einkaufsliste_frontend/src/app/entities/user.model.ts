@@ -1,19 +1,19 @@
 export interface IUser {
-    id: number,
-    email: string,
-    username: string,
-    first_name: string,
-    start_date: Date,
-    about: string
+    id: number | undefined,
+    email: string| undefined,
+    username: string| undefined,
+    first_name: string| undefined,
+    start_date: Date| undefined,
+    about: string| undefined
 }
    
 export class User implements IUser{
     constructor(
-        public id: number,
-        public email: string,
-        public username: string,
-        public first_name: string,
-        public start_date: Date,
-        public about: string
+        public id: number| undefined,
+        public email: string| undefined,
+        public username: string| undefined,
+        public first_name: string| undefined,
+        public start_date: Date| undefined,
+        public about: string| undefined
     ){}
 }

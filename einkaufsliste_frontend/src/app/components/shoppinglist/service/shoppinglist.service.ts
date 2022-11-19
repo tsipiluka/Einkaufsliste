@@ -36,7 +36,7 @@ export class ShoppinglistService {
     return this.http.put(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/' + entryID + '/', body,{'headers': headers} );
   }
 
-  loadContributors(shoppinglistID:number): Observable<any>{
+  getContributors(shoppinglistID:number): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/', {'headers': headers} );
