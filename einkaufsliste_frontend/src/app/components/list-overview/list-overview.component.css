@@ -34,3 +34,11 @@
 .dialog-element {
     margin-top: 10px;
 }
+
+.delete-btn {
+    vertical-align: middle;
+}
+
+.list-span {
+    padding-right: 180px;
+}

@@ -34,7 +34,12 @@
             </p-card>   
         </div>
         <div class="col-12 activeCard" *ngFor="let list of this.lists">
-            <p-card header="{{this.list.name}}">Erstellt von: {{this.list.owner}}</p-card>   
+            <p-card header="{{this.list.name}}">
+                <div class="shoppinglist-body">
+                    <span class="list-span">Erstellt von: {{this.list.owner}}</span>
+                    <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                </div>
+            </p-card>   
         </div>
     </div>
 </div>
