@@ -1,0 +1,36 @@
+.menubar {
+    margin-bottom: 40px;
+    display: flex;
+}
+
+.shoppinglistName {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.menuBtn {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.activeCard {
+    margin-bottom: 20px;
+}
+
+.header {
+    background-color: #185265;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: white;
+    display: flex;
+}
+
+.activeCard {
+    text-align: center;
+}
+
+.dialog-element {
+    margin-top: 10px;
+}
