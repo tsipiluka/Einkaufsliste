@@ -1,3 +1,4 @@
+<p-toast position="bottom-center" key="tc"></p-toast>
 <div class="container">
     <div class="row">
         <div class="menubar header">
@@ -34,7 +35,14 @@
             </p-card>   
         </div>
         <div class="col-12 activeCard" *ngFor="let list of this.lists">
-            <p-card header="{{this.list.name}}">Erstellt von: {{this.list.owner}}</p-card>   
+            <p-card header="{{this.list.name}}">
+                <div class="shoppinglist-body">
+                    <span class="list-span">Erstellt von: {{this.list.owner}}</span>
+                    <p-confirmPopup></p-confirmPopup>
+                    <button pButton pRipple type="button" (click)="confirm($event, this.list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                    <button pButton pRipple type="button" (click)="toShoppinglist(this.list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
+                </div>
+            </p-card>   
         </div>
     </div>
 </div>

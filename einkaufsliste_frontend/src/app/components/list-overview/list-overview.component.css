@@ -1,3 +1,7 @@
+.container {
+    background-color: #18526535;
+}
+
 .menubar {
     margin-bottom: 40px;
     display: flex;
@@ -33,4 +37,17 @@
 
 .dialog-element {
     margin-top: 10px;
+}
+
+.delete-btn {
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+shoppinglist-body {
+    align-items: center;
+}
+
+.list-span {
+    padding-right: 100px;
 }
