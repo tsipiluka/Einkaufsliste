@@ -71,14 +71,19 @@ class ShoppingListDetails(APIView):
         '''
         user = get_user_from_token(request)
         if user is None:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        # return the shopping list with the given id only if the user is the owner or a contributor of the shopping list
         try:
-                shopping_list = ShoppingList.objects.get(id=id, owner=user)
+            shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = ShoppingListSerializer(shopping_list)
-        return Response(serializer.data)
-    
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if shopping_list.owner == user or shopping_list.contributors.filter(id=user.id).exists():
+            serializer = ShoppingListSerializer(shopping_list)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+
     def put(self, request, id):
         '''
         Implements an endpoint to update a specific shopping list of the currently logged in user.
