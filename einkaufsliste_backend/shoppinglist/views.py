@@ -77,7 +77,7 @@ class ShoppingListDetails(APIView):
             shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if shopping_list.owner == user or ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if shopping_list.owner == user or ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             serializer = ShoppingListSerializer(shopping_list)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -153,6 +153,7 @@ class ShoppingListEntries(APIView):
             for entry in serializer.data:
                 if entry['assignee'] is not None:
                     entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
@@ -182,7 +183,7 @@ class ShoppingListEntryAdd(APIView):
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListEntrySerializer(data=request.data)
@@ -211,7 +212,7 @@ class ShoppingListEntryDetails(APIView):
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         try:
@@ -242,7 +243,7 @@ class ShoppingListEntryDetails(APIView):
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         try:
@@ -279,7 +280,7 @@ class ShoppingListEntryDetails(APIView):
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         try:
@@ -305,7 +306,7 @@ class ShoppingListContributors(APIView):
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         contributors = ShoppingListContributor.objects.filter(shopping_list=shopping_list)
