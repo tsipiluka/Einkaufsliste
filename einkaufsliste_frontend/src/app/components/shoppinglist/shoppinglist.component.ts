@@ -34,7 +34,6 @@ export class ShoppinglistComponent implements OnInit {
   addEntryName: string = ''
   addEntryAssignee: User | null = <User>{}
 
-
   contributorlist: User[] = []
   selectedContributor: User | undefined
   
@@ -45,8 +44,9 @@ export class ShoppinglistComponent implements OnInit {
   displayContribAtAssigneeModify: boolean = false
   displayAddEntrySwitch: boolean = false
   displayContribForAddEntry: boolean = false
-  
 
+  searchEntry: string = ''
+  
   constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -55,6 +55,10 @@ export class ShoppinglistComponent implements OnInit {
       this.loadEntries()
     })
   }
+
+  // sortListBySearch(){
+  //   this.shoppinglistEntries()
+  // }
 
   loadEntries(){
     this.shoppinglistEntries = []
@@ -76,8 +80,7 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   getFirstCharFromString(input: string) {
-    // return Array.from(input)[0]
-    return "hi"
+    return Array.from(input)[0]
   }
 
   loadContributors(entry: ShoppinglistEntry) {
@@ -95,9 +98,17 @@ export class ShoppinglistComponent implements OnInit {
     this.displayAddEntrySwitch = true
   }
 
-  modifyEntry(contributor: number){
+  modifyEntryAssginee(contributor: number){
     this.displayContribAtAssigneeModify = false
-    const entryChanges = { 'name':this.selectedEntry!.name,'status': this.selectedEntry!.status, 'assignee': contributor}
+    const entryChanges = {'assignee': contributor!}
+    this.shoppinglistService.changeEntry(this.shoppinglistID!,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
+      this.loadEntries()
+    })
+  }
+
+  modifyEntryStatus(entry: ShoppinglistEntry){
+    this.selectedEntry = entry
+    const entryChanges = {'status': this.selectedEntry!.status, 'assignee': this.selectedEntry!.assignee?.id }
     this.shoppinglistService.changeEntry(this.shoppinglistID!,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
       this.loadEntries()
     })
