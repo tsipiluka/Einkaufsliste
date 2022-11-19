@@ -148,7 +148,7 @@ class ShoppingListEntries(APIView):
 
         # use the user object instead of the user id in the response
         for entry in serializer.data:
-            entry['creator'] = LightUserSerializer(NewUser.objects.get(id=entry['creator'])).data
+            entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
