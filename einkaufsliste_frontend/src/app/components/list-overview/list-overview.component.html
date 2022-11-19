@@ -1,3 +1,4 @@
+<p-toast position="bottom-center" key="tc"></p-toast>
 <div class="container">
     <div class="row">
         <div class="menubar header">
@@ -37,7 +38,8 @@
             <p-card header="{{this.list.name}}">
                 <div class="shoppinglist-body">
                     <span class="list-span">Erstellt von: {{this.list.owner}}</span>
-                    <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                    <p-confirmPopup></p-confirmPopup>
+                    <button pButton pRipple type="button" (click)="confirm($event)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
                 </div>
             </p-card>   
         </div>

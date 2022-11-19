@@ -4,11 +4,14 @@ import { Subscription } from 'rxjs';
 import { IShoppinglist, Shoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ListOverviewService } from './service/list-overview.service';
 import { GoogleApiService } from 'src/app/google-api.service';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-list-overview',
   templateUrl: './list-overview.component.html',
   styleUrls: ['./list-overview.component.css'],
+  providers: [MessageService, ConfirmationService],
 })
 export class ListOverviewComponent implements OnInit {
   events: string[] = [];
@@ -16,7 +19,12 @@ export class ListOverviewComponent implements OnInit {
   lists: Shoppinglist[] = [];
   display: boolean = false;
 
-  constructor(private router: Router, private listOverviewService: ListOverviewService) {
+  constructor(
+    private router: Router,
+    private listOverviewService: ListOverviewService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {
     if (!localStorage.getItem('access_token')) {
       this.router.navigate(['login']);
     }
@@ -53,5 +61,20 @@ export class ListOverviewComponent implements OnInit {
 
   showDialog() {
     this.display = true;
+  }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: 'Soll diese Einkaufsliste gelöscht werden?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        //confirm action
+        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
+      },
+      reject: () => {
+        //reject action
+      },
+    });
   }
 }

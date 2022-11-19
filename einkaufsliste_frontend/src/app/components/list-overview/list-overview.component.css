@@ -39,6 +39,10 @@
     vertical-align: middle;
 }
 
+shoppinglist-body {
+    align-items: center;
+}
+
 .list-span {
-    padding-right: 180px;
+    padding-right: 150px;
 }

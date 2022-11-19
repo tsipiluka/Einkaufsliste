@@ -21,10 +21,14 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import {TooltipModule} from 'primeng/tooltip';
-import {AvatarModule} from 'primeng/avatar';
-import {ToggleButtonModule} from 'primeng/togglebutton';
-import {ListboxModule} from 'primeng/listbox';
+import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ListboxModule } from 'primeng/listbox';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -46,9 +50,12 @@ import {ListboxModule} from 'primeng/listbox';
     TooltipModule,
     AvatarModule,
     ToggleButtonModule,
-    ListboxModule
+    ListboxModule,
+    ToastModule,
+    MessagesModule,
+    MessageModule,
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
