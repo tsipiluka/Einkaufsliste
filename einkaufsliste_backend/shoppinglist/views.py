@@ -146,7 +146,9 @@ class ShoppingListEntries(APIView):
         serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
         # use LightUserSerializer to serialize the user of the shopping list entry
         for entry in serializer.data:
-            entry['user'] = LightUserSerializer(NewUser.objects.get(id=entry['user'])).data
+            # if assignee not user not set
+            if entry['assignee'] is not None:
+                entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['user'])).data
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ShoppingListEntryAdd(APIView):
