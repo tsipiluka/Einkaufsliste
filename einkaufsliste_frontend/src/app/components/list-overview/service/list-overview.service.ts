@@ -22,7 +22,19 @@ export class ListOverviewService {
     console.log(body);
     this.http.post(this.APIUrl + '/api/shoppinglists/', { name: n, description: d }, { headers: headers }).subscribe({
       next: data => {
-        console.log('Success');
+        console.log('Created Shoppinglist');
+      },
+      error: error => {
+        console.error('There was an error!');
+      },
+    });
+  }
+
+  deleteShoppinglist(id: number) {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/', { headers: headers }).subscribe({
+      next: data => {
+        console.log('Deleted Shoppinglist');
       },
       error: error => {
         console.error('There was an error!');

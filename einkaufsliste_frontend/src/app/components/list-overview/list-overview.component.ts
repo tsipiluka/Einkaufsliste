@@ -33,6 +33,7 @@ export class ListOverviewComponent implements OnInit {
 
   getShoppinglists() {
     console.log('Einkaufslisten werden geladen');
+    this.lists = [];
     this.listOverviewService.getShoppinglists().subscribe((res: any) => {
       for (let entry of res) {
         this.lists.push(entry);
@@ -47,7 +48,6 @@ export class ListOverviewComponent implements OnInit {
       (<HTMLInputElement>document.getElementById('name')).value,
       (<HTMLInputElement>document.getElementById('description')).value
     );
-    this.lists = [];
     this.getShoppinglists();
     this.display = false;
   }
@@ -63,18 +63,25 @@ export class ListOverviewComponent implements OnInit {
     this.display = true;
   }
 
-  confirm(event: Event) {
+  confirm(event: Event, id: number) {
     this.confirmationService.confirm({
       target: event.target!,
       message: 'Soll diese Einkaufsliste gelöscht werden?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         //confirm action
+        console.log('Einkaufsliste wird gelöscht');
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
+        this.listOverviewService.deleteShoppinglist(id);
+        this.getShoppinglists();
       },
       reject: () => {
         //reject action
       },
     });
+  }
+
+  toShoppinglist(id: number) {
+    this.router.navigate(['shoppinglist', id]);
   }
 }

@@ -34,12 +34,12 @@
                 <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-plus"></i></button>
             </p-card>   
         </div>
-        <div class="col-12 activeCard" *ngFor="let list of this.lists">
+        <div class="col-12 activeCard" *ngFor="let list of this.lists" (click)="toShoppinglist(this.list.id)">
             <p-card header="{{this.list.name}}">
                 <div class="shoppinglist-body">
                     <span class="list-span">Erstellt von: {{this.list.owner}}</span>
                     <p-confirmPopup></p-confirmPopup>
-                    <button pButton pRipple type="button" (click)="confirm($event)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                    <button pButton pRipple type="button" (click)="confirm($event, this.list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
                 </div>
             </p-card>   
         </div>
