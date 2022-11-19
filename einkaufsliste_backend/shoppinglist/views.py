@@ -144,12 +144,12 @@ class ShoppingListEntries(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
         
         shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)        
-        serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
+        # serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
 
         # use the user object instead of the user id in the response
-        for entry in serializer.data:
+        for entry in shopping_list_entries.data:
             entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(shopping_list_entries.data, status=status.HTTP_200_OK)
 
 
 class ShoppingListEntryAdd(APIView):
