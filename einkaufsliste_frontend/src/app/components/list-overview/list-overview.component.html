@@ -40,6 +40,7 @@
                     <span class="list-span">Erstellt von: {{this.list.owner}}</span>
                     <p-confirmPopup></p-confirmPopup>
                     <button pButton pRipple type="button" (click)="confirm($event, this.list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                    <button pButton pRipple type="button" (click)="toShoppinglist(this.list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
                 </div>
             </p-card>   
         </div>

@@ -1,3 +1,7 @@
+.container {
+    background-color: #18526535;
+}
+
 .menubar {
     margin-bottom: 40px;
     display: flex;
@@ -37,6 +41,7 @@
 
 .delete-btn {
     vertical-align: middle;
+    margin-left: 10px;
 }
 
 shoppinglist-body {
@@ -44,5 +49,5 @@ shoppinglist-body {
 }
 
 .list-span {
-    padding-right: 150px;
+    padding-right: 100px;
 }
