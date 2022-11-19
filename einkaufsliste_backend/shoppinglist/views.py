@@ -219,12 +219,14 @@ class ShoppingListEntryDetails(APIView):
 
     def put(self, request, shopping_list_id, entry_id):
         '''
-        Implements an endpoint to update a specific shopping list entry of the currently logged in user if he is the owner of the shopping list or a contributor.
+        Implements an endpoint to update a specific shopping list entry
+        of the currently logged in user if he is the owner of the shopping list or a contributor.
 
         The endpoint expects a JSON object containing at least one of the following fields:
 
         * name: The name of the shopping list entry
         * status: The status of the shopping list entry
+        * assignee: The assignee of the shopping list entry
         '''
         user = get_user_from_token(request)
         if user is None:
@@ -244,6 +246,8 @@ class ShoppingListEntryDetails(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = ShoppingListEntrySerializer(entry, data=request.data)
+        # set the shoppinglist field in serializer.data to the given shopping list id
+        serializer.initial_data['shopping_list'] = shopping_list_id
         # TESTING NEEDED
         for field in serializer.fields:
             if field not in serializer.initial_data:
