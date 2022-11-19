@@ -77,7 +77,7 @@ class ShoppingListDetails(APIView):
             shopping_list = ShoppingList.objects.get(id=id)
         except ShoppingList.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        if shopping_list.owner == user or shopping_list.contributors.filter(id=user.id).exists():
+        if shopping_list.owner == user or ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
             serializer = ShoppingListSerializer(shopping_list)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -149,7 +149,7 @@ class ShoppingListEntries(APIView):
         if shopping_list.owner == user or shopping_list.contributors.filter(id=user.id).exists():
             shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)
             serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
-            
+
             for entry in serializer.data:
                 if entry['assignee'] is not None:
                     entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
