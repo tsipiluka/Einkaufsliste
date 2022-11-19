@@ -146,7 +146,7 @@ class ShoppingListEntries(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         # return the shopping list entries only if the user is a contributor of the shopping list
-        if shopping_list.owner == user or ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+        if shopping_list.owner == user or ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user).exists():
             shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)
             serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
 
