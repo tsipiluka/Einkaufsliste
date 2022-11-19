@@ -143,9 +143,14 @@ class ShoppingListEntries(APIView):
         if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
             return Response(status=status.HTTP_403_FORBIDDEN)
         
-        shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)
+        shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)        
         serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
+
+        # use the user object instead of the user id in the response
+        for entry in serializer.data:
+            entry['user'] = NewUser.objects.get(id=entry['user']).username
         return Response(serializer.data, status=status.HTTP_200_OK)
+        
 
 class ShoppingListEntryAdd(APIView):
     def post(self, request, id):
