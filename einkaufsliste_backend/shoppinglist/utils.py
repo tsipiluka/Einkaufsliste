@@ -14,10 +14,7 @@ def get_user_from_token(request):
         return None
 
 def check_user_owner_contribution(user, shopping_list):
-    if user == shopping_list.owner:
+    if user == shopping_list.owner or ShoppingListContributor.objects.filter(user=user, shopping_list=shopping_list).exists():
         return True
-    try:
-        ShoppingListContributor.objects.filter(shopping_list=shopping_list, contributor=user)
-        return True
-    except ShoppingListContributor.DoesNotExist:
+    else:
         return False
