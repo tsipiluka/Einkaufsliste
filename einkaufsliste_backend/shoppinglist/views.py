@@ -148,7 +148,7 @@ class ShoppingListEntries(APIView):
         for entry in serializer.data:
             # if assignee not user not set
             if entry['assignee'] is not None:
-                entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['user'])).data
+                entry['assignee'] = LightUserSerializer(NewUser.objects.get(id=entry['assignee'])).data
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ShoppingListEntryAdd(APIView):
