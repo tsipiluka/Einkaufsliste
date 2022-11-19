@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
-import { Shoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ShoppinglistService } from './service/shoppinglist.service';
 import { User } from 'src/app/entities/user.model';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 export class Entry{
   constructor(
@@ -47,7 +47,7 @@ export class ShoppinglistComponent implements OnInit {
 
   searchEntry: string = ''
   
-  constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute) { }
+  constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute, private handleError: ErrorHandlerService) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -66,6 +66,8 @@ export class ShoppinglistComponent implements OnInit {
         for(let entry of res){
           this.shoppinglistEntries.push(<ShoppinglistEntry>entry)
         }
+      }, (err: any) => {
+        this.handleError.handleError(err,window.location.pathname)
       })
   }
 
