@@ -1,0 +1,98 @@
+.container {
+    background-color: rgb(229, 234, 250);
+}
+
+.shoppinglistName {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.menuBtn {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.activeCard {
+    margin-bottom: 20px;
+}
+
+.menuBar {
+    background-color: #185265;
+    text-align: center;
+    color: white;
+    display: flex;
+    margin-bottom: 5px
+}
+
+.entrylist {
+    display:flex;
+    overflow:visible;
+    text-align: center;
+}
+
+.entry {
+    display:flex;
+    margin-bottom: 10px;
+    border:1px solid#185265;
+    border-radius: 10px;
+    align-items: center;
+    height: 60px;
+}
+
+.field-checkbox{
+    margin-right: 20px;
+    margin-left: 5px
+}
+
+.assigneeField {
+    text-align: right;
+}
+
+p-avatar {
+    margin-right: 5px;
+    background-color: darkgrey;
+}
+
+.editBtn_off {
+    margin-bottom: 10px;
+    background-color: grey;
+}
+
+.editBtn_on {
+    margin-bottom: 10px;
+    background-color: #1f4ca0;
+}
+
+.editEntryIcon {
+    margin-right: 10px;
+}
+
+div.editField.col-4 {
+    text-align: right;
+}
+
+.p-avatar.p-avatar-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+    background: #0b4279;
+    border-color: #2669ac;
+    color: #266fb8;
+}
+
+.dialog {
+    text-align: center;
+}
+
+.dialog-element {
+    margin-top: 10px;
+}
