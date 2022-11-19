@@ -27,7 +27,6 @@
 Make sure to have [Docker](https://www.docker.com/) installed.
 Check by running `docker --version` in your terminal. If the command is not found, install Docker by following the instructions [here](https://docs.docker.com/get-docker/).
 
-
 ## What this Compose does
 1. Providing all backend functionalities uncluding:
    - [x] [Django Python](https://www.djangoproject.com/) backend
@@ -112,6 +111,13 @@ After that the database should be cleared. Migrations should now work properly. 
 | ```docker-compose down -v``` | Stops and removes the containers and volumes |
 | ```docker-compose down -v --rmi all``` | Stops and removes the containers, volumes and images |
 | ```docker-compose up -d``` | Builds and starts the containers in the background |
+
 ## Authors
 
 ## License
+
+spoonacular API
+
+google maps API
+
+Open Food Facts API
