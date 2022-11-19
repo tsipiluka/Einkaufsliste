@@ -23,18 +23,22 @@ class ShoppingLists(APIView):
         
     def get(self, request):
         '''
-        Implements the GET method for the ShoppingLists API. Returns all shopping lists of the user.
+        Implements the GET method for the ShoppingLists API. Returns 
+        all shopping lists of the user.
         '''
         user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         shopping_lists = ShoppingList.objects.filter(owner=user)
         serializer = ShoppingListSerializer(shopping_lists, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
         """
-        Implements an endpoint to create a new shopping list in the context of the currently
-        logged in user and adds the user as a contributor.
+        Implements an endpoint to create a new shopping list in the 
+        context of the currently logged in user. Adds the user as
+        contributor to the shopping list.
 
         The endpoint expects a JSON object containing:
 
@@ -44,15 +48,18 @@ class ShoppingLists(APIView):
         user = get_user_from_token(request)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
         serializer = ShoppingListSerializer(data=request.data)
         # set the owner of the shopping list to the currently logged in user
         serializer.initial_data['owner'] = user.id
+
         if serializer.is_valid():
             serializer.save()
             # add the user to the contributors of the shopping list
             shopping_list = ShoppingList.objects.get(id=serializer.data['id'])
             shopping_list_contributor = ShoppingListContributor(shopping_list=shopping_list, contributor=user)
             shopping_list_contributor.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -100,35 +107,52 @@ class ShoppingListDetails(APIView):
     
     def delete(self, request, id):
         '''
-        Implements an endpoint to delete a specific shopping list of the currently logged in user.
-        '''
-        user = get_user_from_token(request)
-        if user is None:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
-        try:
-                shopping_list = ShoppingList.objects.get(id=id, owner=user)
-        except ShoppingList.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-        shopping_list.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-class ShoppingListEntries(APIView):        
-    def get(self, request, id):
-        '''
-        Implements the GET method for the ShoppingListEntries API. Returns all shopping list entries for the given shopping list id.
+        Implements an endpoint to delete a specific shopping list.
+        Only the owner of the shopping list can delete it.
         '''
         user = get_user_from_token(request)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            shopping_list = ShoppingList.objects.get(id=id, owner=user)
+        except ShoppingList.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        # check if the user is the owner of the shopping list
+        if shopping_list.owner != user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            shopping_list.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
-        entries = ShoppingListEntry.objects.filter(shopping_list=id)
-        serializer = ShoppingListEntrySerializer(entries, many=True)
+class ShoppingListEntries(APIView):        
+    def get(self, request, id):
+        '''
+        Implements the GET method for the ShoppingListEntries API. 
+        Returns all shopping list entries for the given shopping list id
+        if the user is a contributor or owner of the shopping list.
+        '''
+        user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        try:
+            shopping_list = ShoppingList.objects.get(id=id)
+        except ShoppingList.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if user != shopping_list.owner and not ShoppingListContributor.objects.filter(shopping_list=shopping_list, user=user).exists():
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        shopping_list_entries = ShoppingListEntry.objects.filter(shopping_list=shopping_list)
+        serializer = ShoppingListEntrySerializer(shopping_list_entries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ShoppingListEntryAdd(APIView):
     def post(self, request, id):
         """
-        Implements an endpoint to create a new shopping list entry in the context of the currently logged in user if he is the owner of the shopping list or a contributor.
+        Implements an endpoint to create a new shopping list entry in 
+        the context of the currently logged in user if he is the owner
+        of the shopping list or a contributor.
 
         The endpoint expects a JSON object containing:
 
@@ -165,7 +189,9 @@ class ShoppingListEntryAdd(APIView):
 class ShoppingListEntryDetails(APIView):
     def get(self, request, shopping_list_id, entry_id):
         '''
-        Implements an endpoint to get a specific shopping list entry of the currently logged in user if he is the owner of the shopping list or a contributor.
+        Implements an endpoint to get a specific shopping list
+        entry of the currently logged in user if he is the owner
+        of the shopping list or a contributor.
         '''
         user = get_user_from_token(request)
         if user is None:
@@ -225,7 +251,9 @@ class ShoppingListEntryDetails(APIView):
 
     def delete(self, request, shopping_list_id, entry_id):
         '''
-        Implements an endpoint to delete a specific shopping list entry of the currently logged in user if he is the owner of the shopping list or a contributor.
+        Implements an endpoint to delete a specific shopping list
+        entry of the currently logged in user if he is the owner 
+        of the shopping list or a contributor.
         '''
         user = get_user_from_token(request)
         if user is None:
@@ -283,7 +311,8 @@ class ShoppingListContributors(APIView):
         
     def post(self, request, shopping_list_id):
         '''
-        Implements an endpoint to add a new contributor to a specific shopping list of the currently logged in user if he is the owner of the shopping list.
+        Implements an endpoint to add a new contributor to a specific shopping
+         list of the currently logged in user if he is the owner of the shopping list.
 
         The endpoint expects a JSON object containing:
 
