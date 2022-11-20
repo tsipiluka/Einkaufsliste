@@ -49,6 +49,26 @@ shoppinglist-body {
     align-items: center;
 }
 
+.add-user {
+    margin-top: 15px;
+}
+
+.friendlist {
+    margin-top: 20px;
+}
+
+:host >>> .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0
+}
+
+table thead td:nth-child(0) {
+    width: 90%;
+}
+
+.delete-friend-btn {
+    text-align: right;
+}
+
 :host >>> .p-card .p-card-content {
     padding-top: 0;
 }

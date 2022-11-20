@@ -18,7 +18,18 @@ export class ListOverviewComponent implements OnInit {
   opened: boolean = false;
   lists: Shoppinglist[] = [];
   display: boolean = false;
-
+  visibleSidebar: boolean = false;
+  friends: any = [
+    {
+      name: 'David',
+    },
+    {
+      name: 'Moritz',
+    },
+    {
+      name: 'Luka',
+    },
+  ];
   constructor(
     private router: Router,
     private listOverviewService: ListOverviewService,
