@@ -64,11 +64,11 @@
         <div class="col-12 activeCard" *ngFor="let list of this.lists">
             <p-card header="{{this.list.name}}">
                 <div class="shoppinglist-body">
-                    <span class="list-span">Erstellt von: {{this.list.owner}}</span>
+                    <span class="list-span">Beschreibung: {{this.list.description}}</span>
                     <p-confirmPopup></p-confirmPopup>
-                    <button pButton pRipple type="button" (click)="confirm($event, this.list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
-                    <button pButton pRipple type="button" (click)="toShoppinglist(this.list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
                 </div>
+                <button pButton pRipple type="button" (click)="confirm($event, this.list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                <button pButton pRipple type="button" (click)="toShoppinglist(this.list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
             </p-card>   
         </div>
     </div>

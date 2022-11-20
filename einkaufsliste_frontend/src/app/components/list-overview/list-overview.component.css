@@ -42,14 +42,11 @@
 .delete-btn {
     vertical-align: middle;
     margin-left: 10px;
+    margin-top: 10px;
 }
 
 shoppinglist-body {
     align-items: center;
-}
-
-.list-span {
-    padding-right: 90px;
 }
 
 .add-user {
@@ -70,4 +67,8 @@ table thead td:nth-child(0) {
 
 .delete-friend-btn {
     text-align: right;
+}
+
+:host >>> .p-card .p-card-content {
+    padding-top: 0;
 }
