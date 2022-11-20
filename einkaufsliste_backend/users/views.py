@@ -2,6 +2,7 @@ import requests
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from sentry_sdk import capture_exception
 from .serializers import CustomUserSerializer, WholeUserSerializer, LightUserSerializer
 from rest_framework.permissions import AllowAny
 
@@ -16,7 +17,8 @@ def user_from_token(request):
         access_token = AccessToken.objects.get(token=token)
         user = NewUser.objects.get(id=access_token.user_id)
         return user
-    except AccessToken.DoesNotExist:
+    except AccessToken.DoesNotExist as e:
+        capture_exception(e)
         return None
 
 class UserInformation(APIView):
@@ -41,7 +43,8 @@ class UserInformation(APIView):
                 return Response(status=status.HTTP_401_UNAUTHORIZED)
             else:
                 return Response(serializer.data, status=status.HTTP_200_OK)
-        except NewUser.DoesNotExist:
+        except NewUser.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 class UserInformationLight(APIView):
@@ -63,7 +66,8 @@ class UserInformationLight(APIView):
                 user = NewUser.objects.get(id=id)
                 serializer = LightUserSerializer(user)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            except NewUser.DoesNotExist:
+            except NewUser.DoesNotExist as e:
+                capture_exception(e)
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
 
@@ -98,5 +102,6 @@ class CustomUserCreate(APIView):
                 })
                 # return Response(json, status=status.HTTP_201_CREATED)
                 return Response(r.json(), status=status.HTTP_201_CREATED)
+        capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
