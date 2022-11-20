@@ -1,5 +1,32 @@
 <p-toast position="bottom-center" key="tc"></p-toast>
 <div class="container">
+    <p-sidebar [(visible)]="visibleSidebar" position="right" [baseZIndex]="10000">
+        <h3>Freundesliste</h3>
+        <div class="col-12 md:col-4 add-user">
+            <h5>Füge einen Freund hinzu:</h5>
+            <div class="p-inputgroup">
+                <input type="text" pInputText placeholder="Username">   
+                <button type="button" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
+            </div>
+        </div>
+        <div class="friendlist">
+            <h5>Deine Freunde:</h5>
+            <p-table [value]="products" >
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{product.name}}</td>
+                        <td>
+                            <div class="delete-friend-btn">
+                                <button type="button" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </p-sidebar>
     <div class="row">
         <div class="menubar header">
             <div class="col-2 menuBtn">
@@ -9,7 +36,7 @@
                 <h1>Einkaufslisten</h1>
             </div>
             <div class="col-2 menuBtn">
-                <button pButton pRipple type="button" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-cog" style="color:white"></i></button>
+                <button pButton pRipple type="button" (click)="visibleSidebar = true" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-users"></i></button>
             </div>
         </div>
         <div class="col-12 activeCard">

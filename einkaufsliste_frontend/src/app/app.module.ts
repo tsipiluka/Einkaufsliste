@@ -29,6 +29,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { SidebarModule } from 'primeng/sidebar';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -54,6 +56,8 @@ import { MessageModule } from 'primeng/message';
     ToastModule,
     MessagesModule,
     MessageModule,
+    SidebarModule,
+    TableModule,
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],
