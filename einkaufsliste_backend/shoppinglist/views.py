@@ -387,8 +387,11 @@ class ShoppingListContributors(APIView):
             entries = ShoppingListEntry.objects.filter(
                 shopping_list=shopping_list, assignee=contributor.contributor)
             for entry in entries:
-                entry.assignee = None
-                entry.save()
-                
+                try:
+                    entry.assignee = None
+                    entry.save()
+                except:
+                    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
