@@ -13,6 +13,12 @@ export class ShoppinglistService {
 
   constructor(private http: HttpClient){}
 
+  getShoppinglist(shoppinglistID:number): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/api/shoppinglist/'+ shoppinglistID + "/", {'headers': headers} );
+  }
+
   getShoppinglistEntries(id: number): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));

@@ -5,7 +5,7 @@
                 <button pButton pRipple type="button" routerLink="/list-overview" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-angle-left" style="color:white"></i></button>
             </div>
             <div class="col-8 shoppinglistName">
-                <h1>WG</h1>
+                <h1>{{this.shoppingList!.name}}</h1>
             </div>
             <div class="col-2 menuBtn">
                 <button pButton pRipple type="button" style="color: white;" (click)="openSettings()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-cog" style="color:white"></i></button>
