@@ -5,6 +5,7 @@ import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 import { ShoppinglistService } from './service/shoppinglist.service';
 import { User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
 
 export class Entry{
   constructor(
@@ -27,9 +28,9 @@ export class ShoppinglistComponent implements OnInit {
 
   private routeSub: Subscription = new Subscription;
 
-  shoppinglistID: number | undefined
   shoppinglistEntries: ShoppinglistEntry[] = []
   selectedEntry: ShoppinglistEntry | undefined;
+  shoppingList: IShoppinglist | undefined
 
   addEntryName: string = ''
   addEntryAssignee: User | null = <User>{}
@@ -44,25 +45,22 @@ export class ShoppinglistComponent implements OnInit {
   displayContribAtAssigneeModify: boolean = false
   displayAddEntrySwitch: boolean = false
   displayContribForAddEntry: boolean = false
-
-  searchEntry: string = ''
+  dislaySettings: boolean = false
   
   constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute, private handleError: ErrorHandlerService) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
-      this.shoppinglistID = params['id']
-      this.loadEntries()
+      this.shoppinglistService.getShoppinglist(params['id']).subscribe((res:IShoppinglist)=> {
+        this.shoppingList = res
+        this.loadEntries()
+      })
     })
   }
 
-  // sortListBySearch(){
-  //   this.shoppinglistEntries()
-  // }
-
   loadEntries(){
     this.shoppinglistEntries = []
-      this.shoppinglistService.getShoppinglistEntries(this.shoppinglistID!).subscribe((res: any) => {
+      this.shoppinglistService.getShoppinglistEntries(this.shoppingList!.id).subscribe((res: any) => {
         for(let entry of res){
           this.shoppinglistEntries.push(<ShoppinglistEntry>entry)
         }
@@ -72,7 +70,7 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   deleteEntry(entryID: number) {
-    this.shoppinglistService.deleteEntry(this.shoppinglistID!,entryID).subscribe((res:any)=>{
+    this.shoppinglistService.deleteEntry(this.shoppingList!.id,entryID).subscribe((res:any)=>{
       this.loadEntries()
     })
   }
@@ -88,7 +86,7 @@ export class ShoppinglistComponent implements OnInit {
   loadContributors(entry: ShoppinglistEntry) {
     this.selectedEntry = entry
     this.contributorlist = []
-    this.shoppinglistService.getContributors(this.shoppinglistID!).subscribe((res: User[])=>{
+    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe((res: User[])=>{
       for(let contributor of res){
         this.contributorlist.push(contributor)
       }
@@ -103,7 +101,7 @@ export class ShoppinglistComponent implements OnInit {
   modifyEntryAssginee(contributor: number){
     this.displayContribAtAssigneeModify = false
     const entryChanges = {'assignee': contributor!}
-    this.shoppinglistService.changeEntry(this.shoppinglistID!,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
+    this.shoppinglistService.changeEntry(this.shoppingList!.id,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
       this.loadEntries()
     })
   }
@@ -111,14 +109,14 @@ export class ShoppinglistComponent implements OnInit {
   modifyEntryStatus(entry: ShoppinglistEntry){
     this.selectedEntry = entry
     const entryChanges = {'status': this.selectedEntry!.status, 'assignee': this.selectedEntry!.assignee?.id }
-    this.shoppinglistService.changeEntry(this.shoppinglistID!,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
+    this.shoppinglistService.changeEntry(this.shoppingList!.id,this.selectedEntry!.id!,entryChanges).subscribe(()=>{
       this.loadEntries()
     })
   }
   
   displayAddEntryAssignee(){
     this.contributorlist = []
-    this.shoppinglistService.getContributors(this.shoppinglistID!).subscribe((res: User[])=>{
+    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe((res: User[])=>{
       for(let contributor of res){
         this.contributorlist.push(contributor)
       }
@@ -133,11 +131,15 @@ export class ShoppinglistComponent implements OnInit {
   
   addEntry(){
     let newEntry = this.addEntryAssignee!==null ? <ShoppinglistEntry>{'name': this.addEntryName, 'assignee': this.addEntryAssignee!.id} : <ShoppinglistEntry>{'name': this.addEntryName}
-    this.shoppinglistService.addEntry(this.shoppinglistID!, newEntry).subscribe((res: any)=>{
+    this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe((res: any)=>{
       this.addEntryName = ''
       this.addEntryAssignee = <User>{}
       this.displayAddEntrySwitch = false
       this.loadEntries()
     })
+  }
+
+  openSettings() {
+    this.dislaySettings = true
   }
 }
