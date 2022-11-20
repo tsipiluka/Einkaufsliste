@@ -383,5 +383,12 @@ class ShoppingListContributors(APIView):
             contributor = ShoppingListContributor.objects.get(
                 user=serializer.validated_data['user'], shopping_list=serializer.validated_data['shopping_list'])
             contributor.delete()
+            # set assignee of all shoppuing list entries of the contributor to None
+            entries = ShoppingListEntry.objects.filter(
+                shopping_list=shopping_list, assignee=contributor.contributor)
+            for entry in entries:
+                entry.assignee = None
+                entry.save()
+                
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
