@@ -19,7 +19,7 @@ export class ListOverviewComponent implements OnInit {
   lists: Shoppinglist[] = [];
   display: boolean = false;
   visibleSidebar: boolean = false;
-  products: any = [
+  friends: any = [
     {
       name: 'David',
     },
