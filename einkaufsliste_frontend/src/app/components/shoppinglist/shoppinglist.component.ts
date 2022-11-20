@@ -44,8 +44,7 @@ export class ShoppinglistComponent implements OnInit {
   displayContribAtAssigneeModify: boolean = false
   displayAddEntrySwitch: boolean = false
   displayContribForAddEntry: boolean = false
-
-  searchEntry: string = ''
+  dislaySettings: boolean = false
   
   constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute, private handleError: ErrorHandlerService) { }
 
@@ -55,10 +54,6 @@ export class ShoppinglistComponent implements OnInit {
       this.loadEntries()
     })
   }
-
-  // sortListBySearch(){
-  //   this.shoppinglistEntries()
-  // }
 
   loadEntries(){
     this.shoppinglistEntries = []
@@ -139,5 +134,9 @@ export class ShoppinglistComponent implements OnInit {
       this.displayAddEntrySwitch = false
       this.loadEntries()
     })
+  }
+
+  openSettings() {
+    this.dislaySettings = true
   }
 }
