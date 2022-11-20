@@ -66,6 +66,28 @@ class UserInformationLight(APIView):
             except NewUser.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
+class UserInformationLightByName(APIView):
+    def get(self, request, username):
+        '''
+        Implements an endpoint to get the information of the
+        user with the given username. In case the user is not found,
+        the endpoint returns a 404 status code.
+
+        The endpoint returns a JSON object containing:
+        * id: The id of the user.
+        * username: The username of the user.
+        '''
+        user = user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            try:
+                user = NewUser.objects.get(username=username)
+                serializer = LightUserSerializer(user)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except NewUser.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
 class UserList(APIView):
     permission_classes = (AllowAny,)
     
