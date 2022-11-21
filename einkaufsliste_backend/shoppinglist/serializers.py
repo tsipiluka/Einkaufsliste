@@ -15,4 +15,4 @@ class ShoppingListEntrySerializer(serializers.ModelSerializer):
 class ShoppingListContributorSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingListContributor
-        fields = ('id', 'contributor', 'shopping_list')
+        fields = ('id', 'contributor')

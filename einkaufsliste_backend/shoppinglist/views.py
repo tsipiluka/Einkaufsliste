@@ -381,7 +381,7 @@ class ShoppingListContributors(APIView):
         serializer = ShoppingListContributorSerializer(data=request.data)
         if serializer.is_valid():
             contributor = ShoppingListContributor.objects.get(
-                user=serializer.validated_data['user'], shopping_list=serializer.validated_data['shopping_list'])
+                contributor=serializer.validated_data['contributor'], shopping_list=shopping_list)
             contributor.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
