@@ -177,6 +177,7 @@ export class ShoppinglistComponent implements OnInit {
     const removeContrib = {'contributor': contributorId}
     this.shoppinglistService.removeContributor(this.shoppingList!.id, removeContrib).subscribe(()=>{
       this.loadContributors()
+      this.loadEntries()
     }, err => {
       this.handleError.handleError(err,window.location.pathname)
     })
