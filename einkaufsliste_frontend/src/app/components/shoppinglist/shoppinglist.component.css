@@ -1,5 +1,5 @@
 .container {
-    background-color: rgb(229, 234, 250);
+    background-color: rgb(221, 223, 231);
 }
 
 .shoppinglistName {
@@ -28,16 +28,10 @@
     border-bottom-right-radius: 20px;
 }
 
-.entrylist {
-    display:flex;
-    overflow:visible;
-    text-align: center;
-}
-
 .entry {
     display:flex;
     margin-bottom: 10px;
-    border:1px solid#185265;
+    border:1px solid darkgrey;
     border-radius: 10px;
     align-items: center;
     height: 60px;
@@ -97,4 +91,21 @@ div.editField.col-4 {
 
 .dialog-element {
     margin-top: 10px;
+}
+
+.add-user {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+:host >>> .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0
+}
+
+.delete-friend-btn {
+    text-align: right;
+}
+
+:host >>> .p-card .p-card-content {
+    padding-top: 0;
 }

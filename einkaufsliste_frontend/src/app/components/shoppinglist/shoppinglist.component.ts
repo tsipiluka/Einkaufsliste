@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 import { ShoppinglistService } from './service/shoppinglist.service';
-import { User } from 'src/app/entities/user.model';
+import { IUser, User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
 
@@ -32,6 +32,9 @@ export class ShoppinglistComponent implements OnInit {
   selectedEntry: ShoppinglistEntry | undefined;
   shoppingList: IShoppinglist | undefined
 
+  signedInUser: User | undefined
+  friendlist: User[] | undefined
+
   addEntryName: string = ''
   addEntryAssignee: User | null = <User>{}
 
@@ -50,10 +53,22 @@ export class ShoppinglistComponent implements OnInit {
   constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute, private handleError: ErrorHandlerService) { }
 
   ngOnInit(): void {
+    this.shoppinglistService.getUserInformation().subscribe((user: User) => {
+      this.signedInUser = user
+      this.loadShoppinglist()
+    }, err => {
+      this.handleError.handleError(err,window.location.pathname)
+    })  
+  }
+
+  loadShoppinglist(){
     this.routeSub = this.route.params.subscribe(params => {
-      this.shoppinglistService.getShoppinglist(params['id']).subscribe((res:IShoppinglist)=> {
+      this.shoppinglistService.getShoppinglist(params['id']).subscribe((res:any)=> {
         this.shoppingList = res
+        this.shoppingList!.owner = <IUser>{id: res.owner}
         this.loadEntries()
+      }, err => {
+        this.handleError.handleError(err,window.location.pathname)
       })
     })
   }
@@ -64,7 +79,7 @@ export class ShoppinglistComponent implements OnInit {
         for(let entry of res){
           this.shoppinglistEntries.push(<ShoppinglistEntry>entry)
         }
-      }, (err: any) => {
+      }, err => {
         this.handleError.handleError(err,window.location.pathname)
       })
   }
@@ -83,14 +98,14 @@ export class ShoppinglistComponent implements OnInit {
     return Array.from(input)[0]
   }
 
-  loadContributors(entry: ShoppinglistEntry) {
-    this.selectedEntry = entry
+  loadContributors(entry?: ShoppinglistEntry) {
+    this.selectedEntry = entry ? entry: this.selectedEntry
     this.contributorlist = []
-    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe((res: User[])=>{
-      for(let contributor of res){
+    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe((contributors: User[])=>{
+      for(let contributor of contributors){
         this.contributorlist.push(contributor)
       }
-      this.displayContribAtAssigneeModify = true
+      this.displayContribAtAssigneeModify = entry ? true: this.displayContribAtAssigneeModify
     })
   }
 
@@ -125,7 +140,7 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   selectUserForAddEntry(conID:number, conUsername: string){
-    this.addEntryAssignee = <User>{id: conID, username: conUsername}
+    this.addEntryAssignee = <IUser>{id: conID, username: conUsername}
     this.displayContribForAddEntry = false
   }
   
@@ -133,13 +148,37 @@ export class ShoppinglistComponent implements OnInit {
     let newEntry = this.addEntryAssignee!==null ? <ShoppinglistEntry>{'name': this.addEntryName, 'assignee': this.addEntryAssignee!.id} : <ShoppinglistEntry>{'name': this.addEntryName}
     this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe((res: any)=>{
       this.addEntryName = ''
-      this.addEntryAssignee = <User>{}
+      this.addEntryAssignee = <IUser>{}
       this.displayAddEntrySwitch = false
       this.loadEntries()
     })
   }
 
   openSettings() {
+    this.loadFriends()
+    this.loadContributors()
     this.dislaySettings = true
+  }
+
+  checkIfSignedInUserIsOwner(): boolean {
+    return this.shoppingList!.owner.id === this.signedInUser!.id
+  }
+
+  loadFriends(){
+    this.shoppinglistService.getFriendlist().subscribe((friendlist: User[]) => {
+      this.friendlist = friendlist
+      console.log(this.friendlist)
+    }, err => {
+      this.handleError.handleError(err,window.location.pathname)
+    })
+  }
+
+  removeContributor(contributorId: number){
+    const removeContrib = {'contributor': contributorId}
+    this.shoppinglistService.removeContributor(this.shoppingList!.id, removeContrib).subscribe(()=>{
+      this.loadContributors()
+    }, err => {
+      this.handleError.handleError(err,window.location.pathname)
+    })
   }
 }

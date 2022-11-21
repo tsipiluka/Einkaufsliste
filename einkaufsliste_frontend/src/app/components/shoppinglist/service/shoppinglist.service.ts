@@ -25,10 +25,10 @@ export class ShoppinglistService {
     return this.http.get(this.APIUrl + '/api/shoppinglist/'+ id + "/entries/", {'headers': headers} );
   }
 
-  getUserInformationByID(id: number): Observable<any>{
+  getUserInformation(): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/user/information/' + id + '/', {'headers': headers} );
+    return this.http.get(this.APIUrl + '/user/information/', {'headers': headers} );
   }
 
   addEntry(shoppinglistID:number, val: ShoppinglistEntry): Observable<any>{
@@ -54,4 +54,16 @@ export class ShoppinglistService {
     .set('Authorization', ''+localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/', {'headers': headers} );
   }
-}
+
+  removeContributor(shoppinglistID:number, val: any): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/add/', {'body': val,'headers': headers} );
+  }
+
+  getFriendlist(): Observable<any>{
+    const headers= new HttpHeaders()
+    .set('Authorization', ''+localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/api/friends/', {'headers': headers} );
+  }
+} 

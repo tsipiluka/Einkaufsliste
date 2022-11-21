@@ -31,6 +31,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
+import {DividerModule} from 'primeng/divider';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -58,6 +59,7 @@ import { TableModule } from 'primeng/table';
     MessageModule,
     SidebarModule,
     TableModule,
+    DividerModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],
