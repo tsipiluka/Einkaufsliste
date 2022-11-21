@@ -12,14 +12,16 @@ class ShoppingLists(APIView):
 
     def get(self, request):
         '''
-        Implements the GET method for the ShoppingLists API. Returns 
-        all shopping lists of the user.
+        Implements the GET method for the ShoppingLists API.
+        Returns a list of all shopping lists where the user
+        is the owner or contributor object exists.
         '''
         user = get_user_from_token(request)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-        shopping_lists = ShoppingList.objects.filter(owner=user)
+        
+        # get all shopping lists where the user is the owner or contributor        
+        shopping_lists = ShoppingList.objects.filter(owner=user) | ShoppingList.objects.filter(contributors__contributor=user)
         serializer = ShoppingListSerializer(shopping_lists, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
