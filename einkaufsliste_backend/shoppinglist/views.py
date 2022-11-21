@@ -14,16 +14,28 @@ class ShoppingLists(APIView):
         '''
         Implements the GET method for the ShoppingLists API.
         Returns a list of all shopping lists where the user
-        is the owner or contributor object exists.
+        is a contributor.
         '''
         user = get_user_from_token(request)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-        # get all shopping lists where the user is the owner or contributor        
-        shopping_lists = ShoppingList.objects.filter(owner=user) | ShoppingList.objects.filter(contributors__contributor=user)
-        serializer = ShoppingListSerializer(shopping_lists, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # contributor lists
+        shopping_list_contributors = ShoppingListContributor.objects.filter(contributor=user)
+        shopping_lists = [slc.shopping_list for slc in shopping_list_contributors]
+        # owner lists
+        shopping_lists_owner = ShoppingList.objects.filter(owner=user)
+        shopping_lists = list(set(shopping_lists + list(shopping_lists_owner)))
+        try:
+            serializer = ShoppingListSerializer(shopping_lists, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
+
+
+
+
 
     def post(self, request):
         """
