@@ -35,6 +35,7 @@ export class ShoppinglistComponent implements OnInit {
 
   signedInUser: User | undefined
   friendlist: User[] = []
+  friendlistLight: User[] = []
   selectedFriend: User | undefined
 
   addEntryName: string = ''
@@ -171,7 +172,7 @@ export class ShoppinglistComponent implements OnInit {
   loadFriends(){
     this.shoppinglistService.getFriendlist().subscribe((friendlist: any[]) => {
       for(let friend of friendlist){
-        this.friendlist.push(<IUser>{id: friend.friend.id, username: friend.friend.username})
+        this.friendlist.push(<IUser>{id: friend.id, username: friend.username})
       }
       console.log(this.friendlist)
     }, err => {
@@ -189,18 +190,23 @@ export class ShoppinglistComponent implements OnInit {
     })
   }
 
-  filterCountry(event: any) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered : any[] = [];
+  filterFriend(event: any) {
+    let filtered : User[] = []
     let query = event.query;
-
-    for(let i = 0; i < this.friendlist!.length; i++) {
-        let friend = this.friendlist![i];
-        if (friend.username!.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+    for(let i = 0; i < this.friendlist.length; i++) {
+        let friend = this.friendlist[i];
+        if (friend.username!.toLowerCase().includes(query.toLowerCase()) && this.contributorlist.every(contributor => contributor.id != friend.id)) {
             filtered.push(friend);
         }
     }
+    this.friendlistLight = filtered;
+  }
 
-    this.friendlist = filtered;
-}
+  addContributor(){
+    const newContributor = {user: this.selectedFriend!.id}
+    this.shoppinglistService.addContributor(this.shoppingList!.id, newContributor).subscribe(()=>{
+      this.loadContributors()
+      this.selectedFriend = undefined
+    })
+  }
 }

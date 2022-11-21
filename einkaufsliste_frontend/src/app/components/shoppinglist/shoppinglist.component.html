@@ -4,9 +4,9 @@
         <p-divider></p-divider>
         <h5>Teilnehmerliste</h5>
         <div *ngIf="checkIfSignedInUserIsOwner()" class="col-12 md:col-4 add-user">
-            <p-autoComplete [(ngModel)]="selectedFriend" [suggestions]="friendlist" (completeMethod)="filterCountry($event)" field="name" [dropdown]="true">
+            <p-autoComplete [(ngModel)]="selectedFriend" [suggestions]="friendlistLight" (onSelect)="addContributor()" (completeMethod)="filterFriend($event)" field="username" placeholder="Adde deinen Freund" [dropdown]="true">
                 <ng-template let-friend pTemplate="item">
-                    <div>{{friend}}</div>
+                    <div>{{friend.username}}</div>
                 </ng-template>
             </p-autoComplete>        
         </div>
@@ -15,7 +15,7 @@
                 <div class="col">
                     <b>{{contributor.username}}</b>
                 </div>
-                <div *ngIf="checkIfSignedInUserIsOwner()" class="col-2">
+                <div *ngIf="checkIfSignedInUserIsOwner() && contributor.id !== this.shoppingList!.owner.id" class="col-2">
                     <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="removeContributor(contributor.id!)" class="p-button-rounded p-button-danger"></button> 
                 </div>
             </div>        
