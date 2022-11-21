@@ -32,6 +32,7 @@ import { MessageModule } from 'primeng/message';
 import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import {DividerModule} from 'primeng/divider';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -59,7 +60,8 @@ import {DividerModule} from 'primeng/divider';
     MessageModule,
     SidebarModule,
     TableModule,
-    DividerModule
+    DividerModule,
+    AutoCompleteModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],

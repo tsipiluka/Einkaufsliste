@@ -4,10 +4,11 @@
         <p-divider></p-divider>
         <h5>Teilnehmerliste</h5>
         <div *ngIf="checkIfSignedInUserIsOwner()" class="col-12 md:col-4 add-user">
-            <div class="p-inputgroup">
-                <input type="text" pInputText placeholder="Username">   
-                <button type="button" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
-            </div>
+            <p-autoComplete [(ngModel)]="selectedFriend" [suggestions]="friendlist" (completeMethod)="filterCountry($event)" field="name" [dropdown]="true">
+                <ng-template let-friend pTemplate="item">
+                    <div>{{friend}}</div>
+                </ng-template>
+            </p-autoComplete>        
         </div>
         <div class="row">
             <div *ngFor="let contributor of this.contributorlist" class="entry">
@@ -17,7 +18,6 @@
                 <div *ngIf="checkIfSignedInUserIsOwner()" class="col-2">
                     <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="removeContributor(contributor.id!)" class="p-button-rounded p-button-danger"></button> 
                 </div>
-                
             </div>        
         </div>
     </p-sidebar>

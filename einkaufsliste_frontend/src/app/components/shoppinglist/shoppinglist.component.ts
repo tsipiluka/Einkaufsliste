@@ -6,6 +6,7 @@ import { ShoppinglistService } from './service/shoppinglist.service';
 import { IUser, User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
+import { ConfirmEventType } from 'primeng/api';
 
 export class Entry{
   constructor(
@@ -33,7 +34,8 @@ export class ShoppinglistComponent implements OnInit {
   shoppingList: IShoppinglist | undefined
 
   signedInUser: User | undefined
-  friendlist: User[] | undefined
+  friendlist: User[] = []
+  selectedFriend: User | undefined
 
   addEntryName: string = ''
   addEntryAssignee: User | null = <User>{}
@@ -66,6 +68,9 @@ export class ShoppinglistComponent implements OnInit {
       this.shoppinglistService.getShoppinglist(params['id']).subscribe((res:any)=> {
         this.shoppingList = res
         this.shoppingList!.owner = <IUser>{id: res.owner}
+        if(this.checkIfSignedInUserIsOwner()){
+          this.loadFriends()
+        }
         this.loadEntries()
       }, err => {
         this.handleError.handleError(err,window.location.pathname)
@@ -155,7 +160,6 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   openSettings() {
-    this.loadFriends()
     this.loadContributors()
     this.dislaySettings = true
   }
@@ -165,8 +169,10 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   loadFriends(){
-    this.shoppinglistService.getFriendlist().subscribe((friendlist: User[]) => {
-      this.friendlist = friendlist
+    this.shoppinglistService.getFriendlist().subscribe((friendlist: any[]) => {
+      for(let friend of friendlist){
+        this.friendlist.push(<IUser>{id: friend.friend.id, username: friend.friend.username})
+      }
       console.log(this.friendlist)
     }, err => {
       this.handleError.handleError(err,window.location.pathname)
@@ -182,4 +188,19 @@ export class ShoppinglistComponent implements OnInit {
       this.handleError.handleError(err,window.location.pathname)
     })
   }
+
+  filterCountry(event: any) {
+    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+    let filtered : any[] = [];
+    let query = event.query;
+
+    for(let i = 0; i < this.friendlist!.length; i++) {
+        let friend = this.friendlist![i];
+        if (friend.username!.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+            filtered.push(friend);
+        }
+    }
+
+    this.friendlist = filtered;
+}
 }
