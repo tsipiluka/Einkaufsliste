@@ -84,9 +84,9 @@ export class ListOverviewComponent implements OnInit {
         //confirm action
         console.log('Einkaufsliste wird gelöscht');
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
-        this.listOverviewService.deleteShoppinglist(id);
-        this.getShoppinglists();
-        window.location.reload();
+        this.listOverviewService.deleteShoppinglist(id).subscribe((res: any)=>{
+          this.getShoppinglists();
+        })
       },
       reject: () => {
         //reject action

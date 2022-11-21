@@ -62,14 +62,13 @@
                 <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-plus"></i></button>
             </p-card>   
         </div>
-        <div class="col-12 activeCard" *ngFor="let list of this.lists">
-            <p-card header="{{this.list.name}}">
+        <div class="col-12 activeCard" *ngFor="let list of lists">
+            <p-card header="{{list.name}}">
                 <div class="shoppinglist-body">
-                    <span class="list-span">Beschreibung: {{this.list.description}}</span>
-                    
+                    <span class="list-span">Beschreibung: {{list.description}}</span>
                 </div>
-                <button pButton pRipple type="button" (click)="confirm($event, this.list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
-                <button pButton pRipple type="button" (click)="toShoppinglist(this.list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
+                <button pButton pRipple type="button" (click)="confirm($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                <button pButton pRipple type="button" (click)="toShoppinglist(list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
             </p-card>   
         </div>
     </div>
