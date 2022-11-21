@@ -206,7 +206,7 @@ export class ShoppinglistComponent implements OnInit {
     const newContributor = {user: this.selectedFriend!.id}
     this.shoppinglistService.addContributor(this.shoppingList!.id, newContributor).subscribe(()=>{
       this.loadContributors()
-      this.selectedFriend = undefined
+      this.selectedFriend = <IUser>{}
     })
   }
 }
