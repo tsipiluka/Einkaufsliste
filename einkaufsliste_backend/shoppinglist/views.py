@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from users.serializers import LightUserSerializer
 from shoppinglist.utils import get_user_from_token, check_user_owner_contribution
+from sentry_sdk import capture_exception
 
 
 class ShoppingLists(APIView):
@@ -65,6 +66,7 @@ class ShoppingLists(APIView):
             shopping_list_contributor.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -80,7 +82,8 @@ class ShoppingListDetails(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         if check_user_owner_contribution(user, shopping_list):
             serializer = ShoppingListSerializer(shopping_list)
@@ -102,7 +105,8 @@ class ShoppingListDetails(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             shopping_list = ShoppingList.objects.get(id=id, owner=user)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = ShoppingListSerializer(shopping_list, data=request.data)
 
@@ -112,6 +116,7 @@ class ShoppingListDetails(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
@@ -124,11 +129,13 @@ class ShoppingListDetails(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             shopping_list = ShoppingList.objects.get(id=id, owner=user)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         # check if the user is the owner of the shopping list
         if shopping_list.owner != user:
+            capture_exception(Exception('User is not the owner of the shopping list'))
             return Response(status=status.HTTP_403_FORBIDDEN)
         else:
             shopping_list.delete()
@@ -147,7 +154,8 @@ class ShoppingListEntries(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             shopping_list = ShoppingList.objects.get(id=id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if check_user_owner_contribution(user, shopping_list):
@@ -188,7 +196,8 @@ class ShoppingListEntryAdd(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if check_user_owner_contribution(user, shopping_list):
@@ -200,6 +209,7 @@ class ShoppingListEntryAdd(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            capture_exception(Exception(serializer.errors))
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
@@ -218,14 +228,16 @@ class ShoppingListEntryDetails(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if check_user_owner_contribution(user, shopping_list):
             try:
                 entry = ShoppingListEntry.objects.get(
                     id=entry_id, shopping_list=shopping_list)
-            except ShoppingListEntry.DoesNotExist:
+            except ShoppingListEntry.DoesNotExist as e:
+                capture_exception(e)
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
             serializer = ShoppingListEntrySerializer(entry)
@@ -250,14 +262,16 @@ class ShoppingListEntryDetails(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if check_user_owner_contribution(user, shopping_list):
             try:
                 entry = ShoppingListEntry.objects.get(
                     id=entry_id, shopping_list=shopping_list)
-            except ShoppingListEntry.DoesNotExist:
+            except ShoppingListEntry.DoesNotExist as e:
+                capture_exception(e)
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
             serializer = ShoppingListEntrySerializer(entry, data=request.data)
@@ -271,6 +285,7 @@ class ShoppingListEntryDetails(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
+            capture_exception(Exception(serializer.errors))
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
@@ -287,14 +302,16 @@ class ShoppingListEntryDetails(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if check_user_owner_contribution(user, shopping_list):
             try:
                 entry = ShoppingListEntry.objects.get(
                     id=entry_id, shopping_list=shopping_list)
-            except ShoppingListEntry.DoesNotExist:
+            except ShoppingListEntry.DoesNotExist as e:
+                capture_exception(e)
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
             entry.delete()
@@ -315,7 +332,8 @@ class ShoppingListContributors(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if check_user_owner_contribution(user, shopping_list):
@@ -328,7 +346,8 @@ class ShoppingListContributors(APIView):
             # serialize the user objects
             try:
                 user_serializer = LightUserSerializer(users, many=True)
-            except:
+            except Exception as e:
+                capture_exception(e)
                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return Response(user_serializer.data, status=status.HTTP_200_OK)
@@ -351,10 +370,12 @@ class ShoppingListContributors(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if user != shopping_list.owner:
+            capture_exception(Exception('User is not the owner of the shopping list'))
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListContributorSerializer(data=request.data)
@@ -366,8 +387,10 @@ class ShoppingListContributors(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            capture_exception(Exception(serializer.errors))
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
+            capture_exception(Exception('User is already a contributor'))
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, shopping_list_id):
@@ -386,10 +409,12 @@ class ShoppingListContributors(APIView):
 
         try:
             shopping_list = ShoppingList.objects.get(id=shopping_list_id)
-        except ShoppingList.DoesNotExist:
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         if user != shopping_list.owner:
+            capture_exception(Exception('User is not the owner of the shopping list'))
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListContributorSerializer(data=request.data)
@@ -409,4 +434,5 @@ class ShoppingListContributors(APIView):
                     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return Response(status=status.HTTP_204_NO_CONTENT)
+        capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

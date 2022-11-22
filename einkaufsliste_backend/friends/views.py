@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from oauth2_provider.models import AccessToken
 from users.serializers import LightUserSerializer
+from sentry_sdk import capture_exception
 from friends.serializers import FriendSerializer
 from friends.models import Friend
 from rest_framework.views import APIView
@@ -19,13 +20,16 @@ def get_user_from_token(request):
         access_token = AccessToken.objects.get(token=token)
         user = NewUser.objects.get(id=access_token.user_id)
         return user
-    except AccessToken.DoesNotExist:
+    except AccessToken.DoesNotExist as e:
+        capture_exception(e)
         return None
 
 class Friends(APIView):
     
     def get(self, request):
         user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         '''
         Implements the GET method for the Friends API. Returns all friends of the user.
         '''
@@ -62,8 +66,10 @@ class Friends(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            capture_exception(Exception(serializer.errors))
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
+            capture_exception(Exception('Friendship already exists'))
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
 class FriendDetails(APIView):
@@ -85,7 +91,8 @@ class FriendDetails(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             friend = Friend.objects.get(id=id, initiator=user)
-        except Friend.DoesNotExist:
+        except Friend.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = FriendSerializer(friend)
         return JsonResponse(serializer.data, safe=False)
@@ -101,7 +108,8 @@ class FriendDetails(APIView):
         user = get_user_from_token(request)
         try:
             friend = Friend.objects.get(initiator=user, id=id)
-        except Friend.DoesNotExist:
+        except Friend.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = FriendSerializer(instance=friend, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -120,5 +128,6 @@ class FriendDetails(APIView):
             friend = Friend.objects.get(id=id, user=user)
             friend.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        except Friend.DoesNotExist:
+        except Friend.DoesNotExist as e:
+            capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)

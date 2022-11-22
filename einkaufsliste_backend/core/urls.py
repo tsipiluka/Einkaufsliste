@@ -27,3 +27,9 @@ urlpatterns =  [
     path('swagger/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
     path('user/', include('users.urls', namespace='users')),
 ]
+
+
+# handler404 = 'mysite.views.my_custom_page_not_found_view'
+# handler500 = 'mysite.views.my_custom_error_view'
+# handler403 = 'mysite.views.my_custom_permission_denied_view'
+# handler400 = 'mysite.views.my_custom_bad_request_view'
