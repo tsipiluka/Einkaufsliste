@@ -109,3 +109,12 @@ div.editField.col-4 {
 :host >>> .p-card .p-card-content {
     padding-top: 0;
 }
+
+.delete-btn {
+    margin-left: 5%;
+}
+
+.sidebar-header {
+    display:flex;
+    align-items: center;
+}

@@ -1,9 +1,12 @@
 <div class="container">
     <p-sidebar [(visible)]="dislaySettings" position="right" [baseZIndex]="10000">
-        <h2>Einstellungen</h2>
+        <div class="sidebar-header">
+            <h2>Einstellungen</h2>
+            <button pButton pRipple type="button" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+        </div>
         <p-divider></p-divider>
         <h5>Teilnehmerliste</h5>
-        <div *ngIf="checkIfSignedInUserIsOwner()" class="col-12 md:col-4 add-user">
+        <div *ngIf="checkIfSignedInUserIsOwner()" class=" add-user">
             <p-autoComplete [(ngModel)]="selectedFriend" [suggestions]="friendlistLight" (onSelect)="addContributor()" (completeMethod)="filterFriend($event)" field="username" placeholder="Adde deinen Freund" [dropdown]="true">
                 <ng-template let-friend pTemplate="item">
                     <div>{{friend.username}}</div>

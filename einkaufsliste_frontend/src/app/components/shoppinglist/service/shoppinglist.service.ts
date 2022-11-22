@@ -64,7 +64,7 @@ export class ShoppinglistService {
   addContributor(shoppinglistID:number, val: any): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/',val, {'headers': headers} );
+    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/add/',val, {'headers': headers} );
   }
 
   getFriendlist(): Observable<any>{
