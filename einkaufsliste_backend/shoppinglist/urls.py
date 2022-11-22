@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ShoppingLists, ShoppingListDetails, ShoppingListEntries, ShoppingListEntryAdd, ShoppingListEntryDetails, ShoppingListContributors, trigger_error
+from .views import ShoppingLists, ShoppingListDetails, ShoppingListEntries, ShoppingListEntryAdd, ShoppingListEntryDetails, ShoppingListContributors
 
 app_name = 'shoppinglist'
 
@@ -12,5 +12,4 @@ urlpatterns = [
     path('shoppinglist/<int:id>/contributors/', ShoppingListContributors.as_view(), name='shoppinglist_contributors'),
     path('shoppinglist/<int:shopping_list_id>/contributors/add/', ShoppingListContributors.as_view(), name='shoppinglist_contributors_add'),
     path('shoppinglist/contributor/<int:contributor_id>', ShoppingListContributors.as_view(), name='shoppinglist_contributors_remove'),
-    #path('sentry-debug/', trigger_error),
 ]

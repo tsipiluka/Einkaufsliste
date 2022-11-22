@@ -411,6 +411,3 @@ class ShoppingListContributors(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-def trigger_error(request):
-    division_by_zero = 1 / 0

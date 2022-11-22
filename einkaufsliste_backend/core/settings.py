@@ -243,7 +243,7 @@ SOCIAL_AUTH_USER_FIELDS = ['email', 'username', 'first_name', 'password']
 # }
 
 sentry_sdk.init(
-    dsn="https://e1c5dcae856c486d831110cc485dffa7@o4504192126025728.ingest.sentry.io/4504192127533056",
+    dsn=rs.read_secrets("SENTRY_DSN"),
     integrations=[DjangoIntegration()],
 
     # Set traces_sample_rate to 1.0 to capture 100%
