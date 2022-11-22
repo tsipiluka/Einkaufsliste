@@ -209,4 +209,10 @@ export class ShoppinglistComponent implements OnInit {
       this.selectedFriend = <IUser>{}
     })
   }
+
+  deleteCurrentShoppinglist() {
+    this.shoppinglistService.deleteShoppinglist(this.shoppingList!.id).subscribe(()=>{
+      this.router.navigate(['list-overview'])
+    })
+  }
 }
