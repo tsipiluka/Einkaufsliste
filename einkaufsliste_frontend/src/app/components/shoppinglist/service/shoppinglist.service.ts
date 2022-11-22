@@ -34,7 +34,7 @@ export class ShoppinglistService {
   addEntry(shoppinglistID:number, val: ShoppinglistEntry): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entries/add/',val, {'headers': headers} );
+    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/entry/',val, {'headers': headers} );
   }
 
   deleteEntry(shoppinglistID:number, entryID:number): Observable<any>{
@@ -58,13 +58,13 @@ export class ShoppinglistService {
   removeContributor(shoppinglistID:number, val: any): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/add/', {'body': val,'headers': headers} );
+    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributor/', {'body': val,'headers': headers} );
   }
 
   addContributor(shoppinglistID:number, val: any): Observable<any>{
     const headers= new HttpHeaders()
     .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributors/add/',val, {'headers': headers} );
+    return this.http.post(this.APIUrl + '/api/shoppinglist/' + shoppinglistID + '/contributor/',val, {'headers': headers} );
   }
 
   getFriendlist(): Observable<any>{
