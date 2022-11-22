@@ -393,6 +393,7 @@ class ShoppingListContributors(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListContributorSerializer(data=request.data)
+        serializer.initial_data['shopping_list'] = shopping_list_id
         if serializer.is_valid():
             contributor = ShoppingListContributor.objects.get(
                 contributor=serializer.validated_data['contributor'], shopping_list=shopping_list)
