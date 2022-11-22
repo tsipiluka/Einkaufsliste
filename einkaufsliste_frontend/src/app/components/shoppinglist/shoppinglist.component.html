@@ -1,11 +1,39 @@
+<p-confirmPopup></p-confirmPopup>
 <div class="container">
+    <p-sidebar [(visible)]="dislaySettings" position="right" [baseZIndex]="10000">
+        <div class="sidebar-header">
+            <h2>Einstellungen</h2>
+            <div *ngIf="checkIfSignedInUserIsOwner()">
+                <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+            </div>
+        </div>
+        <p-divider></p-divider>
+        <h5>Teilnehmerliste</h5>
+        <div *ngIf="checkIfSignedInUserIsOwner()" class=" add-user">
+            <p-autoComplete [(ngModel)]="selectedFriend" [suggestions]="friendlistLight" (onSelect)="addContributor()" (completeMethod)="filterFriend($event)" field="username" placeholder="Adde deinen Freund" [dropdown]="true">
+                <ng-template let-friend pTemplate="item">
+                    <div>{{friend.username}}</div>
+                </ng-template>
+            </p-autoComplete>        
+        </div>
+        <div class="row">
+            <div *ngFor="let contributor of this.contributorlist" class="entry">
+                <div class="col">
+                    <b>{{contributor.username}}</b>
+                </div>
+                <div *ngIf="checkIfSignedInUserIsOwner() && contributor.id !== this.shoppingList!.owner.id" class="col-2">
+                    <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="removeContributor(contributor.id!)" class="p-button-rounded p-button-danger"></button> 
+                </div>
+            </div>        
+        </div>
+    </p-sidebar>
     <div class="row">
         <div class="menuBar">
             <div class="col-2 menuBtn">
                 <button pButton pRipple type="button" routerLink="/list-overview" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-angle-left" style="color:white"></i></button>
             </div>
             <div class="col-8 shoppinglistName">
-                <h1>{{this.shoppingList!.name}}</h1>
+                <h1>{{this.shoppingList?.name}}</h1>
             </div>
             <div class="col-2 menuBtn">
                 <button pButton pRipple type="button" style="color: white;" (click)="openSettings()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-cog" style="color:white"></i></button>
@@ -120,8 +148,4 @@
     <div *ngFor="let contributor of this.contributorlist" class="col-12 md:col-4 dialog-element">
        <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="selectUserForAddEntry(contributor.id!, contributor.username!)" class="p-button-outlined"></button>
     </div>
-</p-dialog>
-
-<p-dialog header="Settings" [(visible)]="dislaySettings" [modal]="true" class="dialog">
-    <p></p>
 </p-dialog>

@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from oauth2_provider.models import AccessToken
+from users.serializers import LightUserSerializer
 from sentry_sdk import capture_exception
 from friends.serializers import FriendSerializer
 from friends.models import Friend
@@ -34,7 +35,17 @@ class Friends(APIView):
         '''
         friends = Friend.objects.filter(initiator=user)
         serializer = FriendSerializer(friends, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        # get the user objects of the friends
+        friends = []
+        for friend in serializer.data:
+            friends.append(NewUser.objects.get(id=friend['friend']))
+        # serialize the user objects
+        try:
+            serializer = LightUserSerializer(friends, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
     
     def post(self, request):
         """

@@ -30,15 +30,8 @@ export class ListOverviewService {
     });
   }
 
-  deleteShoppinglist(id: number) {
+  deleteShoppinglist(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/', { headers: headers }).subscribe({
-      next: data => {
-        console.log('Deleted Shoppinglist');
-      },
-      error: error => {
-        console.error('There was an error!');
-      },
-    });
+    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/', { headers: headers })
   }
 }

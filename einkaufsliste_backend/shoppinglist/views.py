@@ -13,16 +13,30 @@ class ShoppingLists(APIView):
 
     def get(self, request):
         '''
-        Implements the GET method for the ShoppingLists API. Returns 
-        all shopping lists of the user.
+        Implements the GET method for the ShoppingLists API.
+        Returns a list of all shopping lists where the user
+        is a contributor.
         '''
         user = get_user_from_token(request)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        # contributor lists
+        shopping_list_contributors = ShoppingListContributor.objects.filter(contributor=user)
+        shopping_lists = [slc.shopping_list for slc in shopping_list_contributors]
+        # owner lists
+        shopping_lists_owner = ShoppingList.objects.filter(owner=user)
+        shopping_lists = list(set(shopping_lists + list(shopping_lists_owner)))
+        try:
+            serializer = ShoppingListSerializer(shopping_lists, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+            
 
-        shopping_lists = ShoppingList.objects.filter(owner=user)
-        serializer = ShoppingListSerializer(shopping_lists, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 
     def post(self, request):
         """
@@ -404,9 +418,10 @@ class ShoppingListContributors(APIView):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = ShoppingListContributorSerializer(data=request.data)
+        serializer.initial_data['shopping_list'] = shopping_list_id
         if serializer.is_valid():
             contributor = ShoppingListContributor.objects.get(
-                user=serializer.validated_data['user'], shopping_list=serializer.validated_data['shopping_list'])
+                contributor=serializer.validated_data['contributor'], shopping_list=shopping_list)
             contributor.delete()
             # set assignee of all shoppuing list entries of the contributor to None
             entries = ShoppingListEntry.objects.filter(
