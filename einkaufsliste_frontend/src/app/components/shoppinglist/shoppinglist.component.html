@@ -1,9 +1,10 @@
+<p-confirmPopup></p-confirmPopup>
 <div class="container">
     <p-sidebar [(visible)]="dislaySettings" position="right" [baseZIndex]="10000">
         <div class="sidebar-header">
             <h2>Einstellungen</h2>
             <div *ngIf="checkIfSignedInUserIsOwner()">
-                <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist()" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
             </div>
         </div>
         <p-divider></p-divider>

@@ -6,7 +6,7 @@ import { ShoppinglistService } from './service/shoppinglist.service';
 import { IUser, User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
-import { ConfirmEventType } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 
 export class Entry{
   constructor(
@@ -23,7 +23,8 @@ export interface EntryMap {
 @Component({
   selector: 'app-shoppinglist',
   templateUrl: './shoppinglist.component.html',
-  styleUrls: ['./shoppinglist.component.css']
+  styleUrls: ['./shoppinglist.component.css'],
+  providers: [ConfirmationService]
 })
 export class ShoppinglistComponent implements OnInit {
 
@@ -53,7 +54,8 @@ export class ShoppinglistComponent implements OnInit {
   displayContribForAddEntry: boolean = false
   dislaySettings: boolean = false
   
-  constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute, private handleError: ErrorHandlerService) { }
+  constructor(private router: Router, private shoppinglistService: ShoppinglistService ,private route: ActivatedRoute, private handleError: ErrorHandlerService,
+    private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.shoppinglistService.getUserInformation().subscribe((user: User) => {
@@ -210,9 +212,18 @@ export class ShoppinglistComponent implements OnInit {
     })
   }
 
-  deleteCurrentShoppinglist() {
-    this.shoppinglistService.deleteShoppinglist(this.shoppingList!.id).subscribe(()=>{
-      this.router.navigate(['list-overview'])
-    })
+  deleteCurrentShoppinglist(event: any) {
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: 'Soll diese Einkaufsliste gelöscht werden?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        console.log('Einkaufsliste wird gelöscht');
+        this.shoppinglistService.deleteShoppinglist(this.shoppingList!.id).subscribe(()=>{
+          this.router.navigate(['list-overview'])
+        })
+      }
+    });
+
   }
 }
