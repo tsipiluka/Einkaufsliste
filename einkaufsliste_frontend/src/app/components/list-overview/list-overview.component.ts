@@ -31,6 +31,7 @@ export class ListOverviewComponent implements OnInit {
       this.router.navigate(['login']);
     }
     this.getShoppinglists();
+    this.getFriends();
   }
 
   getShoppinglists() {
@@ -42,6 +43,13 @@ export class ListOverviewComponent implements OnInit {
       }
     });
     console.log(this.lists);
+  }
+
+  addFriend() {
+    this.listOverviewService.addFriend((<HTMLInputElement>document.getElementById('friendname')).value).subscribe((res: any) => {
+      this.getFriends();
+      (<HTMLInputElement>document.getElementById('friendname')).value = '';
+    });
   }
 
   getFriends() {
