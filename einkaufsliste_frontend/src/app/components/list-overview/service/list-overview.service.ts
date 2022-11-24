@@ -16,18 +16,9 @@ export class ListOverviewService {
     return this.http.get(this.APIUrl + '/api/shoppinglists/', { headers: headers });
   }
 
-  postShoppinglist(n: string, d: string) {
+  postShoppinglist(n: string, d: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    const body = JSON.stringify({ name: n, description: d });
-    console.log(body);
-    this.http.post(this.APIUrl + '/api/shoppinglists/', { name: n, description: d }, { headers: headers }).subscribe({
-      next: data => {
-        console.log('Created Shoppinglist');
-      },
-      error: error => {
-        console.error('There was an error!');
-      },
-    });
+    return this.http.post(this.APIUrl + '/api/shoppinglists/', { name: n, description: d }, { headers: headers });
   }
 
   deleteShoppinglist(id: number): Observable<any> {

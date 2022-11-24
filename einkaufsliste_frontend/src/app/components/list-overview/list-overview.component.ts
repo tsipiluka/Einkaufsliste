@@ -38,11 +38,8 @@ export class ListOverviewComponent implements OnInit {
     console.log('Einkaufslisten werden geladen');
     this.lists = [];
     this.listOverviewService.getShoppinglists().subscribe((res: any) => {
-      for (let entry of res) {
-        this.lists.push(entry);
-      }
+      this.lists = res;
     });
-    console.log(this.lists);
   }
 
   addFriend() {
@@ -56,17 +53,21 @@ export class ListOverviewComponent implements OnInit {
     this.listOverviewService.getFriendlist().subscribe((res: any) => {
       this.friends = res;
     });
+    this.friends = this.friends;
   }
 
   createShoppinglist() {
     console.log('Neue Einkaufsliste wird erstellt');
-    this.listOverviewService.postShoppinglist(
-      (<HTMLInputElement>document.getElementById('name')).value,
-      (<HTMLInputElement>document.getElementById('description')).value
-    );
-    this.getShoppinglists();
-    window.location.reload();
-    this.display = false;
+    this.listOverviewService
+      .postShoppinglist(
+        (<HTMLInputElement>document.getElementById('name')).value,
+        (<HTMLInputElement>document.getElementById('description')).value
+      )
+      .subscribe((res: any) => {
+        this.getShoppinglists();
+        this.display = false;
+      });
+    this.messageService.add({ key: 'tc', severity: 'success', summary: 'Erfolgreich!', detail: 'Einkaufsliste erfolgreich erstellt!' });
   }
 
   ngOnInit(): void {}
@@ -88,7 +89,7 @@ export class ListOverviewComponent implements OnInit {
       accept: () => {
         //confirm action
         console.log('Einkaufsliste wird gelöscht');
-        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
+        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Gelöscht!', detail: 'Einkaufsliste erfolgreich gelöscht!' });
         this.listOverviewService.deleteShoppinglist(id).subscribe((res: any) => {
           this.getShoppinglists();
         });
