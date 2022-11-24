@@ -39,4 +39,9 @@ export class ListOverviewService {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/api/friends/', { headers: headers });
   }
+
+  addFriend(username: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.post(this.APIUrl + '/api/friend/' + username + '/', {}, { headers: headers });
+  }
 }
