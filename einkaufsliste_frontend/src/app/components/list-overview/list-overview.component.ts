@@ -6,6 +6,7 @@ import { ListOverviewService } from './service/list-overview.service';
 import { GoogleApiService } from 'src/app/google-api.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { User } from 'src/app/entities/user.model';
 
 @Component({
   selector: 'app-list-overview',
@@ -19,17 +20,7 @@ export class ListOverviewComponent implements OnInit {
   lists: Shoppinglist[] = [];
   display: boolean = false;
   visibleSidebar: boolean = false;
-  friends: any = [
-    {
-      name: 'David',
-    },
-    {
-      name: 'Moritz',
-    },
-    {
-      name: 'Luka',
-    },
-  ];
+  friends: User[] = [];
   constructor(
     private router: Router,
     private listOverviewService: ListOverviewService,
@@ -51,6 +42,12 @@ export class ListOverviewComponent implements OnInit {
       }
     });
     console.log(this.lists);
+  }
+
+  getFriends() {
+    this.listOverviewService.getFriendlist().subscribe((res: any) => {
+      this.friends = res;
+    });
   }
 
   createShoppinglist() {
@@ -84,9 +81,9 @@ export class ListOverviewComponent implements OnInit {
         //confirm action
         console.log('Einkaufsliste wird gelöscht');
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
-        this.listOverviewService.deleteShoppinglist(id).subscribe((res: any)=>{
+        this.listOverviewService.deleteShoppinglist(id).subscribe((res: any) => {
           this.getShoppinglists();
-        })
+        });
       },
       reject: () => {
         //reject action
