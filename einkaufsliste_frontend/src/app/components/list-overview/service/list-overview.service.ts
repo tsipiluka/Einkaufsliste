@@ -32,12 +32,11 @@ export class ListOverviewService {
 
   deleteShoppinglist(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/', { headers: headers })
+    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/', { headers: headers });
   }
 
-  getPlacesNearby(val:any): Observable<any>{
-    const headers= new HttpHeaders()
-    .set('Authorization', ''+localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/google-places/',val,  {'headers': headers} );
+  getPlacesNearby(val: any): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/google-places/', val);
   }
 }
