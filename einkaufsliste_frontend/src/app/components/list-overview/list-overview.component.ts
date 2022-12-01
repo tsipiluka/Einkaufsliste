@@ -17,10 +17,12 @@ import { User } from 'src/app/entities/user.model';
 export class ListOverviewComponent implements OnInit {
   events: string[] = [];
   opened: boolean = false;
-  lists: Shoppinglist[] = [];
+  lists: any[] = [];
   display: boolean = false;
   visibleSidebar: boolean = false;
   friends: User[] = [];
+  user: User = new User(0, '', '', '', new Date(), '');
+
   constructor(
     private router: Router,
     private listOverviewService: ListOverviewService,
@@ -30,8 +32,15 @@ export class ListOverviewComponent implements OnInit {
     if (!localStorage.getItem('access_token')) {
       this.router.navigate(['login']);
     }
+    this.getUser();
     this.getShoppinglists();
     this.getFriends();
+  }
+
+  getUser() {
+    this.listOverviewService.getUser().subscribe((res: any) => {
+      this.user = res;
+    });
   }
 
   getShoppinglists() {
@@ -39,6 +48,7 @@ export class ListOverviewComponent implements OnInit {
     this.lists = [];
     this.listOverviewService.getShoppinglists().subscribe((res: any) => {
       this.lists = res;
+      console.log(this.lists[0].owner);
     });
   }
 

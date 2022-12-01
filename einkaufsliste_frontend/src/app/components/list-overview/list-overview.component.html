@@ -67,7 +67,9 @@
                 <div class="shoppinglist-body">
                     <span class="list-span">Beschreibung: {{list.description}}</span>
                 </div>
-                <button pButton pRipple type="button" (click)="confirm($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                <ng-container *ngIf="list.owner == this.user.id">
+                    <button pRipple type="button" (click)="confirm($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                </ng-container>
                 <button pButton pRipple type="button" (click)="toShoppinglist(list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
             </p-card>   
         </div>
