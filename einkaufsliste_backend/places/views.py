@@ -18,16 +18,14 @@ class ShoppingPlaces(APIView):
         Implements the GET method for the NearShoppingPlaces API. 
         Returns a list of shopping places near the current user.
         '''
-        # user = get_user_from_token(request)
-        # if user is None:
-        #     return Response(status=status.HTTP_401_UNAUTHORIZED)
+        user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         lat = str(data['lat'])
         lon = str(data['lon'])
         key = rs.read_secrets("GOOGLE_PLACES_API_KEY")
 
-
-        # locationbias=circle%3A2000%
         #url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=supermarket&inputtype=textquery&locationbias=circle%3A2000%" + lat + "," + lon + "&fields=formatted_address,name,geometry" +"&key=" + key
         url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=supermarket&inputtype=textquery&location=" + lat + "," + lon + "&radius=16000&fields=formatted_address,name,geometry" +"&key=" + key
         
