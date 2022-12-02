@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { GmapComponent } from './components/gmap/gmap.component';
 import { ListOverviewComponent } from './components/list-overview/list-overview.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
@@ -9,28 +10,32 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'registration',
-    component: RegistrationComponent
+    component: RegistrationComponent,
   },
   {
     path: 'list-overview',
-    component: ListOverviewComponent
+    component: ListOverviewComponent,
   },
   {
     path: 'shoppinglist/:id',
-    component: ShoppinglistComponent
-  }
+    component: ShoppinglistComponent,
+  },
+  {
+    path: 'gmap',
+    component: GmapComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

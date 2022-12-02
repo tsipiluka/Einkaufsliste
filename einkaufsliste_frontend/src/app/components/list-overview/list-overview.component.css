@@ -72,3 +72,16 @@ table thead td:nth-child(0) {
 :host >>> .p-card .p-card-content {
     padding-top: 0;
 }
+
+.btn-add {
+    width: 50%;
+    display: inline-block;
+}
+
+.btn-maps {
+    width: 50%;
+    display: inline-block;
+}
+
+
+

@@ -64,7 +64,9 @@ export class ListOverviewComponent implements OnInit {
     this.display = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getStoresNearby()
+  }
 
   logout() {
     localStorage.clear();
@@ -96,5 +98,16 @@ export class ListOverviewComponent implements OnInit {
 
   toShoppinglist(id: number) {
     this.router.navigate(['shoppinglist', id]);
+  }
+
+  getStoresNearby(){
+    if(!navigator.geolocation){
+      console.log('location ist nicht da')
+    }
+    navigator.geolocation.getCurrentPosition((position) => {
+      const coords = position.coords
+      const latLong = {lat: coords.latitude, log: coords.longitude}
+      console.log(latLong)
+    })
   }
 }
