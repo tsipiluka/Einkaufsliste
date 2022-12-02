@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/login/login.component';
@@ -12,6 +12,7 @@ import { ListOverviewComponent } from './components/list-overview/list-overview.
 import { ShoppinglistComponent } from './components/shoppinglist/shoppinglist.component';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 // PrimeNG
 import { CardModule } from 'primeng/card';
@@ -31,11 +32,13 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
-import {DividerModule} from 'primeng/divider';
-import {AutoCompleteModule} from 'primeng/autocomplete';
+import { DividerModule } from 'primeng/divider';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { GmapComponent } from './components/gmap/gmap.component';
+import { GMapModule } from 'primeng/gmap';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
+  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent, GmapComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -44,6 +47,8 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
     OAuthModule.forRoot(),
     NgbModule,
     FormsModule,
+    GoogleMapsModule,
+    HttpClientJsonpModule,
 
     CardModule,
     ButtonModule,
@@ -61,7 +66,8 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
     SidebarModule,
     TableModule,
     DividerModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    GMapModule,
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],
