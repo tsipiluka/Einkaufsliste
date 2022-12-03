@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'shoppinglist',
     'friends',
     'drf_yasg', # Swagger
+    'places',
 ]
 
 MIDDLEWARE = [

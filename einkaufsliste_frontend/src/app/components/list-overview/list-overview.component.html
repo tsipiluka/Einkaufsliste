@@ -59,7 +59,14 @@
                                 <button pButton type="button" (click)="createShoppinglist()" label="Erstellen" icon="pi pi-check"></button>
                         </div>
                 </p-dialog>
-                <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-plus"></i></button>
+                <div class="menu">
+                    <div class="btn-maps">
+                        <button pButton pRipple (click)="routeToGmap()" type="button" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-map"></i></button>
+                    </div>
+                    <div class="btn-add">
+                        <button pButton pRipple type="button" (click)="showDialog()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-plus"></i></button>
+                    </div>
+                </div>
             </p-card>   
         </div>
         <div class="col-12 activeCard" *ngFor="let list of lists">

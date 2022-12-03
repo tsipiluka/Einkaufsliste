@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <div class="menubar header">
+            <div class="col-2 menuBtn">
+                <button pButton pRipple type="button" (click)="routeToListOverview()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-arrow-left" style="color:white"></i></button>
+            </div>
+            <div class="col-8 shoppinglistName">
+                <h1>Einkaufslisten</h1>
+            </div>
+            <div class="col-2 menuBtn">
+                <button pButton pRipple type="button" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-users"></i></button>
+            </div>
+        </div>
+        <div class="col-12 activeCard">
+        </div>
+        <div class="col-12 activeCard">
+            <p-card header="Map">
+                <div *ngIf="apiLoaded | async" style="margin-right: 50px;">
+                    <google-map [options]="options" (mapClick)="addMarker($event)" style="margin-right: auto;">
+                        <map-marker
+                            *ngFor="let markerPosition of markerPositions"
+                            [position]="markerPosition"
+                        >
+                        </map-marker>
+                    </google-map>
+                </div>
+            </p-card>   
+        </div>
+    </div>
+</div>
+
+
