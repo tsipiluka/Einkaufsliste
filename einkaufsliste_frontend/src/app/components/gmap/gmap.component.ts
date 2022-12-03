@@ -9,20 +9,21 @@ import { ngbPositioning } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 @Component({
   selector: 'app-gmap',
   templateUrl: './gmap.component.html',
-  styleUrls: ['./gmap.component.css'],
+  styleUrls: ['./gmap.component.css', '../list-overview/list-overview.component.css'],
 })
 export class GmapComponent implements OnInit {
   visibleSidebar: boolean = false;
-  center: google.maps.LatLngLiteral = { lat: 51.678418, lng: 7.809007 };
+  //lat = 0;
+  long = 0;
+
+  center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   zoom = 4;
   display: any;
   GMAP_API_KEY: string = pkg.GOOGLE_MAPS_API_KEY;
   url = 'https://maps.googleapis.com/maps/api/js?key=' + this.GMAP_API_KEY;
   apiLoaded: Observable<boolean>;
-  lat = this.watchPosition().lat;
-  long = this.watchPosition().long;
   options: google.maps.MapOptions = {
-    center: { lat: this.lat, lng: this.long },
+    center: { lat: 0, lng: 0 },
   };
   markerPositions: google.maps.LatLngLiteral[] = [];
 
@@ -50,16 +51,12 @@ export class GmapComponent implements OnInit {
   watchPosition() {
     let desLat = 0;
     let desLong = 0;
-    let lat = 0;
-    let long = 0;
     let id = navigator.geolocation.watchPosition(
       position => {
         console.log('lat: ' + position.coords.latitude + ' long: ' + position.coords.longitude);
         if (position.coords.latitude === desLat && position.coords.longitude === desLong) {
           navigator.geolocation.clearWatch(id);
         }
-        lat = position.coords.latitude;
-        long = position.coords.longitude;
       },
       error => {
         console.log(error);
@@ -70,7 +67,6 @@ export class GmapComponent implements OnInit {
         maximumAge: 0,
       }
     );
-    return { lat: lat, long: long };
   }
 
   moveMap(event: google.maps.MapMouseEvent) {
@@ -83,5 +79,9 @@ export class GmapComponent implements OnInit {
 
   addMarker(event: google.maps.MapMouseEvent) {
     this.markerPositions.push(event.latLng!.toJSON());
+  }
+
+  routeToListOverview() {
+    this.router.navigate(['list-overview']);
   }
 }

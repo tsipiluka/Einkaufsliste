@@ -65,7 +65,7 @@ export class ListOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getStoresNearby()
+    this.getStoresNearby();
   }
 
   logout() {
@@ -86,9 +86,9 @@ export class ListOverviewComponent implements OnInit {
         //confirm action
         console.log('Einkaufsliste wird gelöscht');
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Confirmed', detail: 'Einkaufsliste erfolgreich gelöscht!' });
-        this.listOverviewService.deleteShoppinglist(id).subscribe((res: any)=>{
+        this.listOverviewService.deleteShoppinglist(id).subscribe((res: any) => {
           this.getShoppinglists();
-        })
+        });
       },
       reject: () => {
         //reject action
@@ -100,14 +100,18 @@ export class ListOverviewComponent implements OnInit {
     this.router.navigate(['shoppinglist', id]);
   }
 
-  getStoresNearby(){
-    if(!navigator.geolocation){
-      console.log('location ist nicht da')
+  getStoresNearby() {
+    if (!navigator.geolocation) {
+      console.log('location ist nicht da');
     }
-    navigator.geolocation.getCurrentPosition((position) => {
-      const coords = position.coords
-      const latLong = {lat: coords.latitude, log: coords.longitude}
-      console.log(latLong)
-    })
+    navigator.geolocation.getCurrentPosition(position => {
+      const coords = position.coords;
+      const latLong = { lat: coords.latitude, log: coords.longitude };
+      console.log(latLong);
+    });
+  }
+
+  routeToGmap() {
+    this.router.navigate(['gmap']);
   }
 }
