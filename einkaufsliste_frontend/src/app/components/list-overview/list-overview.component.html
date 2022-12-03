@@ -6,8 +6,8 @@
         <div class="col-12 md:col-4 add-user">
             <h5>Füge einen Freund hinzu:</h5>
             <div class="p-inputgroup">
-                <input type="text" pInputText placeholder="Username">   
-                <button type="button" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
+                <input type="text" pInputText placeholder="Username" id="friendname">   
+                <button type="button" (click)="addFriend()" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
             </div>
         </div>
         <div class="friendlist">
@@ -15,9 +15,9 @@
             <p-table [value]="friends" styleClass="p-datatable-striped">
                 <ng-template pTemplate="header">
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-friends>
                     <tr>
-                        <td>{{product.name}}</td>
+                        <td>{{friends.username}}</td>
                         <td>
                             <div class="delete-friend-btn">
                                 <button type="button" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
