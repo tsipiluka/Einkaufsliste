@@ -255,6 +255,8 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   routeToShoppingplace() {
-    window.open('https://maps.google.com/?q=' + 0 + ' ' + 0);
+    window.open(
+      'https://maps.google.com/?q=' + this.shoppingplace.candidates[0].name + ' ' + this.shoppingplace.candidates[0].formatted_address
+    );
   }
 }
