@@ -50,12 +50,10 @@ p-avatar {
 }
 
 .editBtn_off {
-    margin-bottom: 10px;
-    background-color: grey;
+    margin-left: 0px;
 }
 
 .editBtn_on {
-    margin-bottom: 10px;
     background-color: #1f4ca0;
 }
 
@@ -125,4 +123,19 @@ div.editField.col-4 {
     color: blue;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.btn-edit {
+    width: 50%;
+    display: inline-block;
+}
+
+.btn-add {
+    width: 50%;
+    display: inline-block;
+}
+
+.editCard {
+    margin-bottom: 20px;
+    text-align: center;
 }

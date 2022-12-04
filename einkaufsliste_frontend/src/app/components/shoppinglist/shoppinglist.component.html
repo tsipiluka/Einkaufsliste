@@ -40,12 +40,23 @@
             </div>
         </div>
         <div class="col-8">
-            <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="displayAddEntry()" class="p-button-sm p-button-rounded  editBtn"></button>
+            <!-- <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="displayAddEntry()" class="p-button-sm p-button-rounded  editBtn"></button> -->
         </div>
         <div class="editField col-4">
             <!-- <input type="text" pInputText [(ngModel)]="searchEntry" (onChange)="sortListBySearch()">  -->
-            <!-- <button pButton label="Edit" [ngClass]="{editBtn_on: edit_checked,editBtn_off: !edit_checked}" icon="pi pi-file-edit"(click)="changeEditBtn()" class="p-button-sm p-button-rounded"></button> -->
-            <p-toggleButton onLabel="Edit" offLabel="Edit" onIcon="pi pi-check" offIcon="pi pi-pencil" [(ngModel)]="edit_checked"></p-toggleButton>
+            <!-- <p-toggleButton onLabel="Edit" offLabel="Edit" onIcon="pi pi-check" offIcon="pi pi-pencil" [(ngModel)]="edit_checked"></p-toggleButton> -->
+        </div>
+        <div class="col-12 editCard">
+            <p-card header="Einkaufsliste bearbeiten">
+                <div class="menu">
+                    <div class="btn-edit">
+                        <button pButton pRipple type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-file-edit"></i></button>
+                    </div>
+                    <div class="btn-add">
+                        <button pButton pRipple type="button" (click)="displayAddEntry()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-plus"></i></button>
+                    </div>
+                </div>
+            </p-card>   
         </div>
         <div class="col-12 activeCard">
             <p-card header="Active">
