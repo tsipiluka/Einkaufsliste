@@ -29,7 +29,7 @@ export class ShoppinglistComponent implements OnInit {
   shoppinglistEntries: ShoppinglistEntry[] = [];
   selectedEntry: ShoppinglistEntry | undefined;
   shoppingList: IShoppinglist | undefined;
-  shoppingplace: Shoppingplace[] = [];
+  shoppingplace: any;
 
   signedInUser: User | undefined;
   friendlist: User[] = [];
@@ -192,7 +192,6 @@ export class ShoppinglistComponent implements OnInit {
         for (let friend of friendlist) {
           this.friendlist.push(<IUser>{ id: friend.id, username: friend.username });
         }
-        console.log(this.friendlist);
       },
       err => {
         this.handleError.handleError(err, window.location.pathname);
@@ -242,7 +241,6 @@ export class ShoppinglistComponent implements OnInit {
       message: 'Soll diese Einkaufsliste gelöscht werden?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log('Einkaufsliste wird gelöscht');
         this.shoppinglistService.deleteShoppinglist(this.shoppingList!.id).subscribe(() => {
           this.router.navigate(['list-overview']);
         });
@@ -254,5 +252,11 @@ export class ShoppinglistComponent implements OnInit {
     this.shoppinglistService.getShoppingplace(lat, lng).subscribe((res: any) => {
       this.shoppingplace = res;
     });
+  }
+
+  routeToShoppingplace() {
+    window.open(
+      'https://maps.google.com/?q=' + this.shoppingplace.candidates[0].name + ' ' + this.shoppingplace.candidates[0].formatted_address
+    );
   }
 }

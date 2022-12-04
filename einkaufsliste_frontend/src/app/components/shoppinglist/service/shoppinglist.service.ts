@@ -64,11 +64,11 @@ export class ShoppinglistService {
 
   getFriendlist(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/api/shoppingplaces/', { headers: headers });
+    return this.http.get(this.APIUrl + '/api/friends/', { headers: headers });
   }
 
   getShoppingplace(lat: number, lng: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/places/supermarkets/', { lat: lat, lon: lng }, { headers: headers });
+    return this.http.post(this.APIUrl + '/places/shoppingplaces/', { lat: lat, lon: lng }, { headers: headers });
   }
 }
