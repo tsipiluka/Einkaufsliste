@@ -50,6 +50,11 @@ export class ShoppinglistComponent implements OnInit {
   displayAddEntrySwitch: boolean = false;
   displayContribForAddEntry: boolean = false;
   dislaySettings: boolean = false;
+  crd: any;
+
+  position = navigator.geolocation.getCurrentPosition(position => {
+    this.crd = position.coords;
+  });
 
   constructor(
     private router: Router,
@@ -64,7 +69,7 @@ export class ShoppinglistComponent implements OnInit {
       (user: User) => {
         this.signedInUser = user;
         this.loadShoppinglist();
-        this.getShoppingplace(0, 10);
+        this.getShoppingplace();
       },
       err => {
         this.handleError.handleError(err, window.location.pathname);
@@ -248,8 +253,10 @@ export class ShoppinglistComponent implements OnInit {
     });
   }
 
-  getShoppingplace(lat: number, lng: number) {
-    this.shoppinglistService.getShoppingplace(lat, lng).subscribe((res: any) => {
+  getShoppingplace() {
+    console.log(this.crd.latitude);
+    console.log(this.crd.longitude);
+    this.shoppinglistService.getShoppingplace(this.crd.latitude, this.crd.longitude).subscribe((res: any) => {
       this.shoppingplace = res;
     });
   }
