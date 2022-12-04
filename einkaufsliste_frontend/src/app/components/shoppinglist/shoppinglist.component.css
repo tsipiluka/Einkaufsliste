@@ -107,7 +107,7 @@ div.editField.col-4 {
 }
 
 .delete-btn {
-    margin-left: 5%;
+    margin-left: 110%;
 }
 
 .sidebar-header {
@@ -138,4 +138,9 @@ div.editField.col-4 {
 .editCard {
     margin-bottom: 20px;
     text-align: center;
+}
+
+.contributor {
+    width: 89%;
+    margin-left: 10px;
 }
