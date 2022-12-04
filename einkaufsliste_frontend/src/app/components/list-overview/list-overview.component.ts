@@ -35,7 +35,6 @@ export class ListOverviewComponent implements OnInit {
   }
 
   getShoppinglists() {
-    console.log('Einkaufslisten werden geladen');
     this.lists = [];
     this.listOverviewService.getShoppinglists().subscribe((res: any) => {
       this.lists = res;
@@ -57,7 +56,6 @@ export class ListOverviewComponent implements OnInit {
   }
 
   createShoppinglist() {
-    console.log('Neue Einkaufsliste wird erstellt');
     this.listOverviewService
       .postShoppinglist(
         (<HTMLInputElement>document.getElementById('name')).value,
@@ -90,7 +88,6 @@ export class ListOverviewComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         //confirm action
-        console.log('Einkaufsliste wird gelöscht');
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Gelöscht!', detail: 'Einkaufsliste erfolgreich gelöscht!' });
         this.listOverviewService.deleteShoppinglist(id).subscribe((res: any) => {
           this.getShoppinglists();
@@ -108,12 +105,10 @@ export class ListOverviewComponent implements OnInit {
 
   getStoresNearby() {
     if (!navigator.geolocation) {
-      console.log('location ist nicht da');
     }
     navigator.geolocation.getCurrentPosition(position => {
       const coords = position.coords;
       const latLong = { lat: coords.latitude, log: coords.longitude };
-      console.log(latLong);
     });
   }
 

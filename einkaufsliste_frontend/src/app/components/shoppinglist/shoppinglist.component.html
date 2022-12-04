@@ -119,11 +119,19 @@
                 </div>   
             </p-card>   
         </div>
+        <div class="col-12 marketCard">
+            <p-card header="Nächster Supermarkt:">
+                <span (click)="routeToShoppingplace()" class="gmaplink">{{this.shoppingplace!.candidates[0].name}}</span>
+                <div class="address">
+                    <span>{{this.shoppingplace!.candidates[0].formatted_address}}</span>
+                </div>
+            </p-card>   
+        </div>
     </div>
 </div>
 <p-dialog header="Teilnehmerliste" [(visible)]="displayContribAtAssigneeModify" [modal]="true" class="dialog">
     <div *ngFor="let contributor of this.contributorlist" class="col-12 md:col-4 dialog-element">
-       <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="modifyEntryAssginee(contributor.id!)" class="p-button-outlined"></button>
+        <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="modifyEntryAssginee(contributor.id!)" class="p-button-outlined"></button>
     </div>
 </p-dialog>
 <p-dialog header="Add Entry" [(visible)]="displayAddEntrySwitch" [modal]="true" class="dialog">
