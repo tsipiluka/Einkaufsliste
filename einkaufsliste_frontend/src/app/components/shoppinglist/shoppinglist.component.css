@@ -1,5 +1,5 @@
 .container {
-    background-color: rgb(221, 223, 231);
+    background-color: #18526535;
 }
 
 .shoppinglistName {
@@ -24,8 +24,6 @@
     color: white;
     display: flex;
     margin-bottom: 5px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
 }
 
 .entry {
@@ -117,4 +115,8 @@ div.editField.col-4 {
 .sidebar-header {
     display:flex;
     align-items: center;
+}
+
+.marketCard {
+    margin-top: 20px;
 }
