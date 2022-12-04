@@ -25,7 +25,7 @@ class ShoppingPlaces(APIView):
         lat = str(data['lat'])
         lon = str(data['lon'])
         key = rs.read_secrets("GOOGLE_PLACES_API_KEY")
-        url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=supermarket,grocerystore,discounter&inputtype=textquery&locationbias=circle:1600@"+ lat + "," + lon + "&radius=16000&fields=formatted_address,name,geometry" +"&key=" + key
+        url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=LIDL,REWE,EDEKA,ALDI&inputtype=textquery&locationbias=circle:1600@"+ lat + "," + lon + "&radius=16000&fields=formatted_address,name,geometry" +"&key=" + key
         result = requests.get(url)
         if not result.status_code == 200:
             capture_exception(Exception(result.json()))
