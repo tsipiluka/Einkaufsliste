@@ -120,4 +120,10 @@ export class ListOverviewComponent implements OnInit {
   routeToGmap() {
     this.router.navigate(['gmap']);
   }
+
+  deleteFriend(id: number) {
+    this.listOverviewService.deleteFriend(id).subscribe((res: any) => {
+      this.getFriends();
+    });
+  }
 }

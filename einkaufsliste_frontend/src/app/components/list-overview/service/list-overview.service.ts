@@ -40,4 +40,11 @@ export class ListOverviewService {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.post(this.APIUrl + '/api/friend/' + username + '/', {}, { headers: headers });
   }
+
+  deleteFriend(id: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.delete(this.APIUrl + '/api/friends/' + id + '/', { headers: headers });
+  }
+
+  getFriendship(id);
 }
