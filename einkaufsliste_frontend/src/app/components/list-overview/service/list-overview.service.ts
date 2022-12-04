@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IUser, User } from 'src/app/entities/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +40,10 @@ export class ListOverviewService {
   addFriend(username: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.post(this.APIUrl + '/api/friend/' + username + '/', {}, { headers: headers });
+  }
+
+  getUser(): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/user/information/', { headers: headers });
   }
 }
