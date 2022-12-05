@@ -42,6 +42,11 @@ export class ListOverviewService {
     return this.http.post(this.APIUrl + '/api/friend/' + username + '/', {}, { headers: headers });
   }
 
+  deleteFriend(id: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.delete(this.APIUrl + '/api/friends/delete/' + id + '/', { headers: headers });
+  }
+
   getUser(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/user/information/', { headers: headers });

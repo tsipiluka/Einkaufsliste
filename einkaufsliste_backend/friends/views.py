@@ -144,11 +144,13 @@ class DeleteFriend(APIView):
         """
         user = get_user_from_token(request)
         try:
-            friend = Friend.objects.get(initiator=user, friend=friend_id)
-            friend.delete()
-            friend = Friend.objects.get(initiator=friend_id, friend=user)
-            friend.delete()
+            try:
+                friend = Friend.objects.get(initiator=user, friend=friend_id)
+                friend.delete()
+            except:
+                friend = Friend.objects.get(initiator=friend_id, friend=user)
+                friend.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Friend.DoesNotExist as e:
             capture_exception(e)
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
