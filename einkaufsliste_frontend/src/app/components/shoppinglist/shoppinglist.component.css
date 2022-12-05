@@ -144,3 +144,10 @@ div.editField.col-4 {
     width: 89%;
     margin-left: 10px;
 }
+
+.flip {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
