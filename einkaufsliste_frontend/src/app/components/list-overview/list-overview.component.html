@@ -74,7 +74,13 @@
                 <div class="shoppinglist-body">
                     <span class="list-span">Beschreibung: {{list.description}}</span>
                 </div>
-                <button pButton pRipple type="button" (click)="confirm($event, list.id)" class="p-button-rounded p-button-danger delete-btn" *ngIf="this.list.owner == this.user.id"><i class="pi pi-trash"></i></button>
+                <ng-component *ngIf="this.list.owner == this.user.id; then deleteBlock else leaveBlock" ></ng-component>
+                <ng-template #deleteBlock>
+                    <button pButton pRipple type="button" (click)="confirmDelete($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                </ng-template>
+                <ng-template #leaveBlock>
+                    <button pButton pRipple type="button" (click)="confirmLeave($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-sign-out"></i></button>
+                </ng-template>
                 <button pButton pRipple type="button" (click)="toShoppinglist(list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
             </p-card>   
         </div>

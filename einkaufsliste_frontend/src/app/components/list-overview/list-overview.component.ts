@@ -91,7 +91,7 @@ export class ListOverviewComponent implements OnInit {
     this.display = true;
   }
 
-  confirm(event: Event, id: number) {
+  confirmDelete(event: Event, id: number) {
     this.confirmationService.confirm({
       target: event.target!,
       message: 'Soll diese Einkaufsliste gelöscht werden?',
@@ -100,6 +100,24 @@ export class ListOverviewComponent implements OnInit {
         //confirm action
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Gelöscht!', detail: 'Einkaufsliste erfolgreich gelöscht!' });
         this.listOverviewService.deleteShoppinglist(id).subscribe((res: any) => {
+          this.getShoppinglists();
+        });
+      },
+      reject: () => {
+        //reject action
+      },
+    });
+  }
+
+  confirmLeave(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: 'Soll diese Einkaufsliste verlassen werden?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        //confirm action
+        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Verlassen!', detail: 'Einkaufsliste erfolgreich verlassen!' });
+        this.listOverviewService.leaveShoppinglist(id).subscribe((res: any) => {
           this.getShoppinglists();
         });
       },

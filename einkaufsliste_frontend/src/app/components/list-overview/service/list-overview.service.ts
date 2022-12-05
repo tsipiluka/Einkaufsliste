@@ -51,4 +51,9 @@ export class ListOverviewService {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/user/information/', { headers: headers });
   }
+
+  leaveShoppinglist(id: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/contribution/', { headers: headers });
+  }
 }
