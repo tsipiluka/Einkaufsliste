@@ -44,7 +44,7 @@ export class ListOverviewService {
 
   deleteFriend(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/friends/delete/' + id + '/', { headers: headers });
+    return this.http.delete(this.APIUrl + '/api/friends/delete/' + id + '/', { headers: headers });
   }
 
   getUser(): Observable<any> {
