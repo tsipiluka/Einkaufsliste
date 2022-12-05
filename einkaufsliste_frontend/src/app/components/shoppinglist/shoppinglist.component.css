@@ -1,5 +1,5 @@
 .container {
-    background-color: rgb(221, 223, 231);
+    background-color: #18526535;
 }
 
 .shoppinglistName {
@@ -24,8 +24,6 @@
     color: white;
     display: flex;
     margin-bottom: 5px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
 }
 
 .entry {
@@ -52,12 +50,10 @@ p-avatar {
 }
 
 .editBtn_off {
-    margin-bottom: 10px;
-    background-color: grey;
+    margin-left: 0px;
 }
 
 .editBtn_on {
-    margin-bottom: 10px;
     background-color: #1f4ca0;
 }
 
@@ -111,10 +107,40 @@ div.editField.col-4 {
 }
 
 .delete-btn {
-    margin-left: 5%;
+    margin-left: 110%;
 }
 
 .sidebar-header {
     display:flex;
     align-items: center;
+}
+
+.marketCard {
+    margin-top: 20px;
+}
+
+.gmaplink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-edit {
+    width: 50%;
+    display: inline-block;
+}
+
+.btn-add {
+    width: 50%;
+    display: inline-block;
+}
+
+.editCard {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contributor {
+    width: 89%;
+    margin-left: 10px;
 }

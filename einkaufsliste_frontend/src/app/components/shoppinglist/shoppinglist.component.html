@@ -17,7 +17,7 @@
             </p-autoComplete>        
         </div>
         <div class="row">
-            <div *ngFor="let contributor of this.contributorlist" class="entry">
+            <div *ngFor="let contributor of this.contributorlist" class="entry contributor">
                 <div class="col">
                     <b>{{contributor.username}}</b>
                 </div>
@@ -40,12 +40,23 @@
             </div>
         </div>
         <div class="col-8">
-            <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="displayAddEntry()" class="p-button-sm p-button-rounded  editBtn"></button>
+            <!-- <button pButton pRipple type="button" label="Add Entry" icon="pi pi-plus" (click)="displayAddEntry()" class="p-button-sm p-button-rounded  editBtn"></button> -->
         </div>
         <div class="editField col-4">
             <!-- <input type="text" pInputText [(ngModel)]="searchEntry" (onChange)="sortListBySearch()">  -->
-            <!-- <button pButton label="Edit" [ngClass]="{editBtn_on: edit_checked,editBtn_off: !edit_checked}" icon="pi pi-file-edit"(click)="changeEditBtn()" class="p-button-sm p-button-rounded"></button> -->
-            <p-toggleButton onLabel="Edit" offLabel="Edit" onIcon="pi pi-check" offIcon="pi pi-pencil" [(ngModel)]="edit_checked"></p-toggleButton>
+            <!-- <p-toggleButton onLabel="Edit" offLabel="Edit" onIcon="pi pi-check" offIcon="pi pi-pencil" [(ngModel)]="edit_checked"></p-toggleButton> -->
+        </div>
+        <div class="col-12 editCard">
+            <p-card header="Einkaufsliste bearbeiten">
+                <div class="menu">
+                    <div class="btn-edit">
+                        <button pButton pRipple type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-file-edit"></i></button>
+                    </div>
+                    <div class="btn-add">
+                        <button pButton pRipple type="button" (click)="displayAddEntry()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-plus"></i></button>
+                    </div>
+                </div>
+            </p-card>   
         </div>
         <div class="col-12 activeCard">
             <p-card header="Active">
@@ -119,11 +130,19 @@
                 </div>   
             </p-card>   
         </div>
+        <div class="col-12 marketCard">
+            <p-card header="Nächster Supermarkt:">
+                <span (click)="routeToShoppingplace()" class="gmaplink">{{this.shoppingplace!.candidates[0].name}}</span>
+                <div class="address">
+                    <span>{{this.shoppingplace!.candidates[0].formatted_address}}</span>
+                </div>
+            </p-card>   
+        </div>
     </div>
 </div>
 <p-dialog header="Teilnehmerliste" [(visible)]="displayContribAtAssigneeModify" [modal]="true" class="dialog">
     <div *ngFor="let contributor of this.contributorlist" class="col-12 md:col-4 dialog-element">
-       <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="modifyEntryAssginee(contributor.id!)" class="p-button-outlined"></button>
+        <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="modifyEntryAssginee(contributor.id!)" class="p-button-outlined"></button>
     </div>
 </p-dialog>
 <p-dialog header="Add Entry" [(visible)]="displayAddEntrySwitch" [modal]="true" class="dialog">
