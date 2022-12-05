@@ -134,3 +134,21 @@ class FriendDetails(APIView):
         except Friend.DoesNotExist as e:
             capture_exception(e)
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+class DeleteFriend(APIView):
+
+    def delete(self, request, friend_id):
+        """
+        Implements an endpoint to delete a specific friendship.
+        Expects the id of the friend to be deleted in the URL.
+        """
+        user = get_user_from_token(request)
+        try:
+            friend = Friend.objects.get(initiator=user, friend=friend_id)
+            friend.delete()
+            friend = Friend.objects.get(initiator=friend_id, friend=user)
+            friend.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Friend.DoesNotExist as e:
+            capture_exception(e)
+            return Response(status=status.HTTP_404_NOT_FOUND)
