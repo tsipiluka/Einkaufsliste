@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ShoppingLists, ShoppingListDetails, ShoppingListEntries, ShoppingListEntryAdd, ShoppingListEntryDetails, ShoppingListContributors
+from .views import ShoppingLists, ShoppingListDetails, ShoppingListEntries, ShoppingListEntryAdd, ShoppingListEntryDetails, ShoppingListContributors, LeaveShoppingList
 
 app_name = 'shoppinglist'
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('shoppinglist/<int:id>/contributors/', ShoppingListContributors.as_view(), name='shoppinglist_contributors'),
     path('shoppinglist/<int:shopping_list_id>/contributor/', ShoppingListContributors.as_view(), name='shoppinglist_contributors_add'),
     path('shoppinglist/contributor/<int:contributor_id>', ShoppingListContributors.as_view(), name='shoppinglist_contributors_remove'),
+    path('shoppinglist/<int:shopping_list_id>/contribution/', LeaveShoppingList.as_view(), name='shoppinglist_contribution_remove'),
 ]
