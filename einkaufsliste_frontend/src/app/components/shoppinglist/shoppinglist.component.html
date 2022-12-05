@@ -16,15 +16,22 @@
                 </ng-template>
             </p-autoComplete>        
         </div>
-        <div class="row">
-            <div *ngFor="let contributor of this.contributorlist" class="entry contributor">
-                <div class="col">
-                    <b>{{contributor.username}}</b>
-                </div>
-                <div *ngIf="checkIfSignedInUserIsOwner() && contributor.id !== this.shoppingList!.owner.id" class="col-2">
-                    <button pButton pRipple type="button" icon="pi pi-minus" style="height:40px;width: 40px;" (click)="removeContributor(contributor.id!)" class="p-button-rounded p-button-danger"></button> 
-                </div>
-            </div>        
+        <div class="contributorlist">
+            <p-table [value]="contributorlist" styleClass="p-datatable-striped">
+                <ng-template pTemplate="header">
+                </ng-template>
+                <ng-template pTemplate="body" let-contributor>
+                    <tr>
+                        <td>{{contributor.username}}</td>
+                        <td>
+                            <div class="delete-friend-btn">
+                                <button *ngIf="checkIfSignedInUserIsOwner() && contributor.id == this.shoppingList!.owner.id" pButton pRipple icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-text" disabled></button>
+                                <button *ngIf="checkIfSignedInUserIsOwner() && contributor.id !== this.shoppingList!.owner.id" type="button" (click)="removeContributor(this.contributor.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </p-sidebar>
     <div class="row">

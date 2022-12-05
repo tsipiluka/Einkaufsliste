@@ -151,3 +151,11 @@ div.editField.col-4 {
     -webkit-transform: scaleX(-1);
     -ms-transform: scaleX(-1);
 }
+
+.contributorlist {
+    margin-top: 20px;
+}
+
+.delete-contributor-btn {
+    text-align: right;
+}
