@@ -436,3 +436,38 @@ class ShoppingListContributors(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LeaveShoppingList(APIView):
+
+    def delete(self, request, shopping_list_id):
+        '''
+        Implements an endpoint to leave a specific shopping list of the 
+        currently logged in user if he is a contributor.
+        '''
+        user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            shopping_list = ShoppingList.objects.get(id=shopping_list_id)
+        except ShoppingList.DoesNotExist as e:
+            capture_exception(e)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if check_user_owner_contribution(user, shopping_list):
+            contributor = ShoppingListContributor.objects.get(
+                contributor=user, shopping_list=shopping_list)
+            contributor.delete()
+            # set assignee of all shoppuing list entries of the contributor to None
+            entries = ShoppingListEntry.objects.filter(
+                shopping_list=shopping_list, assignee=user)
+            for entry in entries:
+                try:
+                    entry.assignee = None
+                    entry.save()
+                except:
+                    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
