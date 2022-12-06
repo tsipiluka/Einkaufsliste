@@ -125,14 +125,10 @@ div.editField.col-4 {
     cursor: pointer;
 }
 
-.btn-edit {
-    width: 50%;
-    display: inline-block;
-}
 
-.btn-add {
-    width: 50%;
+.btn-menu {
     display: inline-block;
+    margin-left: 10px;
 }
 
 .editCard {
