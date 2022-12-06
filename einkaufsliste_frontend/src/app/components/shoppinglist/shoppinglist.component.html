@@ -66,7 +66,7 @@
             </p-card>   
         </div>
         <div class="col-12 activeCard">
-            <p-card header="Active">
+            <p-card header="Muss gekauft werden:">
                 <div *ngFor="let entry of this.shoppinglistEntries" class="row">
                     <div *ngIf="entry.assignee && !entry.status" class="entry">
                         <div class="col-1 field-checkbox">
@@ -102,7 +102,7 @@
             </p-card>   
         </div>
         <div class="col-12 recentCard">
-            <p-card header="Recent">
+            <p-card header="Bereits gekauft:">
                 <div *ngFor="let entry of this.shoppinglistEntries" class="row">
                     <div *ngIf="entry.assignee && entry.status" class="entry">
                         <div class="col-1 field-checkbox">
