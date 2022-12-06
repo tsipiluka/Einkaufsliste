@@ -29,7 +29,9 @@ export class ShoppinglistComponent implements OnInit {
   shoppinglistEntries: ShoppinglistEntry[] = [];
   selectedEntry: ShoppinglistEntry | undefined;
   shoppingList: IShoppinglist | undefined;
-  shoppingplace: any;
+  shoppingplace = {
+    candidates: [] as Shoppingplace[],
+  };
 
   signedInUser: User | undefined;
   friendlist: User[] = [];
@@ -50,11 +52,7 @@ export class ShoppinglistComponent implements OnInit {
   displayAddEntrySwitch: boolean = false;
   displayContribForAddEntry: boolean = false;
   dislaySettings: boolean = false;
-  crd: any;
-
-  position = navigator.geolocation.getCurrentPosition(position => {
-    this.crd = position.coords;
-  });
+  position: any;
 
   constructor(
     private router: Router,
@@ -62,7 +60,9 @@ export class ShoppinglistComponent implements OnInit {
     private route: ActivatedRoute,
     private handleError: ErrorHandlerService,
     private confirmationService: ConfirmationService
-  ) {}
+  ) {
+    this.shoppingplace.candidates = [{ name: '', formatted_address: '' }];
+  }
 
   ngOnInit(): void {
     this.shoppinglistService.getUserInformation().subscribe(
@@ -254,10 +254,12 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   getShoppingplace() {
-    console.log(this.crd.latitude);
-    console.log(this.crd.longitude);
-    this.shoppinglistService.getShoppingplace(this.crd.latitude, this.crd.longitude).subscribe((res: any) => {
-      this.shoppingplace = res;
+    this.position = navigator.geolocation.getCurrentPosition(position => {
+      this.shoppinglistService.getShoppingplace(position.coords.longitude, position.coords.latitude).subscribe((res: any) => {
+        console.log(res);
+        this.shoppingplace.candidates[0].name = res.candidates[0].name;
+        this.shoppingplace.candidates[0].formatted_address = res.candidates[0].formatted_address;
+      });
     });
   }
 

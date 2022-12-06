@@ -36,6 +36,7 @@ import { DividerModule } from 'primeng/divider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { GmapComponent } from './components/gmap/gmap.component';
 import { GMapModule } from 'primeng/gmap';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent, GmapComponent],
@@ -68,6 +69,7 @@ import { GMapModule } from 'primeng/gmap';
     DividerModule,
     AutoCompleteModule,
     GMapModule,
+    ProgressSpinnerModule,
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent],
