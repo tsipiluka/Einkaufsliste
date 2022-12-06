@@ -8,6 +8,7 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';
+import { MessageService } from 'primeng/api';
 
 export class Entry {
   constructor(public checked: boolean, public name: string, public assignee: User) {}
@@ -59,7 +60,8 @@ export class ShoppinglistComponent implements OnInit {
     private shoppinglistService: ShoppinglistService,
     private route: ActivatedRoute,
     private handleError: ErrorHandlerService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     this.shoppingplace.candidates = [{ name: '', formatted_address: '' }];
   }
@@ -204,17 +206,29 @@ export class ShoppinglistComponent implements OnInit {
     );
   }
 
-  removeContributor(contributorId: number) {
+  removeContributor(event: Event, contributorId: number) {
     const removeContrib = { contributor: contributorId };
-    this.shoppinglistService.removeContributor(this.shoppingList!.id, removeContrib).subscribe(
-      () => {
-        this.loadContributors();
-        this.loadEntries();
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: 'Soll dieser Teilnehmer entfernt werden?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        //confirm action
+        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Entfernt!', detail: 'Teilnehmer erfolgreich entfernt!' });
+        this.shoppinglistService.removeContributor(this.shoppingList!.id, removeContrib).subscribe(
+          () => {
+            this.loadContributors();
+            this.loadEntries();
+          },
+          err => {
+            this.handleError.handleError(err, window.location.pathname);
+          }
+        );
       },
-      err => {
-        this.handleError.handleError(err, window.location.pathname);
-      }
-    );
+      reject: () => {
+        //reject action
+      },
+    });
   }
 
   filterFriend(event: any) {

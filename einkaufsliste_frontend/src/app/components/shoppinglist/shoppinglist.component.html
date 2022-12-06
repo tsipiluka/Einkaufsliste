@@ -23,7 +23,7 @@
                         <td>
                             <div class="delete-friend-btn">
                                 <button *ngIf="checkIfSignedInUserIsOwner() && contributor.id == this.shoppingList!.owner.id" pButton pRipple icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-text" disabled></button>
-                                <button *ngIf="checkIfSignedInUserIsOwner() && contributor.id !== this.shoppingList!.owner.id" type="button" (click)="removeContributor(this.contributor.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                                <button *ngIf="checkIfSignedInUserIsOwner() && contributor.id !== this.shoppingList!.owner.id" type="button" (click)="removeContributor($event, this.contributor.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
                             </div>
                         </td>
                     </tr>
@@ -172,6 +172,6 @@
 </p-dialog>
 <p-dialog header="Select" [(visible)]="displayContribForAddEntry" [modal]="true" class="dialog">
     <div *ngFor="let contributor of this.contributorlist" class="col-12 md:col-4 dialog-element">
-       <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="selectUserForAddEntry(contributor.id!, contributor.username!)" class="p-button-outlined"></button>
+        <button pButton pRipple type="button" icon="pi pi-user-edit" label="{{contributor.username}}" (click)="selectUserForAddEntry(contributor.id!, contributor.username!)" class="p-button-outlined"></button>
     </div>
 </p-dialog>

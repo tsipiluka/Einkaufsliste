@@ -129,9 +129,21 @@ export class ListOverviewComponent implements OnInit {
     this.router.navigate(['shoppinglist', id]);
   }
 
-  deleteFriend(id: number) {
-    this.listOverviewService.deleteFriend(id).subscribe((res: any) => {
-      this.getFriends();
+  deleteFriend(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: 'Soll dieser Freund entfernt werden?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        //confirm action
+        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Entfernt!', detail: 'Freund erfolgreich entfernt!' });
+        this.listOverviewService.deleteFriend(id).subscribe((res: any) => {
+          this.getFriends();
+        });
+      },
+      reject: () => {
+        //reject action
+      },
     });
   }
 }
