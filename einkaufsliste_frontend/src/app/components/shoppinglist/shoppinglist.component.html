@@ -3,9 +3,6 @@
     <p-sidebar [(visible)]="dislaySettings" position="right" [baseZIndex]="10000">
         <div class="sidebar-header">
             <h2>Einstellungen</h2>
-            <div *ngIf="checkIfSignedInUserIsOwner()">
-                <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
-            </div>
         </div>
         <p-divider></p-divider>
         <h5>Teilnehmerliste</h5>
@@ -56,11 +53,14 @@
         <div class="col-12 editCard">
             <p-card header="Einkaufsliste bearbeiten">
                 <div class="menu">
-                    <div class="btn-edit">
-                        <button pButton pRipple type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-file-edit"></i></button>
+                    <div class="btn-menu" *ngIf="checkIfSignedInUserIsOwner()">
+                        <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger"><i class="pi pi-trash"></i></button>
                     </div>
-                    <div class="btn-add">
-                        <button pButton pRipple type="button" (click)="displayAddEntry()" class="p-button-rounded p-button-secondary p-button-outlined btn-menu"><i class="pi pi-plus"></i></button>
+                    <div class="btn-menu">
+                        <button pButton pRipple [ngClass]="{'p-button-outlined': this.edit_checked == true}" type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary"><i class="pi pi-pencil"></i></button>
+                    </div>
+                    <div class="btn-menu">
+                        <button pButton pRipple type="button" (click)="displayAddEntry()" class="p-button-rounded p-button-secondary"><i class="pi pi-plus"></i></button>
                     </div>
                 </div>
             </p-card>   
