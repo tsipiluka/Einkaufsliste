@@ -20,7 +20,7 @@
                         <td>{{friends.username}}</td>
                         <td>
                             <div class="delete-friend-btn">
-                                <button type="button" (click)="deleteFriend(this.friends.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                                <button type="button" (click)="deleteFriend($event, this.friends.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
                             </div>
                         </td>
                     </tr>
