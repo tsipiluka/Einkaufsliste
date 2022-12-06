@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GmapComponent } from './components/gmap/gmap.component';
 import { ListOverviewComponent } from './components/list-overview/list-overview.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
@@ -27,10 +26,6 @@ const routes: Routes = [
   {
     path: 'shoppinglist/:id',
     component: ShoppinglistComponent,
-  },
-  {
-    path: 'gmap',
-    component: GmapComponent,
   },
 ];
 
