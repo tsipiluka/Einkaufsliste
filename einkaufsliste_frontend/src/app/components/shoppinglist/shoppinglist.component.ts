@@ -255,7 +255,8 @@ export class ShoppinglistComponent implements OnInit {
 
   getShoppingplace() {
     this.position = navigator.geolocation.getCurrentPosition(position => {
-      this.shoppinglistService.getShoppingplace(position.coords.longitude, position.coords.latitude).subscribe((res: any) => {
+      console.log(position);
+      this.shoppinglistService.getShoppingplace(position.coords.latitude, position.coords.longitude).subscribe((res: any) => {
         console.log(res);
         this.shoppingplace.candidates[0].name = res.candidates[0].name;
         this.shoppingplace.candidates[0].formatted_address = res.candidates[0].formatted_address;
