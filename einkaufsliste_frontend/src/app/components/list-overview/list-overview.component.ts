@@ -78,9 +78,7 @@ export class ListOverviewComponent implements OnInit {
     this.messageService.add({ key: 'tc', severity: 'success', summary: 'Erfolgreich!', detail: 'Einkaufsliste erfolgreich erstellt!' });
   }
 
-  ngOnInit(): void {
-    this.getStoresNearby();
-  }
+  ngOnInit(): void {}
 
   logout() {
     localStorage.clear();
@@ -129,19 +127,6 @@ export class ListOverviewComponent implements OnInit {
 
   toShoppinglist(id: number) {
     this.router.navigate(['shoppinglist', id]);
-  }
-
-  getStoresNearby() {
-    if (!navigator.geolocation) {
-    }
-    navigator.geolocation.getCurrentPosition(position => {
-      const coords = position.coords;
-      const latLong = { lat: coords.latitude, log: coords.longitude };
-    });
-  }
-
-  routeToGmap() {
-    this.router.navigate(['gmap']);
   }
 
   deleteFriend(id: number) {

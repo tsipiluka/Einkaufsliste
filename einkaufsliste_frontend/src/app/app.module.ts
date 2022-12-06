@@ -34,12 +34,11 @@ import { SidebarModule } from 'primeng/sidebar';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { GmapComponent } from './components/gmap/gmap.component';
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent, GmapComponent],
+  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
