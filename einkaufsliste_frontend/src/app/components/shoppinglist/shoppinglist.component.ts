@@ -112,9 +112,18 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   deleteEntry(entryID: number) {
-    this.shoppinglistService.deleteEntry(this.shoppingList!.id, entryID).subscribe((res: any) => {
-      this.loadEntries();
-    });
+    this.shoppinglistService.deleteEntry(this.shoppingList!.id, entryID).subscribe(
+      (res: any) => {
+        this.loadEntries();
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: this.handleError.handleError(error) + ' - Eintrag konnte nicht gelöscht werden',
+        });
+      }
+    );
   }
 
   changeEditBtn() {
@@ -128,12 +137,21 @@ export class ShoppinglistComponent implements OnInit {
   loadContributors(entry?: ShoppinglistEntry) {
     this.selectedEntry = entry ? entry : this.selectedEntry;
     this.contributorlist = [];
-    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe((contributors: User[]) => {
-      for (let contributor of contributors) {
-        this.contributorlist.push(contributor);
+    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe(
+      (contributors: User[]) => {
+        for (let contributor of contributors) {
+          this.contributorlist.push(contributor);
+        }
+        this.displayContribAtAssigneeModify = entry ? true : this.displayContribAtAssigneeModify;
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: this.handleError.handleError(error) + ' - Teilnehmer konnten nicht geladen werden',
+        });
       }
-      this.displayContribAtAssigneeModify = entry ? true : this.displayContribAtAssigneeModify;
-    });
+    );
   }
 
   displayAddEntry() {
@@ -143,27 +161,54 @@ export class ShoppinglistComponent implements OnInit {
   modifyEntryAssginee(contributor: number) {
     this.displayContribAtAssigneeModify = false;
     const entryChanges = { assignee: contributor! };
-    this.shoppinglistService.changeEntry(this.shoppingList!.id, this.selectedEntry!.id!, entryChanges).subscribe(() => {
-      this.loadEntries();
-    });
+    this.shoppinglistService.changeEntry(this.shoppingList!.id, this.selectedEntry!.id!, entryChanges).subscribe(
+      () => {
+        this.loadEntries();
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: this.handleError.handleError(error) + ' - Teilnehmer konnte nicht geändert werden',
+        });
+      }
+    );
   }
 
   modifyEntryStatus(entry: ShoppinglistEntry) {
     this.selectedEntry = entry;
     const entryChanges = { status: this.selectedEntry!.status, assignee: this.selectedEntry!.assignee?.id };
-    this.shoppinglistService.changeEntry(this.shoppingList!.id, this.selectedEntry!.id!, entryChanges).subscribe(() => {
-      this.loadEntries();
-    });
+    this.shoppinglistService.changeEntry(this.shoppingList!.id, this.selectedEntry!.id!, entryChanges).subscribe(
+      () => {
+        this.loadEntries();
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: this.handleError.handleError(error) + ' - Status konnte nicht geändert werden',
+        });
+      }
+    );
   }
 
   displayAddEntryAssignee() {
     this.contributorlist = [];
-    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe((res: User[]) => {
-      for (let contributor of res) {
-        this.contributorlist.push(contributor);
+    this.shoppinglistService.getContributors(this.shoppingList!.id).subscribe(
+      (res: User[]) => {
+        for (let contributor of res) {
+          this.contributorlist.push(contributor);
+        }
+        this.displayContribForAddEntry = true;
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: this.handleError.handleError(error) + ' - Teilnehmer konnten nicht geladen werden',
+        });
       }
-      this.displayContribForAddEntry = true;
-    });
+    );
   }
 
   selectUserForAddEntry(conID: number, conUsername: string) {
@@ -176,12 +221,21 @@ export class ShoppinglistComponent implements OnInit {
       this.addEntryAssignee !== null
         ? <ShoppinglistEntry>{ name: this.addEntryName, assignee: this.addEntryAssignee!.id }
         : <ShoppinglistEntry>{ name: this.addEntryName };
-    this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe((res: any) => {
-      this.addEntryName = '';
-      this.addEntryAssignee = <IUser>{};
-      this.displayAddEntrySwitch = false;
-      this.loadEntries();
-    });
+    this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe(
+      (res: any) => {
+        this.addEntryName = '';
+        this.addEntryAssignee = <IUser>{};
+        this.displayAddEntrySwitch = false;
+        this.loadEntries();
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Fehler',
+          detail: this.handleError.handleError(error) + ' - Eintrag konnte nicht hinzugefügt werden',
+        });
+      }
+    );
   }
 
   openSettings() {
@@ -248,10 +302,20 @@ export class ShoppinglistComponent implements OnInit {
 
   addContributor() {
     const newContributor = { contributor: this.selectedFriend!.id };
-    this.shoppinglistService.addContributor(this.shoppingList!.id, newContributor).subscribe(() => {
-      this.loadContributors();
-      this.selectedFriend = <IUser>{};
-    });
+    this.shoppinglistService.addContributor(this.shoppingList!.id, newContributor).subscribe(
+      () => {
+        this.loadContributors();
+        this.selectedFriend = <IUser>{};
+      },
+      (error: any) => {
+        this.messageService.add({
+          key: 'tc',
+          severity: 'error',
+          summary: 'Fehler!',
+          detail: this.handleError.handleError(error) + ' - Teilnehmer konnte nicht hinzugefügt werden!',
+        });
+      }
+    );
   }
 
   deleteCurrentShoppinglist(event: any) {
@@ -260,9 +324,19 @@ export class ShoppinglistComponent implements OnInit {
       message: 'Soll diese Einkaufsliste gelöscht werden?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.shoppinglistService.deleteShoppinglist(this.shoppingList!.id).subscribe(() => {
-          this.router.navigate(['list-overview']);
-        });
+        this.shoppinglistService.deleteShoppinglist(this.shoppingList!.id).subscribe(
+          () => {
+            this.router.navigate(['list-overview']);
+          },
+          (error: any) => {
+            this.messageService.add({
+              key: 'tc',
+              severity: 'error',
+              summary: 'Fehler!',
+              detail: this.handleError.handleError(error) + ' - Einkaufsliste konnte nicht gelöscht werden!',
+            });
+          }
+        );
       },
     });
   }
@@ -270,11 +344,21 @@ export class ShoppinglistComponent implements OnInit {
   getShoppingplace() {
     this.position = navigator.geolocation.getCurrentPosition(position => {
       console.log(position);
-      this.shoppinglistService.getShoppingplace(position.coords.latitude, position.coords.longitude).subscribe((res: any) => {
-        console.log(res);
-        this.shoppingplace.candidates[0].name = res.candidates[0].name;
-        this.shoppingplace.candidates[0].formatted_address = res.candidates[0].formatted_address;
-      });
+      this.shoppinglistService.getShoppingplace(position.coords.latitude, position.coords.longitude).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.shoppingplace.candidates[0].name = res.candidates[0].name;
+          this.shoppingplace.candidates[0].formatted_address = res.candidates[0].formatted_address;
+        },
+        (error: any) => {
+          this.messageService.add({
+            key: 'tc',
+            severity: 'error',
+            summary: 'Fehler!',
+            detail: this.handleError.handleError(error) + ' - Einkaufsplatz konnte nicht gefunden werden!',
+          });
+        }
+      );
     });
   }
 
