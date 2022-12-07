@@ -7,6 +7,8 @@ import { GoogleApiService } from 'src/app/google-api.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/entities/user.model';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-overview',
@@ -27,7 +29,8 @@ export class ListOverviewComponent implements OnInit {
     private router: Router,
     private listOverviewService: ListOverviewService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private errorHandlerService: ErrorHandlerService
   ) {
     if (!localStorage.getItem('access_token')) {
       this.router.navigate(['login']);
@@ -38,30 +41,70 @@ export class ListOverviewComponent implements OnInit {
   }
 
   getUser() {
-    this.listOverviewService.getUser().subscribe((res: any) => {
-      this.user = res;
-    });
+    this.listOverviewService.getUser().subscribe(
+      (res: any) => {
+        this.user = res;
+      },
+      (error: any) => {
+        this.messageService.add({
+          key: 'tc',
+          severity: 'error',
+          summary: 'Fehler!',
+          detail: this.errorHandlerService.handleError(error) + ' - Benutzer konnten nicht geladen werden!',
+        });
+      }
+    );
   }
 
   getShoppinglists() {
     this.lists = [];
-    this.listOverviewService.getShoppinglists().subscribe((res: any) => {
-      this.lists = res;
-      console.log(this.lists[0].owner);
-    });
+    this.listOverviewService.getShoppinglists().subscribe(
+      (res: any) => {
+        this.lists = res;
+        console.log(this.lists[0].owner);
+      },
+      (error: any) => {
+        this.messageService.add({
+          key: 'tc',
+          severity: 'error',
+          summary: 'Fehler!',
+          detail: this.errorHandlerService.handleError(error) + ' - Einkaufslisten konnten nicht geladen werden!',
+        });
+      }
+    );
   }
 
   addFriend() {
-    this.listOverviewService.addFriend((<HTMLInputElement>document.getElementById('friendname')).value).subscribe((res: any) => {
-      this.getFriends();
-      (<HTMLInputElement>document.getElementById('friendname')).value = '';
-    });
+    this.listOverviewService.addFriend((<HTMLInputElement>document.getElementById('friendname')).value).subscribe(
+      (res: any) => {
+        this.getFriends();
+        (<HTMLInputElement>document.getElementById('friendname')).value = '';
+      },
+      (error: any) => {
+        this.messageService.add({
+          key: 'tc',
+          severity: 'error',
+          summary: 'Fehler!',
+          detail: this.errorHandlerService.handleError(error) + ' - Freund konnte nicht hinzugefügt werden!',
+        });
+      }
+    );
   }
 
   getFriends() {
-    this.listOverviewService.getFriendlist().subscribe((res: any) => {
-      this.friends = res;
-    });
+    this.listOverviewService.getFriendlist().subscribe(
+      (res: any) => {
+        this.friends = res;
+      },
+      (error: any) => {
+        this.messageService.add({
+          key: 'tc',
+          severity: 'error',
+          summary: 'Fehler!',
+          detail: this.errorHandlerService.handleError(error) + ' - Freundesliste konnte nicht geladen werden!',
+        });
+      }
+    );
     this.friends = this.friends;
   }
 
@@ -71,11 +114,26 @@ export class ListOverviewComponent implements OnInit {
         (<HTMLInputElement>document.getElementById('name')).value,
         (<HTMLInputElement>document.getElementById('description')).value
       )
-      .subscribe((res: any) => {
-        this.getShoppinglists();
-        this.display = false;
-      });
-    this.messageService.add({ key: 'tc', severity: 'success', summary: 'Erfolgreich!', detail: 'Einkaufsliste erfolgreich erstellt!' });
+      .subscribe(
+        (res: any) => {
+          this.getShoppinglists();
+          this.display = false;
+          this.messageService.add({
+            key: 'tc',
+            severity: 'success',
+            summary: 'Erfolgreich!',
+            detail: 'Einkaufsliste erfolgreich erstellt!',
+          });
+        },
+        (error: any) => {
+          this.messageService.add({
+            key: 'tc',
+            severity: 'error',
+            summary: 'Fehler!',
+            detail: this.errorHandlerService.handleError(error) + ' - Einkaufsliste konnte nicht erstellt werden!',
+          });
+        }
+      );
   }
 
   ngOnInit(): void {}
@@ -97,9 +155,19 @@ export class ListOverviewComponent implements OnInit {
       accept: () => {
         //confirm action
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Gelöscht!', detail: 'Einkaufsliste erfolgreich gelöscht!' });
-        this.listOverviewService.deleteShoppinglist(id).subscribe((res: any) => {
-          this.getShoppinglists();
-        });
+        this.listOverviewService.deleteShoppinglist(id).subscribe(
+          (res: any) => {
+            this.getShoppinglists();
+          },
+          (error: any) => {
+            this.messageService.add({
+              key: 'tc',
+              severity: 'error',
+              summary: 'Fehler!',
+              detail: this.errorHandlerService.handleError(error) + ' - Einkaufsliste konnte nicht gelöscht werden!',
+            });
+          }
+        );
       },
       reject: () => {
         //reject action
@@ -115,9 +183,19 @@ export class ListOverviewComponent implements OnInit {
       accept: () => {
         //confirm action
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Verlassen!', detail: 'Einkaufsliste erfolgreich verlassen!' });
-        this.listOverviewService.leaveShoppinglist(id).subscribe((res: any) => {
-          this.getShoppinglists();
-        });
+        this.listOverviewService.leaveShoppinglist(id).subscribe(
+          (res: any) => {
+            this.getShoppinglists();
+          },
+          (error: any) => {
+            this.messageService.add({
+              key: 'tc',
+              severity: 'error',
+              summary: 'Fehler!',
+              detail: this.errorHandlerService.handleError(error) + ' - Einkaufsliste konnte nicht verlassen werden!',
+            });
+          }
+        );
       },
       reject: () => {
         //reject action
@@ -137,9 +215,19 @@ export class ListOverviewComponent implements OnInit {
       accept: () => {
         //confirm action
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Entfernt!', detail: 'Freund erfolgreich entfernt!' });
-        this.listOverviewService.deleteFriend(id).subscribe((res: any) => {
-          this.getFriends();
-        });
+        this.listOverviewService.deleteFriend(id).subscribe(
+          (res: any) => {
+            this.getFriends();
+          },
+          error => {
+            this.messageService.add({
+              key: 'tc',
+              severity: 'error',
+              summary: 'Fehler!',
+              detail: this.errorHandlerService.handleError(error) + ' - Freund konnte nicht entfernt werden!',
+            });
+          }
+        );
       },
       reject: () => {
         //reject action

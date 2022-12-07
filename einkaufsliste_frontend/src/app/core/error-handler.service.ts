@@ -3,26 +3,33 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ErrorHandlerService {
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
-
-  handleError(error: HttpErrorResponse, redirectUrl?: string){
-    switch (error.status){
+  handleError(error: HttpErrorResponse, redirectUrl?: string) {
+    switch (error.status) {
+      case 400:
+        return 'Bad Request';
       case 401: // 401 - Unauthorized
         localStorage.clear();
         this.router.navigate(['login']);
-        break
+        return 'Unauthorized';
+        break;
       case 404: // 404 - Not Found - URL nicht gefunden
         this.router.navigate(['login']);
-        break
+        return 'Not Found';
+        break;
       case 403: // 403 - Forbidden - keine Berechtigungen
-        if((new RegExp('/shoppinglist/[1-9]*')).test(redirectUrl!)){
-          this.router.navigate(['list-overview'])
+        if (new RegExp('/shoppinglist/[1-9]*').test(redirectUrl!)) {
+          this.router.navigate(['list-overview']);
         }
-        break
+        return 'Forbidden';
+      case 500: // 500 - Internal Server Error
+        return 'Internal Server Error';
+        break;
     }
+    return 'Unknown Error';
   }
 }
