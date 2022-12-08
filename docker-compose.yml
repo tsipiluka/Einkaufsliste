@@ -16,6 +16,15 @@ services:
     build: 'einkaufsliste_frontend/'
     ports:
       - 4200:80
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    environment:
+      SONAR_HOST_URL: "http://localhost:9000"
+      SONAR_LOGIN: "sqp_a8c7a90e7ca9e7d02d1be8a5a3c0f3e4baafdb85"
+      SONAR_SCANNER_OPTS: "-Dsonar.projectKey=einkaufsliste"
+    volumes:
+      - ".:/usr/src"
+    network_mode: "host"
   db:
     image: postgres:13
     volumes:
