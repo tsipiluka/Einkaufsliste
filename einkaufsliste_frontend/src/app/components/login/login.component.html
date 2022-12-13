@@ -1,3 +1,4 @@
+<p-toast position="bottom-center"></p-toast>
 <div class="container">
   <body>
     <div class="session">
@@ -28,7 +29,7 @@
           <button class="googleButton" (click)="googleLogin()"><i class="bi bi-google"></i> Sign in with Google</button>
           <button class="login" type="submit" (click)="login()">Log in</button>
         </div> 
-          <a href="http://localhost:4200/registration" class="discrete" >or Sign Up</a>
+          <a (click)="redirectToRegister()" type="button" class="discrete" >or Sign Up</a>
       </form>
     </div>
   </body>

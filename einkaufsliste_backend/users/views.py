@@ -1,3 +1,4 @@
+import os
 import requests
 from rest_framework import status
 from rest_framework.response import Response
@@ -127,8 +128,6 @@ class CustomUserCreate(APIView):
         serializer = CustomUserSerializer(data=request.data)
         # get email from serializer
 
-
-
         if serializer.is_valid():
             user = serializer.save()
             if user:
@@ -137,8 +136,8 @@ class CustomUserCreate(APIView):
                     'grant_type': 'password',
                     'username': user.email,
                     'password': request.data['password'],
-                    'client_id': rs.read_secrets('DJANGO_APP_CLIENT_ID'),
-                    'client_secret': rs.read_secrets('DJANGO_APP_CLIENT_SECRET'),
+                    'client_id': os.environ.get('DJANGO_APP_CLIENT_ID'),
+                    'client_secret': os.environ.get('DJANGO_APP_CLIENT_SECRET'),
                 })
                 # return Response(json, status=status.HTTP_201_CREATED)
                 return Response(r.json(), status=status.HTTP_201_CREATED)
