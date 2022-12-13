@@ -1,16 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUser, User } from 'src/app/entities/user.model';
+import {ServerUrlService} from 'src/app/core/server-url/server-url.service';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListOverviewService {
   //TODO - change to correct url
-  readonly APIUrl = 'http://127.0.0.1:8000';
+  readonly APIUrl = this.serverUrlService.getAPIUrl();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private serverUrlService:ServerUrlService) {}
 
   getShoppinglists(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
