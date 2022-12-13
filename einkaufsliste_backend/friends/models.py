@@ -11,4 +11,3 @@ class Friend(models.Model):
     )
     friend = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name="friend")
     request_status = models.BooleanField(default=False)
-    friend_reject = models.BooleanField(default=False)
