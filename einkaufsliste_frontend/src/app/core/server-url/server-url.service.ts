@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServerUrlService {
 
-  readonly APIUrl = "http://localhost:8000";
+  readonly APIUrl = this.providedUrl;
 
-  constructor() { }
+  constructor(@Inject('BACKEND_URL') private providedUrl: string) { }
 
   getAPIUrl(): string {
     return this.APIUrl;
