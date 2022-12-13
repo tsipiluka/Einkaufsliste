@@ -1,16 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ServerUrlService } from 'src/app/core/server-url/server-url.service';
 import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppinglistService {
-  //TODO - change to correct url
-  readonly APIUrl = 'http://127.0.0.1:8000';
 
-  constructor(private http: HttpClient) {}
+  readonly APIUrl = this.serverUrlService.getAPIUrl();
+
+  constructor(private http: HttpClient, private serverUrlService: ServerUrlService) {}
 
   getShoppinglist(shoppinglistID: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
