@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserRegistration } from 'src/app/entities/user-registration.model';
+import { GoogleApiService } from 'src/app/google-api.service';
 import { RegistrationService } from './service/registration.service';
 
 @Component({
@@ -14,13 +15,17 @@ export class RegistrationComponent implements OnInit {
   username: string = ''
   password: string = ''
 
-  constructor(private router: Router,private registrationService: RegistrationService) { 
+  constructor(private router: Router,private registrationService: RegistrationService, private googleApiService: GoogleApiService) { 
     if(localStorage.getItem('access_token')){
       this.router.navigate(['list-overview'])
     }
   }
 
   ngOnInit(): void {
+  }
+
+  googleLogin() {
+    this.googleApiService.loginWithGoogle()
   }
 
   signUp() {

@@ -15,14 +15,14 @@ export class LoginComponent implements OnInit {
   email: string = ''
   password: string = ''
 
-  constructor(private router: Router,private googleApi: GoogleApiService, private loginService: LoginService,
+  constructor(private router: Router,private googleApiService: GoogleApiService, private loginService: LoginService,
     @Inject('DJANGO_APP_CLIENT_ID') private djangoAppClientId: string,
     @Inject('DJANGO_APP_CLIENT_SECRET') private djangoAppClientSecret: string,
     ) { 
     if(localStorage.getItem('access_token')){
       this.router.navigate(['list-overview'])
     }else{
-      this.googleApi.checkWithBackend()
+      this.googleApiService.checkWithBackend()
     }
   }
 
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   googleLogin() {
-    this.googleApi.loginWithGoogle()
+    this.googleApiService.loginWithGoogle()
   }
 
   login(){
