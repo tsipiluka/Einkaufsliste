@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { IShoppinglist, Shoppinglist } from 'src/app/entities/shoppinglist.model';
+import { Router } from '@angular/router';
 import { ListOverviewService } from './service/list-overview.service';
-import { GoogleApiService } from 'src/app/google-api.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/entities/user.model';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 
 @Component({
   selector: 'app-list-overview',
