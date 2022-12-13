@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 import requests
 from rest_framework.views import APIView
@@ -6,8 +7,6 @@ from sentry_sdk import capture_exception
 from friends.views import get_user_from_token
 from rest_framework.response import Response
 from rest_framework import status
-
-from core.read_secrets import ReadSecrets as rs
 # Create your views here.
 
 
@@ -24,7 +23,7 @@ class ShoppingPlaces(APIView):
         data = request.data
         lat = str(data['lat'])
         lon = str(data['lon'])
-        key = rs.read_secrets("GOOGLE_PLACES_API_KEY")
+        key = os.environ.get("GOOGLE_PLACES_API_KEY")
         url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=LIDL,REWE,EDEKA,ALDI&inputtype=textquery&locationbias=circle:1600@"+ lat + "," + lon + "&radius=16000&fields=formatted_address,name,geometry" +"&key=" + key
         result = requests.get(url)
         if not result.status_code == 200:

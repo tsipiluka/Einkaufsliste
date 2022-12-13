@@ -9,7 +9,6 @@ from rest_framework.permissions import AllowAny
 
 from oauth2_provider.models import AccessToken
 from users.models import NewUser
-from core.read_secrets import ReadSecrets as rs
 
 def user_from_token(request):
     header = request.headers

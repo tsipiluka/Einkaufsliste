@@ -3,7 +3,6 @@ import { AuthConfig, OAuthService} from 'angular-oauth2-oidc'
 import { ITokenAuthentication, TokenAuthentication } from './entities/token-authentication.model';
 import { LoginService } from './components/login/service/login.service';
 import { Router } from '@angular/router'
-import pkg from '../../secrets.json';
 
 @Injectable({
   providedIn: 'root'
