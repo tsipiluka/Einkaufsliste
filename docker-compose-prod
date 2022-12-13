@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  web:
+    build: 'einkaufsliste_backend/'
+    command: >
+      sh -c "python /code/manage.py collectstatic --no-input  && python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
+    volumes:
+      - ./einkaufsliste_backend/:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  frontend:
+    build: 'einkaufsliste_frontend/'
+    ports:
+      - 4200:80
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    environment:
+      SONAR_HOST_URL: "http://localhost:9000"
+      SONAR_LOGIN: "sqp_13c6ebd7a292ec5494413ef08bbea02c00dc139f"
+      SONAR_SCANNER_OPTS: "-Dsonar.projectKey=einkaufsliste"
+    volumes:
+      - ".:/usr/src"
+    network_mode: "host"
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "root@root.de"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    ports:
+      - "5050:80"
+
+volumes:
+  postgres_data:
