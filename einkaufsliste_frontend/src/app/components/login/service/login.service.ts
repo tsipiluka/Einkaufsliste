@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ServerUrlService } from 'src/app/core/server-url/server-url.service';
 import { UserLogin } from 'src/app/entities/user-login.model';
 import { TokenAuthentication } from '../../../entities/token-authentication.model';
 
@@ -9,10 +10,9 @@ import { TokenAuthentication } from '../../../entities/token-authentication.mode
 })
 export class LoginService {
 
-  //TODO - change to correct url
-  readonly APIUrl = "http://127.0.0.1:8000";
+  readonly APIUrl = this.serverUrlService.getAPIUrl();
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private serverUrlService: ServerUrlService){}
 
   googleLogin(val:TokenAuthentication):Observable<any>{
     return this.http.post(this.APIUrl + '/auth/convert-token', val);

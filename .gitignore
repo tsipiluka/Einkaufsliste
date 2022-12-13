@@ -429,3 +429,4 @@ baseline.json
 
 # ignore secrets json
 secrets.json
+*.env

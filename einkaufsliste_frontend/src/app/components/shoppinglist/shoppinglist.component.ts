@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 import { ShoppinglistService } from './service/shoppinglist.service';
 import { IUser, User } from 'src/app/entities/user.model';
-import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';

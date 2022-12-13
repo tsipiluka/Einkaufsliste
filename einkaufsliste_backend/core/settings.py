@@ -98,11 +98,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": rs.read_secrets("DB_NAME"),
-        "USER": rs.read_secrets("DB_USER"),
-        "PASSWORD": rs.read_secrets("DB_PASSWORD"),
-        "HOST": rs.read_secrets("DB_HOST"),
-        "PORT": rs.read_secrets("DB_PORT"),
+        "NAME": os.environ.get("POSTGRES_DB", "postgres"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -141,13 +141,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-# CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200", # angular dev server
-    "http://127.0.0.1:4200", # angular dev server
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    os.environ.get("CORS_ALLOWED_ORIGINS", "*"),
 ]
 
 # Default primary key field type
@@ -244,7 +239,7 @@ SOCIAL_AUTH_USER_FIELDS = ['email', 'username', 'first_name', 'password']
 # }
 
 sentry_sdk.init(
-    dsn=rs.read_secrets("SENTRY_DSN"),
+    dsn=os.environ.get("SENTRY_DSN"),
     integrations=[DjangoIntegration()],
 
     # Set traces_sample_rate to 1.0 to capture 100%
