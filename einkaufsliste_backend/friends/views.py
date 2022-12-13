@@ -26,15 +26,48 @@ def get_user_from_token(request):
         return None
 
 
-class Friends(APIView):
+class FriendsAccepted(APIView):
+
     def get(self, request):
+        """
+        Endpoint to get all friends of the currently
+        logged in user, where the user is either the initiator
+        or the friend and the request_status is True.
+        """
         user = get_user_from_token(request)
         if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+        friends = Friend.objects.filter(
+            initiator=user, request_status=True
+        ) | Friend.objects.filter(friend=user, request_status=True)
+        serializer = FriendSerializer(friends, many=True)
+        # get the user objects of the friends
+        friends = []
+        for friend in serializer.data:
+            if friend["initiator"] == user.id:
+                friends.append(NewUser.objects.get(id=friend["friend"]))
+            else:
+                friends.append(NewUser.objects.get(id=friend["initiator"]))
+        # serialize the user objects
+        try:
+            serializer = LightUserSerializer(friends, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class FriendsPending(APIView):
+    
+    def get(self, request):
         """
-        Implements the GET method for the Friends API. Returns all friends of the user.
+        Endpoint to get all pending friend requests of the currently
+        logged in user, where the user is the initiator and the 
+        request_status is False.
         """
-        friends = Friend.objects.filter(initiator=user)
+        user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        friends = Friend.objects.filter(initiator=user, request_status=False)
         serializer = FriendSerializer(friends, many=True)
         # get the user objects of the friends
         friends = []
@@ -48,13 +81,41 @@ class Friends(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+class FriendsRequested(APIView):
+
+    def get(self, request):
+        """
+        Endpoint to get all pending friend requests of the currently
+        logged in user, where the user is the friend and the 
+        request_status is False.
+        """
+        user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        friends = Friend.objects.filter(friend=user, request_status=False)
+        serializer = FriendSerializer(friends, many=True)
+        # get the user objects of the friends
+        friends = []
+        for friend in serializer.data:
+            friends.append(NewUser.objects.get(id=friend["initiator"]))
+        # serialize the user objects
+        try:
+            serializer = LightUserSerializer(friends, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 class FriendAdd(APIView):
+
     def post(self, request, user_name):
         """
         Implements the POST method for the FriendAdd API. Returns an error
         if the user does not exist or if the user is already a friend.
         """
         user = get_user_from_token(request)
+        if user is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             friend = NewUser.objects.get(username=user_name)
             if Friend.objects.filter(initiator=user, friend=friend).exists():
@@ -76,81 +137,47 @@ class FriendAdd(APIView):
             )
 
 
-class FriendDetails(APIView):
-    def get(self, request, id):
-        """
-        Implements an endpoint to get a specific friendship of the
-        currently logged in user. Returns an error if the friendship
-        does not exist.
+class FriendDelete(APIView):
+    
+        def delete(self, request, id):
+            """
+            Implements the DELETE method to delete a friend. A User can
+            delete it if he is the initiator or the friend no matter 
+            what the request_status is.
+            """
+            user = get_user_from_token(request)
+            if user is None:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            try:
+                friend = Friend.objects.get(id=id)
+                if friend.initiator == user or friend.friend == user:
+                    friend.delete()
+                    return Response(status=status.HTTP_204_NO_CONTENT)
+                else:
+                    return Response(
+                        {"error": "User is not a friend"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            except Friend.DoesNotExist:
+                return Response(
+                    {"error": "Friend does not exist"}, status=status.HTTP_400_BAD_REQUEST
+                )
 
-        The endpoint returns a JSON object containing:
 
-        * id: The id of the friendship.
-        * initiator: The id of the initiator of the friendship.
-        * friend: The id of the friend of the friendship.
-        """
-        user = get_user_from_token(request)
-        if user is None:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        try:
-            friend = Friend.objects.get(id=id, initiator=user)
-        except Friend.DoesNotExist as e:
-            capture_exception(e)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = FriendSerializer(friend)
-        return JsonResponse(serializer.data, safe=False)
+class FriendRequestAccept(APIView):
 
     def put(self, request, id):
         """
-        Implements an endpoint to update a specific friend of the currently logged in user.
-
-        The endpoint expects a JSON object containing:
-
-        * friend: The id of the friend to be changed.
+        Implements an endpoint to accept a friend request.
+        Expects the id of the friend to be accepted in the URL.
+        The user is the friend and the request_status is False.
         """
         user = get_user_from_token(request)
         try:
-            friend = Friend.objects.get(initiator=user, id=id)
-        except Friend.DoesNotExist as e:
-            capture_exception(e)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = FriendSerializer(instance=friend, data=request.data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def delete(self, request, id):
-        """
-        Implements an endpoint to update a specific frienship relation
-        of the currently logged in user. Expects the id of the friendship
-        to be deleted in the URL. Returns an error if the friendship does
-        not exist.
-        """
-        user = get_user_from_token(request)
-        try:
-            friend = Friend.objects.get(id=id, user=user)
-            friend.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Friend.DoesNotExist as e:
-            capture_exception(e)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-class DeleteFriend(APIView):
-
-    def delete(self, request, friend_id):
-        """
-        Implements an endpoint to delete a specific friendship.
-        Expects the id of the friend to be deleted in the URL.
-        """
-        user = get_user_from_token(request)
-        try:
-            try:
-                friend = Friend.objects.get(initiator=user, friend=friend_id)
-                friend.delete()
-            except:
-                friend = Friend.objects.get(initiator=friend_id, friend=user)
-                friend.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            friend = Friend.objects.get(friend=user, id=id, request_status=False)
+            friend.request_status = True
+            friend.save()
+            return Response(status=status.HTTP_200_OK)
         except Friend.DoesNotExist as e:
             capture_exception(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
