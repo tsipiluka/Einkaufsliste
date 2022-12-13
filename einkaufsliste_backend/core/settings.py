@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
-# import read_secrets from read_secrets.py
-from .read_secrets import ReadSecrets as rs
-
 # import sdk for sentry
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration

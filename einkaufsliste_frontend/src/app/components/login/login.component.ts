@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserLogin } from 'src/app/entities/user-login.model';
 import { GoogleApiService } from 'src/app/google-api.service';
 import { LoginService } from './service/login.service';
-import pkg from '../../../../secrets.json';
 import { ValidateInputService } from 'src/app/services/validate-input/validate-input.service';
 import { MessageService } from 'primeng/api';
 

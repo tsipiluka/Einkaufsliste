@@ -7,8 +7,6 @@ from sentry_sdk import capture_exception
 from friends.views import get_user_from_token
 from rest_framework.response import Response
 from rest_framework import status
-
-from core.read_secrets import ReadSecrets as rs
 # Create your views here.
 
 
