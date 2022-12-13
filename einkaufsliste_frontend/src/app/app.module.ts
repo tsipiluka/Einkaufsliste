@@ -36,6 +36,7 @@ import { DividerModule } from 'primeng/divider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
@@ -70,7 +71,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     GMapModule,
     ProgressSpinnerModule,
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService,
+  {
+    provide: 'BACKEND_URL',useValue: environment.BACKEND_URL
+  }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
