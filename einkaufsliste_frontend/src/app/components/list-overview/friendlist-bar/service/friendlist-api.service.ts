@@ -22,6 +22,11 @@ export class FriendlistService {
     return this.http.delete(this.APIUrl + '/api/delete_friend/' + id + '/', { headers: headers });
   }
 
+  acceptFriendRequest(id: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.put(this.APIUrl + '/api/accept_friend/' + id + '/', {}, { headers: headers });
+  }
+
   getFriendlist(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/api/accepted_friends/', { headers: headers });

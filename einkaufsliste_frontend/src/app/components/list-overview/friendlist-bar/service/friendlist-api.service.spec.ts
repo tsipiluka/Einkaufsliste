@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FriendlistService } from './friendlist.service';
+import { FriendlistService } from './friendlist-api.service';
 
 describe('FriendlistService', () => {
   let service: FriendlistService;
