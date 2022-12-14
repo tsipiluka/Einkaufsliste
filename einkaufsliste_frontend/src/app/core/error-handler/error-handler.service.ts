@@ -18,7 +18,7 @@ export class ErrorHandlerService {
         return 'Unauthorized';
         break;
       case 404: // 404 - Not Found - URL nicht gefunden
-        this.router.navigate(['login']);
+        // this.router.navigate(['login']);
         return 'Not Found';
         break;
       case 403: // 403 - Forbidden - keine Berechtigungen

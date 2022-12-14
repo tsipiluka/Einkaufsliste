@@ -8,7 +8,7 @@ import {ServerUrlService} from 'src/app/core/server-url/server-url.service';
   providedIn: 'root',
 })
 export class ListOverviewService {
-  //TODO - change to correct url
+
   readonly APIUrl = this.serverUrlService.getAPIUrl();
 
   constructor(private http: HttpClient, private serverUrlService:ServerUrlService) {}
@@ -18,9 +18,9 @@ export class ListOverviewService {
     return this.http.get(this.APIUrl + '/api/shoppinglists/', { headers: headers });
   }
 
-  postShoppinglist(n: string, d: string): Observable<any> {
+  postShoppinglist(val: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/api/shoppinglists/', { name: n, description: d }, { headers: headers });
+    return this.http.post(this.APIUrl + '/api/shoppinglists/', val, { headers: headers });
   }
 
   deleteShoppinglist(id: number): Observable<any> {
@@ -31,21 +31,6 @@ export class ListOverviewService {
   getPlacesNearby(val: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/google-places/', val);
-  }
-
-  getFriendlist(): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/api/friends/', { headers: headers });
-  }
-
-  addFriend(username: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/api/friend/' + username + '/', {}, { headers: headers });
-  }
-
-  deleteFriend(id: number): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/api/friends/delete/' + id + '/', { headers: headers });
   }
 
   getUser(): Observable<any> {
