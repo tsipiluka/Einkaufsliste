@@ -1,18 +1,13 @@
-import random
-import string
 from django.core.management.base import BaseCommand
 from oauth2_provider.models import Application
 from users.models import NewUser as User
+import secrets
 
 class Command(BaseCommand):
     """
     Creates an oauth2 application and a user
     for testing purposes.
     """
-
-    def secret_generator(self, size=128, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
-        return ''.join(random.choice(chars) for _ in range(size))
-
     help = 'Creates an oauth2 application and a user for testing purposes'
 
     def add_arguments(self, parser):
@@ -27,7 +22,7 @@ class Command(BaseCommand):
             password=options['password'],
         )
         user.save()
-        _client_secret = self.secret_generator()
+        _client_secret = secrets.token_urlsafe(128)
         app = Application.objects.create(
             name='oauth2',
             user=user,
