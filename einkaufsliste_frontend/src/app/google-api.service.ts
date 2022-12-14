@@ -17,9 +17,7 @@ export class GoogleApiService {
     scope: 'openid profile email'
   }
 
-  constructor(@Inject('DJANGO_APP_CLIENT_ID') private djangoAppClientId: string,
-   @Inject('DJANGO_APP_CLIENT_SECRET') private djangoAppClientSecret: string,
-   @Inject('GOOGLE_API_KEY_CLIENT_ID') private googleApiKeyClientId: string,
+  constructor(@Inject('GOOGLE_API_KEY_CLIENT_ID') private googleApiKeyClientId: string,
    @Inject('FRONTEND_URL') private frontendUrl: string,
 
   private router: Router,private readonly oAuthService: OAuthService, private loginService: LoginService) {
@@ -43,9 +41,7 @@ export class GoogleApiService {
     const authenticationData: ITokenAuthentication = {
       token: this.oAuthService.getAccessToken(),
       backend: 'google-oauth2',
-      grant_type: 'convert_token',
-      client_id: this.djangoAppClientId,
-      client_secret: this.djangoAppClientSecret
+      grant_type: 'convert_token'
     }
     this.loginService.googleLogin(authenticationData).subscribe((res: any) => {
       sessionStorage.clear()

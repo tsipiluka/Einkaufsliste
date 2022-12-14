@@ -83,12 +83,6 @@ import { FriendlistBarComponent } from './components/list-overview/friendlist-ba
     provide: 'FRONTEND_URL',useValue: environment.FRONTEND_URL,
   },
   {
-    provide: 'DJANGO_APP_CLIENT_ID',useValue: environment.DJANGO_APP_CLIENT_ID,
-  },
-  {
-    provide: 'DJANGO_APP_CLIENT_SECRET',useValue: environment.DJANGO_APP_CLIENT_SECRET,
-  },
-  {
     provide: 'GOOGLE_API_KEY_CLIENT_ID',useValue: environment.GOOGLE_API_KEY_CLIENT_ID,
   }
   ],

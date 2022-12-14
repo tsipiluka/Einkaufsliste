@@ -18,10 +18,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,private googleApiService: GoogleApiService, private loginService: LoginService,
     private validateInputService: ValidateInputService,
-    private messageService: MessageService,
-    @Inject('DJANGO_APP_CLIENT_ID') private djangoAppClientId: string,
-    @Inject('DJANGO_APP_CLIENT_SECRET') private djangoAppClientSecret: string,
-    ) { 
+    private messageService: MessageService) { 
     if(localStorage.getItem('access_token')){
       this.router.navigate(['list-overview'])
     }else{
@@ -43,7 +40,7 @@ export class LoginComponent implements OnInit {
   login(){
     if(this.validateInputService.validateEmail(this.email!)){
       if(this.validateInputService.validatePassword(this.password!)){
-        const user_credentials = {... new UserLogin(this.djangoAppClientId,this.djangoAppClientSecret,'password', this.email!, this.password!)}
+        const user_credentials = {... new UserLogin('password', this.email!, this.password!)}
         this.loginService.login(user_credentials).subscribe((res: any) => {
           localStorage.setItem('access_token', res.access_token)
           localStorage.setItem('refresh_token', res.refresh_token)
