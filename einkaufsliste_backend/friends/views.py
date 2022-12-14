@@ -41,19 +41,10 @@ class FriendsAccepted(APIView):
             initiator=user, request_status=True
         ) | Friend.objects.filter(friend=user, request_status=True)
         serializer = FriendSerializer(friends, many=True)
-        # get the user objects of the friends
-        friends = []
-        for friend in serializer.data:
-            if friend["initiator"] == user.id:
-                friends.append(NewUser.objects.get(id=friend["friend"]))
-            else:
-                friends.append(NewUser.objects.get(id=friend["initiator"]))
-        # serialize the user objects
-        try:
-            serializer = LightUserSerializer(friends, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except NewUser.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 class FriendsPending(APIView):
@@ -69,16 +60,8 @@ class FriendsPending(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         friends = Friend.objects.filter(initiator=user, request_status=False)
         serializer = FriendSerializer(friends, many=True)
-        # get the user objects of the friends
-        friends = []
-        for friend in serializer.data:
-            friends.append(NewUser.objects.get(id=friend["friend"]))
-        # serialize the user objects
-        try:
-            serializer = LightUserSerializer(friends, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except NewUser.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class FriendsRequested(APIView):
@@ -94,16 +77,7 @@ class FriendsRequested(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         friends = Friend.objects.filter(friend=user, request_status=False)
         serializer = FriendSerializer(friends, many=True)
-        # get the user objects of the friends
-        friends = []
-        for friend in serializer.data:
-            friends.append(NewUser.objects.get(id=friend["initiator"]))
-        # serialize the user objects
-        try:
-            serializer = LightUserSerializer(friends, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except NewUser.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class FriendAdd(APIView):
