@@ -13,6 +13,8 @@ import { ShoppinglistComponent } from './components/shoppinglist/shoppinglist.co
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { environment } from 'src/environments/environment.prod';
+
 
 // PrimeNG
 import { CardModule } from 'primeng/card';
@@ -36,10 +38,11 @@ import { DividerModule } from 'primeng/divider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { environment } from 'src/environments/environment.prod';
+import {BadgeModule} from 'primeng/badge';
+import { FriendlistBarComponent } from './components/list-overview/friendlist-bar/friendlist-bar/friendlist-bar.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
+  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent, FriendlistBarComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -70,10 +73,17 @@ import { environment } from 'src/environments/environment.prod';
     AutoCompleteModule,
     GMapModule,
     ProgressSpinnerModule,
+    BadgeModule,
   ],
   providers: [ConfirmationService, MessageService,
   {
-    provide: 'BACKEND_URL',useValue: environment.BACKEND_URL
+    provide: 'BACKEND_URL',useValue: environment.BACKEND_URL,
+  }, 
+  {
+    provide: 'FRONTEND_URL',useValue: environment.FRONTEND_URL,
+  },
+  {
+    provide: 'GOOGLE_API_KEY_CLIENT_ID',useValue: environment.GOOGLE_API_KEY_CLIENT_ID,
   }
   ],
   bootstrap: [AppComponent],

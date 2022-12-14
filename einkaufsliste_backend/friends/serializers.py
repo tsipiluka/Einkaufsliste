@@ -1,8 +1,12 @@
 from rest_framework import serializers
-from .models import Friend
+from friends.models import Friend
+from users.serializers import LightUserSerializer
 
 
 class FriendSerializer(serializers.ModelSerializer):
+
+    initiator = LightUserSerializer()
+    friend = LightUserSerializer()
     class Meta:
         model = Friend
-        fields = ('id', 'initiator', 'friend')
+        fields = "__all__"

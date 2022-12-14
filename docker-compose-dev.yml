@@ -5,23 +5,29 @@ services:
     build: 'einkaufsliste_backend/'
     command: >
       sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate &&
-             python /code/manage.py runserver 0.0.0.0:8000"
+              python /code/manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./einkaufsliste_backend/:/code
     ports:
       - 8000:8000
     depends_on:
       - db
+    env_file:
+      - dev_vars.env
   frontend:
     build: 'einkaufsliste_frontend/'
     ports:
       - 4200:80
+    env_file:
+      - dev_vars.env
   db:
     image: postgres:13
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+    env_file:
+      - dev_vars.env
   pgadmin:
     container_name: pgadmin4
     image: dpage/pgadmin4
