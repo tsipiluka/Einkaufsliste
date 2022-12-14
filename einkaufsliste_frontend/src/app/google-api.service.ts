@@ -44,8 +44,8 @@ export class GoogleApiService {
       token: this.oAuthService.getAccessToken(),
       backend: 'google-oauth2',
       grant_type: 'convert_token',
-      client_id: this.djangoAppClientId,
-      client_secret: this.djangoAppClientSecret
+      // client_id: this.djangoAppClientId,
+      // client_secret: this.djangoAppClientSecret
     }
     this.loginService.googleLogin(authenticationData).subscribe((res: any) => {
       sessionStorage.clear()
