@@ -19,5 +19,5 @@ jobs:
           script: |
             cd /home/github/repos/Einkaufsliste
             git pull
-            docker-compose -f docker-compose-dev.yml down
-            docker-compose -f docker-compose-dev.yml up -d --build --remove-orphans --force-recreate
+            docker-compose -f docker-compose-prod.yml down
+            docker-compose -f docker-compose-prod.yml up -d --build --remove-orphans --force-recreate
