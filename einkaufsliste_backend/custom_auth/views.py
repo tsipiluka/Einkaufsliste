@@ -89,6 +89,8 @@ class ConvertTokenView(CsrfExemptMixin, OAuthLibMixin, APIView):
     def post(self, request, *args, **kwargs):
         # Use the rest framework `.data` to fake the post body of the django request.
         mutable_data = request.data.copy()
+        mutable_data['client_id'] = os.environ.get('DJANGO_APP_CLIENT_ID')
+        mutable_data['client_secret'] = os.environ.get('DJANGO_APP_CLIENT_SECRET')
         request._request.POST = request._request.POST.copy()
         for key, value in mutable_data.items():
             request._request.POST[key] = value

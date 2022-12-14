@@ -10,13 +10,12 @@ from oauth2_provider.views import AuthorizationView
 from social_django.views import complete
 
 from drf_social_oauth2.views import (
-    ConvertTokenView,
     RevokeTokenView,
     invalidate_sessions,
     DisconnectBackendView,
 )
 
-from custom_auth.views import TokenView
+from custom_auth.views import TokenView, ConvertTokenView
 
 app_name = 'drfso2'
 
