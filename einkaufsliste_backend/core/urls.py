@@ -16,21 +16,12 @@ schema_view = swagger_get_schema_view(
 
 )
 
-
 urlpatterns =  [
-    path('auth/', include('drf_social_oauth2.urls', namespace='drf')), #OAuth
+    path('auth/', include('custom_auth.urls', namespace='drf')), # custom OAuth
     path("admin/", admin.site.urls),
-    path('auth/', include('rest_framework.urls')),
-    # path('api/user/', include('users.urls', namespace='users')), # User
     path('api/', include('shoppinglist.urls', namespace='shoppinglist')), # Shoppinglist
     path('api/', include('friends.urls', namespace='friends')), # Shoppinglist
     path('swagger/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
     path('user/', include('users.urls', namespace='users')),
     path('places/', include('places.urls', namespace='places')),
 ]
-
-
-# handler404 = 'mysite.views.my_custom_page_not_found_view'
-# handler500 = 'mysite.views.my_custom_error_view'
-# handler403 = 'mysite.views.my_custom_permission_denied_view'
-# handler400 = 'mysite.views.my_custom_bad_request_view'
