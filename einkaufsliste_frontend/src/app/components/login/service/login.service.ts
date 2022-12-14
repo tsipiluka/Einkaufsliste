@@ -15,10 +15,10 @@ export class LoginService {
   constructor(private http: HttpClient, private serverUrlService: ServerUrlService){}
 
   googleLogin(val:TokenAuthentication):Observable<any>{
-    return this.http.post(this.APIUrl + '/auth/convert-token', val);
+    return this.http.post(this.APIUrl + 'auth/convert-token', val);
   }
 
   login(user_credentials: UserLogin): Observable<any>{
-    return this.http.post(this.APIUrl + '/auth/token/', user_credentials);
+    return this.http.post(this.APIUrl + 'auth/token/', user_credentials);
   }
 }
