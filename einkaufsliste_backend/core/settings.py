@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'friends',
     'drf_yasg', # Swagger
     'places',
+    'custom_auth'
 ]
 
 MIDDLEWARE = [
