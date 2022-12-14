@@ -9,6 +9,7 @@ import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';
 import { MessageService } from 'primeng/api';
+import { debug } from 'console';
 
 export class Entry {
   constructor(public checked: boolean, public name: string, public assignee: User) {}
@@ -33,6 +34,7 @@ export class ShoppinglistComponent implements OnInit {
   shoppingplace = {
     candidates: [] as Shoppingplace[],
   };
+  toggleOverlay = 'op.toggle($event)';
 
   signedInUser: User | undefined;
   friendlist: User[] = [];
@@ -158,7 +160,7 @@ export class ShoppinglistComponent implements OnInit {
     this.displayAddEntrySwitch = true;
   }
 
-  modifyEntryAssginee(contributor: number) {
+  modifyEntryAssginee(contributor: number | undefined) {
     this.displayContribAtAssigneeModify = false;
     const entryChanges = { assignee: contributor! };
     this.shoppinglistService.changeEntry(this.shoppingList!.id, this.selectedEntry!.id!, entryChanges).subscribe(

@@ -15,7 +15,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { environment } from 'src/environments/environment.prod';
 
-
 // PrimeNG
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -38,8 +37,10 @@ import { DividerModule } from 'primeng/divider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import {BadgeModule} from 'primeng/badge';
+import { BadgeModule } from 'primeng/badge';
 import { FriendlistBarComponent } from './components/list-overview/friendlist-bar/friendlist-bar/friendlist-bar.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent, FriendlistBarComponent],
@@ -74,23 +75,32 @@ import { FriendlistBarComponent } from './components/list-overview/friendlist-ba
     GMapModule,
     ProgressSpinnerModule,
     BadgeModule,
+    DropdownModule,
+    OverlayPanelModule,
   ],
-  providers: [ConfirmationService, MessageService,
-  {
-    provide: 'BACKEND_URL',useValue: environment.BACKEND_URL,
-  }, 
-  {
-    provide: 'FRONTEND_URL',useValue: environment.FRONTEND_URL,
-  },
-  {
-    provide: 'DJANGO_APP_CLIENT_ID',useValue: environment.DJANGO_APP_CLIENT_ID,
-  },
-  {
-    provide: 'DJANGO_APP_CLIENT_SECRET',useValue: environment.DJANGO_APP_CLIENT_SECRET,
-  },
-  {
-    provide: 'GOOGLE_API_KEY_CLIENT_ID',useValue: environment.GOOGLE_API_KEY_CLIENT_ID,
-  }
+  providers: [
+    ConfirmationService,
+    MessageService,
+    {
+      provide: 'BACKEND_URL',
+      useValue: environment.BACKEND_URL,
+    },
+    {
+      provide: 'FRONTEND_URL',
+      useValue: environment.FRONTEND_URL,
+    },
+    {
+      provide: 'DJANGO_APP_CLIENT_ID',
+      useValue: environment.DJANGO_APP_CLIENT_ID,
+    },
+    {
+      provide: 'DJANGO_APP_CLIENT_SECRET',
+      useValue: environment.DJANGO_APP_CLIENT_SECRET,
+    },
+    {
+      provide: 'GOOGLE_API_KEY_CLIENT_ID',
+      useValue: environment.GOOGLE_API_KEY_CLIENT_ID,
+    },
   ],
   bootstrap: [AppComponent],
 })
