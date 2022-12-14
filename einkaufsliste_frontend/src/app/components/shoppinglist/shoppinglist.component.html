@@ -34,13 +34,13 @@
     <div class="row">
         <div class="menuBar">
             <div class="col-2 menuBtn">
-                <button pButton pRipple type="button" routerLink="/list-overview" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-angle-left" style="color:white"></i></button>
+                <button pButton pRipple type="button" routerLink="/list-overview" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><em class="pi pi-angle-left" style="color:white"></em></button>
             </div>
             <div class="col-8 shoppinglistName">
                 <h1>{{this.shoppingList?.name}}</h1>
             </div>
             <div class="col-2 menuBtn">
-                <button pButton pRipple type="button" style="color: white;" (click)="openSettings()" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-cog" style="color:white"></i></button>
+                <button pButton pRipple type="button" style="color: white;" (click)="openSettings()" class="p-button-rounded p-button-secondary p-button-outlined"><em class="pi pi-cog" style="color:white"></em></button>
             </div>
         </div>
         <div class="col-8">
@@ -54,13 +54,13 @@
             <p-card header="Einkaufsliste bearbeiten">
                 <div class="menu">
                     <div class="btn-menu" *ngIf="checkIfSignedInUserIsOwner()">
-                        <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger"><i class="pi pi-trash"></i></button>
+                        <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger"><em class="pi pi-trash"></em></button>
                     </div>
                     <div class="btn-menu">
-                        <button pButton pRipple [ngClass]="{'p-button-outlined': this.edit_checked == true}" type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary"><i class="pi pi-pencil"></i></button>
+                        <button pButton pRipple [ngClass]="{'p-button-outlined': this.edit_checked == true}" type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary"><em class="pi pi-pencil"></em></button>
                     </div>
                     <div class="btn-menu">
-                        <button pButton pRipple type="button" (click)="displayAddEntry()" class="p-button-rounded p-button-secondary"><i class="pi pi-plus"></i></button>
+                        <button pButton pRipple type="button" (click)="displayAddEntry()" class="p-button-rounded p-button-secondary"><em class="pi pi-plus"></em></button>
                     </div>
                 </div>
             </p-card>   
@@ -73,11 +73,11 @@
                             <p-checkbox [(ngModel)]="entry.status" (onChange)="modifyEntryStatus(entry)" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{entry.name}}</b>
+                            <strong>{{entry.name}}</strong>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
                             <p-avatar shape="circle" class="p-avatar p-component p-avatar-circle"
-                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><b style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</b></p-avatar>
+                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><b style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</strong></p-avatar>
                             <button pButton pRipple type="button" icon="pi pi-user-edit" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
                         </div>     
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
@@ -89,7 +89,7 @@
                             <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{entry.name}}</b>
+                            <strong>{{entry.name}}</strong>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
                             <button pButton pRipple type="button" icon="pi pi-plus" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
@@ -109,11 +109,11 @@
                             <p-checkbox [(ngModel)]="entry.status" [binary]="true" (onChange)="modifyEntryStatus(entry)" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{entry.name}}</b>
+                            <strong>{{entry.name}}</strong>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
                             <p-avatar shape="circle" class="p-avatar p-component p-avatar-circle"
-                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><b style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</b></p-avatar>
+                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><b style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</strong></p-avatar>
                             <button pButton pRipple type="button" icon="pi pi-user-edit" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
                         </div>        
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
@@ -125,7 +125,7 @@
                             <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
-                            <b>{{entry.name}}</b>
+                            <strong>{{entry.name}}</strong>
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
                             <button pButton pRipple type="button" icon="pi pi-plus" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-success assigneeAddBtn"></button> 
@@ -155,13 +155,13 @@
 <p-dialog header="Add Entry" [(visible)]="displayAddEntrySwitch" [modal]="true" class="dialog">
     <div class="col-12 md:col-4">
         <div class="p-inputgroup">
-            <span class="p-inputgroup-addon"><i class="pi pi-pencil"></i></span>
+            <span class="p-inputgroup-addon"><em class="pi pi-pencil"></em></span>
             <input type="text" [(ngModel)]="addEntryName" pInputText placeholder="Name" id="name">         
         </div>
     </div>
     <div class="col-12 md:col-4 dialog-element">
         <div class="p-inputgroup">
-            <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <span class="p-inputgroup-addon"><em class="pi pi-user"></em></span>
             <input type="text" disabled="true"  [(ngModel)]="addEntryAssignee!.username" pInputText placeholder="Assignee" id="Assignee">         
             <button type="button" pButton pRipple icon="pi pi-plus" (click)="displayAddEntryAssignee()" styleClass="p-button-success"></button>     
         </div>
