@@ -5,7 +5,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
-import { FriendlistService } from 'src/app/services/friendlist/friendlist.service';
+import { FriendlistService } from './friendlist-bar/service/friendlist-api.service';
 
 @Component({
   selector: 'app-list-overview',
@@ -19,8 +19,7 @@ export class ListOverviewComponent implements OnInit {
   lists: any[] = [];
   display: boolean = false;
   visibleSidebar: boolean = false;
-  friends: any[] = [];
-  friendRequests: any[] = [];
+  friendRequests: any[] | undefined
   // user: User = new User(0, '', '', '', new Date(), '');
   user: User | undefined
 
@@ -69,65 +68,6 @@ export class ListOverviewComponent implements OnInit {
     );
   }
 
-  addFriend() {
-    if(this.validateStringInput(this.friendname!)){
-      this.friendlistService.addFriend(this.friendname!).subscribe(
-        (res: any) => {
-          this.friends =[]
-          this.getAcceptedFriends();
-          this.friendname = undefined;
-        },
-        (err: any) => {
-          this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Freund konnte nicht hinzugefügt werden!')
-        }
-      );
-    }else{
-      this.showWarnMsg('Bitte geben Sie den Namen ihres Freundes an!')
-    }
-  }
-
-  getAcceptedFriends() {
-    this.friendlistService.getFriendlist().subscribe(
-      (res: any) => {
-        this.friends = res;
-        this.getPendingFriends();
-      },
-      (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundesliste konnte nicht geladen werden!')
-      }
-    );
-    this.friends = this.friends;
-  }
-
-  getPendingFriends() {
-    this.friendlistService.getPendingFriendlist().subscribe(
-      (res: any) => {
-        this.friends.concat(res);
-      },
-      (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Austehende Freundschaftsanfragen konnte nicht geladen werden!')
-      }
-    );
-    this.friends = this.friends;
-  }
-
-  getFriendRequests(){
-    this.friendlistService.getFriendRequests().subscribe(
-      (res: any) => {
-        this.friendRequests = res;
-      },
-      (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundschaftsanfragen an Sie konnten nicht geladen werden!')
-      }
-    );
-  }
-
-  displayFriendlistSidebar() {
-    this.friends = [];
-    this.getAcceptedFriends();
-    this.visibleSidebar = true;
-  }
-
   createShoppinglist() {
     if(this.validateStringInput(this.name!)){
       if(this.validateStringInput(this.description!)){
@@ -153,6 +93,10 @@ export class ListOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  displayFriendlistSidebar() {
+    this.visibleSidebar = true;
+  }
 
   logout() {
     localStorage.clear();
@@ -230,30 +174,24 @@ export class ListOverviewComponent implements OnInit {
     });
   }
 
+  hidevisibleBar() {
+    this.visibleSidebar = false;
+    this.getFriendRequests();
+  }
+
   toShoppinglist(id: number) {
     this.router.navigate(['shoppinglist', id]);
   }
 
-  deleteFriend(event: Event, id: number) {
-    this.confirmationService.confirm({
-      target: event.target!,
-      message: 'Soll dieser Freund entfernt werden?',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        //confirm action
-        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Entfernt!', detail: 'Freund erfolgreich entfernt!' });
-        this.friendlistService.deleteFriend(id).subscribe(
-          (res: any) => {
-            this.getAcceptedFriends();
-          },
-          err => {
-            this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Freund konnte nicht entfernt werden!')
-          }
-        );
+  getFriendRequests(){
+    this.friendlistService.getFriendRequests().subscribe(
+      (res: any) => {
+        this.friendRequests = res
       },
-      reject: () => {
-        //reject action
-      },
-    });
+      (err: any) => {
+        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundschaftsanfragen an Sie konnten nicht geladen werden!')
+      }
+    );
+    this.friendRequests = this.friendRequests
   }
 }

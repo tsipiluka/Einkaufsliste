@@ -1,39 +1,8 @@
 <p-toast position="bottom-center" key="tc"></p-toast>
 <p-confirmPopup></p-confirmPopup>
 <div class="container">
-    <p-sidebar [(visible)]="visibleSidebar" position="right" [baseZIndex]="10000">
-        <h3>Freundesliste</h3>
-        <div class="col-12 md:col-4 add-user">
-            <h5>Füge einen Freund hinzu:</h5>
-            <div class="p-inputgroup">
-                <input type="text" pInputText placeholder="Username" id="friendname" [(ngModel)]="friendname">   
-                <button type="button" (click)="addFriend()" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
-            </div>
-        </div>
-        <div class="friendlist">
-            <h5>Deine Freunde:</h5>
-            <p-table [value]="friends" styleClass="p-datatable-striped">
-                <ng-template pTemplate="header">
-                </ng-template>
-                    <ng-template pTemplate="body" let-friends>
-                        <tr>
-                            <td *ngIf="friends.friend.id === this.user!.id">
-                                {{friends.initiator.username}}
-                                <div *ngIf="!friends.request_status"> ...ausstehend</div>
-                            </td>
-                            <td *ngIf="friends.friend.id !== this.user!.id">
-                                {{friends.friend.username}}
-                                <div *ngIf="!friends.request_status"> ...ausstehend</div>
-                            </td>
-                            <td>
-                                <div class="delete-friend-btn">
-                                    <button type="button" (click)="deleteFriend($event, this.friends.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-template>
-            </p-table>
-        </div>
+    <p-sidebar [(visible)]="visibleSidebar" position="right" (onHide)="hidevisibleBar()" [baseZIndex]="10000">
+        <app-friendlist-bar [user]="this.user!" [friendRequests]="friendRequests!"></app-friendlist-bar>
     </p-sidebar>
     <div class="row">
         <div class="menubar header">
@@ -44,15 +13,15 @@
                 <h1>Einkaufslisten</h1>
             </div>
             <div class="col-2 menuBtn">
-                <a (click)="friendRequestPanel.toggle($event)"><i class="pi pi-bell mr-2 p-text-secondary" pBadge style="font-size: 1rem" value="{{this.friendRequests!.length}}"></i></a>
-                <p-overlayPanel #friendRequestPanel>
-                    <ng-template pTemplate>
-                        <div *ngFor="let friend of friendRequests">
-                            {{friend.initiator.username}} möchte mit dir befreundet sein.
-                        </div>
+                <button pButton pRipple type="button" (click)="displayFriendlistSidebar()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined">
+                    <ng-component *ngIf="this.friendRequests!.length === 0; then hideBadge else showBadge" ></ng-component>
+                    <ng-template #hideBadge>
+                        <i class="pi pi-users" styleClass="mr-2"></i>
                     </ng-template>
-                </p-overlayPanel>
-                <button pButton pRipple type="button" (click)="displayFriendlistSidebar()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-users"></i></button>
+                    <ng-template #showBadge>
+                        <i class="pi pi-users" pBadge severity="success" styleClass="mr-2" value="{{this.friendRequests!.length}}"></i>
+                    </ng-template>
+                </button>
             </div>
         </div>
         <div class="col-12 activeCard">
