@@ -1,0 +1,61 @@
+<h3>Freundesliste</h3>
+<div class="col-12 md:col-4 add-user">
+    <h5>Füge einen Freund hinzu:</h5>
+    <div class="p-inputgroup">
+        <input type="text" pInputText placeholder="Username" id="friendname" [(ngModel)]="friendname">   
+        <button type="button" (click)="addFriend()" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
+    </div>
+</div>
+<div class="friendlist">
+    <h5>Deine Freunde:</h5>
+    <p-table [value]="friendRequests!" styleClass="p-datatable-striped">
+        <ng-template pTemplate="body" let-friends>  
+            <tr>
+                <td>
+                    Anfrage von {{friends.initiator.username}}
+                </td>
+                <td>
+                    <div class="delete-friend-btn">
+                        <button type="button" (click)="acceptRequest($event, this.friends.id)" pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success p-button-text"></button>
+                    </div>
+                </td>
+                <td>
+                    <div class="delete-friend-btn">
+                        <button type="button" (click)="deleteFriend($event, this.friends.id, 'request')" pButton pRipple icon="pi pi-minus" class="p-button-rounded p-button-danger p-button-text"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-table [value]="acceptedFriends" styleClass="p-datatable-striped">
+        <ng-template pTemplate="body" let-friends>  
+            <tr>
+                <td *ngIf="friends.initiator.id === this.user!.id">
+                    {{friends.friend.username}}
+                </td>
+                <td *ngIf="friends.initiator.id !== this.user!.id">
+                    {{friends.initiator.username}}
+                </td>
+                <td>
+                    <div class="delete-friend-btn">
+                        <button type="button" (click)="deleteFriend($event, this.friends.id, 'accepted')" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-table [value]="pendingFriends" styleClass="p-datatable-striped">
+            <ng-template pTemplate="body" let-friends>  
+                <tr>
+                    <td>
+                        Anfrage an {{friends.friend.username}} <em>...ausstehend</em>
+                    </td>
+                    <td>
+                        <div class="delete-friend-btn">
+                            <button type="button" (click)="deleteFriend($event, this.friends.id, 'pending')" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+    </p-table>
+</div>
