@@ -14,7 +14,7 @@ export class RegistrationService {
   constructor(private http: HttpClient, private serverUrlService: ServerUrlService){}
 
   signUpUser(user_credentials: UserRegistration):Observable<any>{
-    return this.http.post(this.APIUrl + '/user/create/', user_credentials);
+    return this.http.post(this.APIUrl + 'user/create/', user_credentials);
   }
 
 }
