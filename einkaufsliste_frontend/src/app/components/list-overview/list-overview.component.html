@@ -7,7 +7,7 @@
     <div class="row">
         <div class="menubar header">
             <div class="col-2 menuBtn">
-                <button pButton pRipple type="button" (click)="logout()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-sign-out" style="color:white"></i></button>
+                <button pButton pRipple type="button" (click)="logout()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><em class="pi pi-sign-out" style="color:white"></em></button>
             </div>
             <div class="col-8 shoppinglistName">
                 <h1>Einkaufslisten</h1>
@@ -16,10 +16,10 @@
                 <button pButton pRipple type="button" (click)="displayFriendlistSidebar()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined">
                     <ng-component *ngIf="this.friendRequests!.length === 0; then hideBadge else showBadge" ></ng-component>
                     <ng-template #hideBadge>
-                        <i class="pi pi-users" styleClass="mr-2"></i>
+                        <em class="pi pi-users" styleClass="mr-2"></em>
                     </ng-template>
                     <ng-template #showBadge>
-                        <i class="pi pi-users" pBadge severity="success" styleClass="mr-2" value="{{this.friendRequests!.length}}"></i>
+                        <em class="pi pi-users" pBadge severity="success" styleClass="mr-2" value="{{this.friendRequests!.length}}"></em>
                     </ng-template>
                 </button>
             </div>
@@ -29,13 +29,13 @@
                 <p-dialog header="Neue Einkaufsliste:" [(visible)]="display" [modal]="true">
                         <div class="col-12 md:col-4">
                             <div class="p-inputgroup">
-                                <span class="p-inputgroup-addon"><i class="pi pi-pencil"></i></span>
+                                <span class="p-inputgroup-addon"><em class="pi pi-pencil"></em></span>
                                 <input type="text" pInputText placeholder="Name" id="name" [(ngModel)]="name">         
                             </div>
                         </div>
                         <div class="col-12 md:col-4 dialog-element">
                             <div class="p-inputgroup">
-                                <span class="p-inputgroup-addon"><i class="pi pi-tag"></i></span>
+                                <span class="p-inputgroup-addon"><em class="pi pi-tag"></em></span>
                                 <input type="text" pInputText placeholder="Beschreibung" id="description" [(ngModel)]="description">         
                             </div>
                         </div>
@@ -57,12 +57,12 @@
                 </div>
                 <ng-component *ngIf="this.list.owner == this.user!.id; then deleteBlock else leaveBlock" ></ng-component>
                 <ng-template #deleteBlock>
-                    <button pButton pRipple type="button" (click)="confirmDelete($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
+                    <button pButton pRipple type="button" (click)="confirmDelete($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><em class="pi pi-trash"></em></button>
                 </ng-template>
                 <ng-template #leaveBlock>
-                    <button pButton pRipple type="button" (click)="confirmLeave($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-sign-out"></i></button>
+                    <button pButton pRipple type="button" (click)="confirmLeave($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><em class="pi pi-sign-out"></em></button>
                 </ng-template>
-                <button pButton pRipple type="button" (click)="toShoppinglist(list.id)" class="p-button-rounded p-button-secondary delete-btn"><i class="pi pi-arrow-right"></i></button>
+                <button pButton pRipple type="button" (click)="toShoppinglist(list.id)" class="p-button-rounded p-button-secondary delete-btn"><em class="pi pi-arrow-right"></em></button>
             </p-card>   
         </div>
     </div>
