@@ -15,31 +15,31 @@ export class ListOverviewService {
 
   getShoppinglists(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/api/shoppinglists/', { headers: headers });
+    return this.http.get(this.APIUrl + 'api/shoppinglists/', { headers: headers });
   }
 
   postShoppinglist(val: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.post(this.APIUrl + '/api/shoppinglists/', val, { headers: headers });
+    return this.http.post(this.APIUrl + 'api/shoppinglists/', val, { headers: headers });
   }
 
   deleteShoppinglist(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/', { headers: headers });
+    return this.http.delete(this.APIUrl + 'api/shoppinglist/' + id + '/', { headers: headers });
   }
 
   getPlacesNearby(val: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/google-places/', val);
+    return this.http.get(this.APIUrl + 'google-places/', val);
   }
 
   getUser(): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.get(this.APIUrl + '/user/information/', { headers: headers });
+    return this.http.get(this.APIUrl + 'user/information/', { headers: headers });
   }
 
   leaveShoppinglist(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
-    return this.http.delete(this.APIUrl + '/api/shoppinglist/' + id + '/contribution/', { headers: headers });
+    return this.http.delete(this.APIUrl + 'api/shoppinglist/' + id + '/contribution/', { headers: headers });
   }
 }
