@@ -175,7 +175,6 @@ export class ListOverviewComponent implements OnInit {
   }
 
   hidevisibleBar() {
-    this.visibleSidebar = false;
     this.getFriendRequests();
   }
 

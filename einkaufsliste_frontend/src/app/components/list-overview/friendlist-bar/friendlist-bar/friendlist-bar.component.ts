@@ -22,9 +22,7 @@ export class FriendlistBarComponent implements OnInit {
     private errorHandlerService: ErrorHandlerService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-    if(this.user){
-      this.getAcceptedFriends();
-    }
+    this.getAcceptedFriends();
   }
 
   validateStringInput(str: string) {

@@ -92,7 +92,7 @@ class FriendAdd(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             friend = NewUser.objects.get(username=user_name)
-            if Friend.objects.filter(initiator=user, friend=friend).exists():
+            if Friend.objects.filter(initiator=user, friend=friend).exists() or Friend.objects.filter(initiator=friend, friend=user).exists():
                 return Response(
                     {"error": "User is already a friend"},
                     status=status.HTTP_400_BAD_REQUEST,
