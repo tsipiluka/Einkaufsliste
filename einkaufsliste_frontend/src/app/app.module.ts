@@ -39,10 +39,10 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { GMapModule } from 'primeng/gmap';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import {BadgeModule} from 'primeng/badge';
-import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { FriendlistBarComponent } from './components/list-overview/friendlist-bar/friendlist-bar/friendlist-bar.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent],
+  declarations: [AppComponent, LoginComponent, RegistrationComponent, ListOverviewComponent, ShoppinglistComponent, FriendlistBarComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -74,7 +74,6 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     GMapModule,
     ProgressSpinnerModule,
     BadgeModule,
-    OverlayPanelModule
   ],
   providers: [ConfirmationService, MessageService,
   {
