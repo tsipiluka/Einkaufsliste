@@ -342,9 +342,9 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   getShoppingplace() {
-    this.position = navigator.geolocation.getCurrentPosition(position => {
-      console.log(position);
-      this.shoppinglistService.getShoppingplace(position.coords.latitude, position.coords.longitude).subscribe(
+    navigator.geolocation.getCurrentPosition(position => {
+      this.position = position;
+      this.shoppinglistService.getShoppingplace(this.position.coords.latitude, this.position.coords.longitude).subscribe(
         (res: any) => {
           console.log(res);
           this.shoppingplace.candidates[0].name = res.candidates[0].name;
@@ -364,7 +364,8 @@ export class ShoppinglistComponent implements OnInit {
 
   routeToShoppingplace() {
     window.open(
-      'https://maps.google.com/?q=' + this.shoppingplace.candidates[0].name + ' ' + this.shoppingplace.candidates[0].formatted_address
+      'https://www.google.com/maps/dir/?api=1&origin=&destination=' +
+      this.shoppingplace.candidates[0].name + ' ' + this.shoppingplace.candidates[0].formatted_address + '&travelmode=driving'
     );
   }
 }
