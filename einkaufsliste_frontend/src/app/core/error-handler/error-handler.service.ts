@@ -16,11 +16,9 @@ export class ErrorHandlerService {
         localStorage.clear();
         this.router.navigate(['login']);
         return 'Unauthorized';
-        break;
       case 404: // 404 - Not Found - URL nicht gefunden
         // this.router.navigate(['login']);
         return 'Not Found';
-        break;
       case 403: // 403 - Forbidden - keine Berechtigungen
         if (new RegExp('/shoppinglist/[1-9]*').test(redirectUrl!)) {
           this.router.navigate(['list-overview']);
@@ -28,7 +26,6 @@ export class ErrorHandlerService {
         return 'Forbidden';
       case 500: // 500 - Internal Server Error
         return 'Internal Server Error';
-        break;
     }
     return 'Unknown Error';
   }

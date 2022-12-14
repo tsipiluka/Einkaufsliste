@@ -72,7 +72,7 @@ export class FriendlistBarComponent implements OnInit {
         this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundesliste konnte nicht geladen werden!')
       }
     );
-    this.acceptedFriends = this.acceptedFriends;
+    this.acceptedFriends = [...this.acceptedFriends];
   }
 
   getPendingFriends() {
@@ -84,7 +84,7 @@ export class FriendlistBarComponent implements OnInit {
         this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Austehende Freundschaftsanfragen konnte nicht geladen werden!')
       }
     );
-    this.pendingFriends = this.pendingFriends;
+    this.pendingFriends = [...this.pendingFriends];
   }
 
   getFriendRequests(){
@@ -97,7 +97,7 @@ export class FriendlistBarComponent implements OnInit {
         this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundschaftsanfragen an Sie konnten nicht geladen werden!')
       }
     );
-    this.friendRequests = this.friendRequests;
+    this.friendRequests = [...this.friendRequests!];
   }
 
   deleteFriend(event: Event, id: number, trigger: string) {
