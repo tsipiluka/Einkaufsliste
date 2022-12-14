@@ -19,11 +19,14 @@ export class ListOverviewComponent implements OnInit {
   lists: any[] = [];
   display: boolean = false;
   visibleSidebar: boolean = false;
-  friends: User[] = [];
-  user: User = new User(0, '', '', '', new Date(), '');
+  friends: any[] = [];
+  friendRequests: any[] = [];
+  // user: User = new User(0, '', '', '', new Date(), '');
+  user: User | undefined
 
   name: string | undefined;
   description: string | undefined;
+  friendname: string | undefined;
 
   constructor(
     private router: Router,
@@ -38,7 +41,7 @@ export class ListOverviewComponent implements OnInit {
     }else{
       this.getUser();
       this.getShoppinglists();
-      this.getFriends();
+      this.getFriendRequests();
     }
   }
 
@@ -67,27 +70,62 @@ export class ListOverviewComponent implements OnInit {
   }
 
   addFriend() {
-    this.friendlistService.addFriend((<HTMLInputElement>document.getElementById('friendname')).value).subscribe(
-      (res: any) => {
-        this.getFriends();
-        (<HTMLInputElement>document.getElementById('friendname')).value = '';
-      },
-      (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Freund konnte nicht hinzugefügt werden!')
-      }
-    );
+    if(this.validateStringInput(this.friendname!)){
+      this.friendlistService.addFriend(this.friendname!).subscribe(
+        (res: any) => {
+          this.friends =[]
+          this.getAcceptedFriends();
+          this.friendname = undefined;
+        },
+        (err: any) => {
+          this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Freund konnte nicht hinzugefügt werden!')
+        }
+      );
+    }else{
+      this.showWarnMsg('Bitte geben Sie den Namen ihres Freundes an!')
+    }
   }
 
-  getFriends() {
+  getAcceptedFriends() {
     this.friendlistService.getFriendlist().subscribe(
       (res: any) => {
         this.friends = res;
+        this.getPendingFriends();
       },
       (err: any) => {
         this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundesliste konnte nicht geladen werden!')
       }
     );
     this.friends = this.friends;
+  }
+
+  getPendingFriends() {
+    this.friendlistService.getPendingFriendlist().subscribe(
+      (res: any) => {
+        this.friends.concat(res);
+      },
+      (err: any) => {
+        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Austehende Freundschaftsanfragen konnte nicht geladen werden!')
+      }
+    );
+    this.friends = this.friends;
+  }
+
+  getFriendRequests(){
+    this.friendlistService.getFriendRequests().subscribe(
+      (res: any) => {
+        this.friendRequests = res;
+      },
+      (err: any) => {
+        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundschaftsanfragen an Sie konnten nicht geladen werden!')
+      }
+    );
+  }
+
+  displayFriendlistSidebar() {
+    this.friends = [];
+    this.getAcceptedFriends();
+    this.visibleSidebar = true;
   }
 
   createShoppinglist() {
@@ -206,7 +244,7 @@ export class ListOverviewComponent implements OnInit {
         this.messageService.add({ key: 'tc', severity: 'info', summary: 'Entfernt!', detail: 'Freund erfolgreich entfernt!' });
         this.friendlistService.deleteFriend(id).subscribe(
           (res: any) => {
-            this.getFriends();
+            this.getAcceptedFriends();
           },
           err => {
             this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Freund konnte nicht entfernt werden!')

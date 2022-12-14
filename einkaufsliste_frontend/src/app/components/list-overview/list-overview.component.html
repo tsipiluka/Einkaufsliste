@@ -6,7 +6,7 @@
         <div class="col-12 md:col-4 add-user">
             <h5>Füge einen Freund hinzu:</h5>
             <div class="p-inputgroup">
-                <input type="text" pInputText placeholder="Username" id="friendname">   
+                <input type="text" pInputText placeholder="Username" id="friendname" [(ngModel)]="friendname">   
                 <button type="button" (click)="addFriend()" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
             </div>
         </div>
@@ -15,16 +15,23 @@
             <p-table [value]="friends" styleClass="p-datatable-striped">
                 <ng-template pTemplate="header">
                 </ng-template>
-                <ng-template pTemplate="body" let-friends>
-                    <tr>
-                        <td>{{friends.username}}</td>
-                        <td>
-                            <div class="delete-friend-btn">
-                                <button type="button" (click)="deleteFriend($event, this.friends.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
+                    <ng-template pTemplate="body" let-friends>
+                        <tr>
+                            <td *ngIf="friends.friend.id === this.user!.id">
+                                {{friends.initiator.username}}
+                                <div *ngIf="!friends.request_status"> ...ausstehend</div>
+                            </td>
+                            <td *ngIf="friends.friend.id !== this.user!.id">
+                                {{friends.friend.username}}
+                                <div *ngIf="!friends.request_status"> ...ausstehend</div>
+                            </td>
+                            <td>
+                                <div class="delete-friend-btn">
+                                    <button type="button" (click)="deleteFriend($event, this.friends.id)" pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
             </p-table>
         </div>
     </p-sidebar>
@@ -37,7 +44,15 @@
                 <h1>Einkaufslisten</h1>
             </div>
             <div class="col-2 menuBtn">
-                <button pButton pRipple type="button" (click)="visibleSidebar = true" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-users"></i></button>
+                <a (click)="friendRequestPanel.toggle($event)"><i class="pi pi-bell mr-2 p-text-secondary" pBadge style="font-size: 1rem" value="{{this.friendRequests!.length}}"></i></a>
+                <p-overlayPanel #friendRequestPanel>
+                    <ng-template pTemplate>
+                        <div *ngFor="let friend of friendRequests">
+                            {{friend.initiator.username}} möchte mit dir befreundet sein.
+                        </div>
+                    </ng-template>
+                </p-overlayPanel>
+                <button pButton pRipple type="button" (click)="displayFriendlistSidebar()" style="color: white;" class="p-button-rounded p-button-secondary p-button-outlined"><i class="pi pi-users"></i></button>
             </div>
         </div>
         <div class="col-12 activeCard">
@@ -71,7 +86,7 @@
                 <div class="shoppinglist-body">
                     <span class="list-span">Beschreibung: {{list.description}}</span>
                 </div>
-                <ng-component *ngIf="this.list.owner == this.user.id; then deleteBlock else leaveBlock" ></ng-component>
+                <ng-component *ngIf="this.list.owner == this.user!.id; then deleteBlock else leaveBlock" ></ng-component>
                 <ng-template #deleteBlock>
                     <button pButton pRipple type="button" (click)="confirmDelete($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><i class="pi pi-trash"></i></button>
                 </ng-template>

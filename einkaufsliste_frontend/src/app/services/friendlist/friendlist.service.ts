@@ -26,4 +26,14 @@ export class FriendlistService {
     const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
     return this.http.get(this.APIUrl + '/api/accepted_friends/', { headers: headers });
   }
+
+  getPendingFriendlist(): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/api/pending_friends/', { headers: headers });
+  }
+
+  getFriendRequests(): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', '' + localStorage.getItem('access_token'));
+    return this.http.get(this.APIUrl + '/api/requested_friends/', { headers: headers });
+  }
 }
