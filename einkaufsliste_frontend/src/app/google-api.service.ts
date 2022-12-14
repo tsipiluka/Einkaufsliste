@@ -12,7 +12,7 @@ export class GoogleApiService {
   oAuthConfig: AuthConfig = {
     issuer: "https://accounts.google.com",
     strictDiscoveryDocumentValidation: false,
-    redirectUri: this.frontendUrl + '/login',
+    redirectUri: this.frontendUrl + 'login',
     clientId: this.googleApiKeyClientId,
     scope: 'openid profile email'
   }
