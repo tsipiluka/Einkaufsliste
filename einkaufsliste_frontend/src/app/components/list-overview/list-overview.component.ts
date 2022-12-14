@@ -191,6 +191,6 @@ export class ListOverviewComponent implements OnInit {
         this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundschaftsanfragen an Sie konnten nicht geladen werden!')
       }
     );
-    this.friendRequests = this.friendRequests
+    this.friendRequests = [...this.friendRequests!]
   }
 }
