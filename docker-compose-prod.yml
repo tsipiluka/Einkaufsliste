@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  web:
+  backend:
     build: 'einkaufsliste_backend/'
     command: >
       sh -c "python /code/manage.py collectstatic --no-input  && python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
@@ -29,8 +29,8 @@ services:
       - 80:80
       - 443:443
     depends_on:
-      - einkaufsliste_backend
-      - einkaufsliste_frontend
+      - backend
+      - frontend
   db:
     image: postgres:13
     volumes:
