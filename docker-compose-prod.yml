@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  web:
+  backend:
     build: 'einkaufsliste_backend/'
     command: >
       sh -c "python /code/manage.py collectstatic --no-input  && python /code/manage.py makemigrations && python /code/manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:80"
@@ -17,6 +17,20 @@ services:
       - 4200:80
     env_file:
       - prod_vars.env
+  reverse_proxy:
+    image: nginx:1.19.0
+    volumes:
+      - ./conf/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - /var/www/html:/var/www/html
+      - /static:/static  # <-- needs testing
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - backend
+      - frontend
   db:
     image: postgres:13
     volumes:
@@ -25,15 +39,6 @@ services:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     env_file:
       - prod_vars.env
-  pgadmin:
-    container_name: pgadmin4
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "root@root.de"
-      PGADMIN_DEFAULT_PASSWORD: "root"
-    ports:
-      - "5050:80"
 
 volumes:
   postgres_data:
