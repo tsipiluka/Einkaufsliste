@@ -70,11 +70,11 @@ jobs:
       - name: FOSSA Scan
         uses: fossas/fossa-action@v1
         with:
-          fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
+          api-key: ${{ secrets.FOSSA_API_KEY }}
       - name: FOSSA Test
         uses: fossas/fossa-action@v1
         with:
-          fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
+          api-key: ${{ secrets.FOSSA_API_KEY }}
           run-test: true
 
   deploy:
