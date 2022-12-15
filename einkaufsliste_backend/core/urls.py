@@ -24,4 +24,5 @@ urlpatterns =  [
     path('swagger/schema/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),
     path('user/', include('users.urls', namespace='users')),
     path('places/', include('places.urls', namespace='places')),
+    path('', include('django_prometheus.urls')),
 ]
