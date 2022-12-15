@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
 import { FriendlistService } from './friendlist-bar/service/friendlist-api.service';
+import { ValidateInputService } from 'src/app/services/validate-input/validate-input.service';
 
 @Component({
   selector: 'app-list-overview',
@@ -33,7 +34,8 @@ export class ListOverviewComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private errorHandlerService: ErrorHandlerService,
-    private friendlistService: FriendlistService
+    private friendlistService: FriendlistService,
+    private validateInputService: ValidateInputService
   ) {
     if (!localStorage.getItem('access_token')) {
       this.router.navigate(['login']);
@@ -69,8 +71,8 @@ export class ListOverviewComponent implements OnInit {
   }
 
   createShoppinglist() {
-    if(this.validateStringInput(this.name!)){
-      if(this.validateStringInput(this.description!)){
+    if(this.validateInputService.validateStringInput(this.name!)){
+      if(this.validateInputService.validateStringInput(this.description!)){
         const new_shoppinglist = {name: this.name, description: this.description}
         this.listOverviewService
           .postShoppinglist(new_shoppinglist)
@@ -101,10 +103,6 @@ export class ListOverviewComponent implements OnInit {
   logout() {
     localStorage.clear();
     this.router.navigate(['login']);
-  }
-
-  validateStringInput(str: string) {
-    return str !== '' && str !== undefined && str !== null;
   }
 
   showDialog() {
