@@ -15,17 +15,17 @@
   - [Requirements](#requirements)
   - [What this Compose does](#what-this-compose-does)
   - [How to use](#how-to-use)
-    - [How to enter secrets](#how-to-enter-secrets)
-    - [How to create a djnago superuser in the docker container](#how-to-create-a-djnago-superuser-in-the-docker-container)
-    - [How to to register an app for Django OAuth Tooklkit](#how-to-to-register-an-app-for-django-oauth-tooklkit)
-    - [How to handle django database errors](#how-to-handle-django-database-errors)
+    - [1. Get the code](#1-get-the-code)
+    - [2. Use the vars](#2-use-the-vars)
+    - [3. Setting the DJANGO\_APP\_CLIENT\_ID and DJANGO\_APP\_CLIENT\_SECRET](#3-setting-the-django_app_client_id-and-django_app_client_secret)
+  - [How to start over, delete all data and start from scratch](#how-to-start-over-delete-all-data-and-start-from-scratch)
     - [Usefull docker commands](#usefull-docker-commands)
   - [Authors](#authors)
   - [License](#license)
 
 ## Requirements
 Make sure to have [Docker](https://www.docker.com/) installed.
-Check by running `docker --version` in your terminal. If the command is not found, install Docker by following the instructions [here](https://docs.docker.com/get-docker/).
+Check by running `docker --version` in your terminal. If the command is not found, install Docker by following the instructions stated [here](https://docs.docker.com/get-docker/).
 
 ## What this Compose does
 1. Providing all backend functionalities uncluding:
@@ -38,23 +38,24 @@ Check by running `docker --version` in your terminal. If the command is not foun
    - [x] [Angular](https://reactjs.org/) framework
    - [x] [Nginx](https://www.nginx.com/) web server
 
-The Django Application files are mounted into the container, so you can edit them on your local machine and see the changes in the container. Therefore there is no need to rebuild the container after every change. The development can fully be done in the container.+
+The Django Application files are mounted into the container, so they can easily be edited during development and be seen in realtime. Therefore there is no need to rebuild the container after every change. The development can fully be done in the container.+
 
-For the angular application this needs to be done manually. The angular application is build and copied into the nginx container. Therefore you need to rebuild the container after every change. The development should therefore be done on your local machine and the container is only used for testing.
+For the angular application this needs to be done manually. The angular application is built and copied into the nginx container. Therefore you need to rebuild the container after every change. The development should therefore be done on your local machine and the container is only used for testing.
 
 ## How to use
+### 1. Get the code
 1. Clone this repository
 2. Make sure to cd into the directory which contains the docker-compose.yml file
-3. Run ```docker-compose up --build``` to build and start the containers
+3. Switch to the develop branch by running ```git checkout develop```
+4. Run ```docker-compose up --build``` to build and start the containers
 
-The output should look like this:
+The output should look similar to this:
 ```bash
 $ docker build .
 [+] Building 9.1s (10/10) FINISHED
  => [internal] load build definition from Dockerfile
 ...
 
-Starting einkaufsliste_frontend_1 ... 
 Starting einkaufsliste_frontend_1 ... done
 Starting einkaufsliste_db_1       ... done
 Starting einkaufsliste_web_1      ... done
@@ -66,40 +67,47 @@ The components are now running on the following ports:
 | pgAdmin4 | http://localhost:5050 |
 | Frontend | http://localhost:4200 |
 
-### How to enter secrets
-Both the backend and frontend require secrets to be set in order to run properly. The secrets are stored in separate json files which are not included in the repository. The files are:
-- ```einkaufsliste_backend/secrets.json```
-- ```einkaufsliste_frontend/secrets.json```
-The repository contains example files which can be used as a template. The files are:
-- ```einkaufsliste_backend/secrets_template.json```
-- ```einkaufsliste_frontend/secrets_template.json```
-All needed secrets are stated in the template files. The files can be copied and renamed to ```secrets.json```. The secrets can then be entered in the files.
+### 2. Use the vars
 
-### How to create a djnago superuser in the docker container
-1. Run ```docker exec -it einkaufsliste_web_1 bash```
-2. The command should output something like this: ```root@2f0c290afb99:/code#```. To check if you are in the correct container run ```ls```. The output should look like this: ```root@2f0c290afb99:/code# ls
-app  core  db.sqlite3  dockerfile  manage.py  requirements.txt  secrets.json  secrets_template.json  users```. If the output looks like this you are in the correct container.
-3. Run ```python manage.py createsuperuser``` to create a superuser. The command will ask you to enter a username, email and password. Enter the information and press enter.
-
-### How to to register an app for Django OAuth Tooklkit
-1. Visit the admin page at http://localhost:8000/admin
-2. Under DJANGO OAUTH TOOLKIT select Applications and click on Add
-3. Enter the following information:
-   - Client type: Confidential
-   - Authorization grant type: Resource owner password-based
-   - Name: einkaufsliste_frontend
-4. Make sure to copy the Client ID and Client Secret. You will need them later and can't access them again since they are hashed and salted after creation.
-5. Click on Save. The app is now registered.
-6. Make sure to enter the Client ID and Client Secret in the ```einkaufsliste_frontend/secrets.json``` file.
-
-### How to handle django database errors
-If you encounter multiple database errors, you can try to delete the database and start over. To do so, run the following commands:
+Both the backend and frontend require variables to be set. These aren't set in the repository since they contain sensitive information. Both, the backend and frontend use the same ```.env``` file. The file must be located in teh root directory of the project. For the development branch the file must be named ```dev_vars.env```. For the production branch the file must be named ```prod_vars.env```. The file must contain the following key value pairs:
 ```bash
-docker-compose down
-docker volume rm einkaufsliste_backend_db_data
-docker-compose up --build
+ALLOWED_HOST
+BACKEND_URL
+CORS_ALLOWED_ORIGINS
+DB_HOST
+DB_PORT
+DJANGO_APP_CLIENT_ID
+DJANGO_APP_CLIENT_SECRET
+DJANGO_SECRET_KEY=
+DJANGO_SECRET_KEY
+FRONTEND_URL
+GOOGLE_API_KEY_CLIENT_ID
+GOOGLE_PLACES_API_KEY
+POSTGRES_DB
+POSTGRES_PASSWORD
+POSTGRES_USER
+DJANGO_SECRET_KEY
+SENTRY_DSN
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 ```
-After that the database should be cleared. Migrations should now work properly. Make sure to create a superuser and register the app for Django OAuth Tooklkit again. You can find the instructions above. 
+An example file named ```xy_vars.env.example``` is provided in the repository. The file must be renamed to ```dev_vars.env``` and the values must be set.
+
+### 3. Setting the DJANGO_APP_CLIENT_ID and DJANGO_APP_CLIENT_SECRET
+The OAUTH Toolkit requires a client id and a client secret. Using a fresh database requires to create a new application. To do so, we provide a script which creates a new application in the context of a generated user within the docker container. To run the script, run the following command:
+```bash
+docker exec -it einkaufsliste_web bash -c "python manage.py createauthconfig"
+```
+The script will output the client id and the client secret. These values must be set in the ```.env``` file.
+
+**Congratulations! You are now ready to use the application! :checkered_flag:**
+
+## How to start over, delete all data and start from scratch
+To delete all data and start from scratch, run the following commands:
+```bash
+docker-compose -f docker-compose-dev.yml down -v
+docker-compose -f docker-compose-dev.yml up --build
+```
 
 ### Usefull docker commands
 | Command | Description |
