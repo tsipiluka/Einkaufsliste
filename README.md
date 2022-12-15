@@ -17,7 +17,8 @@
   - [How to use](#how-to-use)
     - [1. Get the code](#1-get-the-code)
     - [2. Use the vars](#2-use-the-vars)
-    - [3. Setting the DJANGO\_APP\_CLIENT\_ID and DJANGO\_APP\_CLIENT\_SECRET](#3-setting-the-django_app_client_id-and-django_app_client_secret)
+    - [3. Set the DJANGO\_APP\_CLIENT\_ID and DJANGO\_APP\_CLIENT\_SECRET](#3-set-the-django_app_client_id-and-django_app_client_secret)
+    - [4. Configuration steps are complete](#4-configuration-steps-are-complete)
   - [How to start over, delete all data and start from scratch](#how-to-start-over-delete-all-data-and-start-from-scratch)
     - [Usefull docker commands](#usefull-docker-commands)
   - [Authors](#authors)
@@ -47,25 +48,6 @@ For the angular application this needs to be done manually. The angular applicat
 1. Clone this repository
 2. Make sure to cd into the directory which contains the docker-compose.yml file
 3. Switch to the develop branch by running ```git checkout develop```
-4. Run ```docker-compose up --build``` to build and start the containers
-
-The output should look similar to this:
-```bash
-$ docker build .
-[+] Building 9.1s (10/10) FINISHED
- => [internal] load build definition from Dockerfile
-...
-
-Starting einkaufsliste_frontend_1 ... done
-Starting einkaufsliste_db_1       ... done
-Starting einkaufsliste_web_1      ... done
-```
-The components are now running on the following ports:
-| Page | URL |
-| --- | --- |
-| Backend | http://localhost:8000 |
-| pgAdmin4 | http://localhost:5050 |
-| Frontend | http://localhost:4200 |
 
 ### 2. Use the vars
 
@@ -93,14 +75,48 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 ```
 An example file named ```xy_vars.env.example``` is provided in the repository. The file must be renamed to ```dev_vars.env``` and the values must be set.
 
-### 3. Setting the DJANGO_APP_CLIENT_ID and DJANGO_APP_CLIENT_SECRET
+### 3. Set the DJANGO_APP_CLIENT_ID and DJANGO_APP_CLIENT_SECRET
+After entering all the other variables, the application is ready to be used. However, the application requires a client id and a client secret to be set. This needs to be set at runtime.
+Start the docker stack by running:
+```bash
+docker-compose -f docker-compose-dev.yml up --build
+```
+The output should look similar to this:
+```bash
+$ docker build .
+[+] Building 9.1s (10/10) FINISHED
+ => [internal] load build definition from Dockerfile
+...
+
+Starting einkaufsliste_frontend_1 ... done
+Starting einkaufsliste_db_1       ... done
+Starting einkaufsliste_web_1      ... done
+```
+The components are now running on the following ports:
+| Page | URL |
+| --- | --- |
+| Backend | http://localhost:8000 |
+| pgAdmin4 | http://localhost:5050 |
+| Frontend | http://localhost:4200 |
+
 The OAUTH Toolkit requires a client id and a client secret. Using a fresh database requires to create a new application. To do so, we provide a script which creates a new application in the context of a generated user within the docker container. To run the script, run the following command:
 ```bash
 docker exec -it einkaufsliste_web bash -c "python manage.py createauthconfig"
 ```
 The script will output the client id and the client secret. These values must be set in the ```.env``` file.
 
+After setting the client id and the client secret, the application needs to be restarted. To do so, run the following commands:
+```bash
+docker-compose -f docker-compose-dev.yml down
+docker-compose -f docker-compose-dev.yml up --build
+```
+### 4. Configuration steps are complete
 **Congratulations! You are now ready to use the application! :checkered_flag:**
+
+From now on the application can simply be started by running:
+```bash
+docker-compose -f docker-compose-dev.yml up --build
+```
 
 ## How to start over, delete all data and start from scratch
 To delete all data and start from scratch, run the following commands:
