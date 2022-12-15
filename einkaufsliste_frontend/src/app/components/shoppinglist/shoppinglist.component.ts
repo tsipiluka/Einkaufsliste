@@ -10,6 +10,7 @@ import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';
 import { MessageService } from 'primeng/api';
 import { FriendlistService } from '../list-overview/friendlist-bar/service/friendlist-api.service';
+import { ValidateInputService } from 'src/app/services/validate-input/validate-input.service';
 
 export class Entry {
   constructor(public checked: boolean, public name: string, public assignee: User) {}
@@ -63,7 +64,8 @@ export class ShoppinglistComponent implements OnInit {
     private handleError: ErrorHandlerService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private friendlistService: FriendlistService
+    private friendlistService: FriendlistService,
+    private validateInputService: ValidateInputService
   ) {
     this.shoppingplace.candidates = [{ name: '', formatted_address: '' }];
   }
@@ -219,25 +221,33 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   addEntry() {
-    let newEntry =
+    if(this.validateInputService.validateStringInput(this.addEntryName)) {
+      let newEntry =
       this.addEntryAssignee !== null
         ? <ShoppinglistEntry>{ name: this.addEntryName, assignee: this.addEntryAssignee!.id }
         : <ShoppinglistEntry>{ name: this.addEntryName };
-    this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe(
-      (res: any) => {
-        this.addEntryName = '';
-        this.addEntryAssignee = <IUser>{};
-        this.displayAddEntrySwitch = false;
-        this.loadEntries();
-      },
-      (error: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Fehler',
-          detail: this.handleError.handleError(error) + ' - Eintrag konnte nicht hinzugefügt werden',
-        });
-      }
-    );
+      this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe(
+        (res: any) => {
+          this.addEntryName = '';
+          this.addEntryAssignee = <IUser>{};
+          this.displayAddEntrySwitch = false;
+          this.loadEntries();
+        },
+        (error: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Fehler',
+            detail: this.handleError.handleError(error) + ' - Eintrag konnte nicht hinzugefügt werden',
+          });
+        }
+      );
+    }else{
+      this.showWarnMsg('Bitte geben Sie einen Namen ein');
+    }
+  }
+
+  showWarnMsg(msg: string) {
+    this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Warn', detail: msg });
   }
 
   openSettings() {

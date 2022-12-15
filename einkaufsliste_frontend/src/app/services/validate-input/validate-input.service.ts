@@ -12,4 +12,8 @@ export class ValidateInputService {
   validatePassword(password: string): boolean{
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[^\w\s])(?=.{8,})/.test(password)
   }
+  
+  validateStringInput(str: string) {
+    return str !== '' && str !== undefined && str !== null;
+  }
 }
