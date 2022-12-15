@@ -87,7 +87,7 @@
                     </div>
                     <div *ngIf="entry.assignee === null && !entry.status" class="entry">
                         <div class="col-1 field-checkbox">
-                            <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
+                            <p-checkbox [(ngModel)]="entry.status" (onChange)="modifyEntryStatus(entry)" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
                             <strong>{{entry.name}}</strong>
@@ -123,7 +123,7 @@
                     </div>
                     <div *ngIf="entry.assignee === null && entry.status" class="entry">
                         <div class="col-1 field-checkbox">
-                            <p-checkbox [(ngModel)]="entry.status" [binary]="true" inputId="binary"></p-checkbox>
+                            <p-checkbox [(ngModel)]="entry.status" (onChange)="modifyEntryStatus(entry)" [binary]="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="col">
                             <strong>{{entry.name}}</strong>
