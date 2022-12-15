@@ -1,5 +1,6 @@
-<p-toast position="bottom-center" key="tc"></p-toast>
+<p-toast position="top-center" key="tc"></p-toast>
 <p-confirmPopup></p-confirmPopup>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" key="logout" [rejectVisible]="false" [dismissableMask]="true"></p-confirmDialog>
 <div class="container">
     <p-sidebar [(visible)]="visibleSidebar" position="right" (onHide)="hidevisibleBar()" [baseZIndex]="10000">
         <app-friendlist-bar [user]="this.user!" [friendRequests]="friendRequests!"></app-friendlist-bar>

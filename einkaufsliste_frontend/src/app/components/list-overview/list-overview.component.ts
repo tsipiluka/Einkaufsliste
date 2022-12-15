@@ -14,7 +14,7 @@ import { ValidateInputService } from 'src/app/services/validate-input/validate-i
   styleUrls: ['./list-overview.component.css'],
   providers: [MessageService, ConfirmationService],
 })
-export class ListOverviewComponent{
+export class ListOverviewComponent {
   events: string[] = [];
   opened: boolean = false;
   lists: any[] = [];
@@ -22,7 +22,7 @@ export class ListOverviewComponent{
   visibleSidebar: boolean = false;
   friendRequests: any[] = [];
   // user: User = new User(0, '', '', '', new Date(), '');
-  user: User | undefined
+  user: User | undefined;
 
   name: string | undefined;
   description: string | undefined;
@@ -39,7 +39,7 @@ export class ListOverviewComponent{
   ) {
     if (!localStorage.getItem('access_token')) {
       this.router.navigate(['login']);
-    }else{
+    } else {
       this.getUser();
       this.getShoppinglists();
       this.getFriendRequests();
@@ -52,7 +52,7 @@ export class ListOverviewComponent{
         this.user = res;
       },
       (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Benutzer konnten nicht geladen werden!')
+        this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Benutzer konnten nicht geladen werden!');
       }
     );
   }
@@ -65,32 +65,30 @@ export class ListOverviewComponent{
         console.log(this.lists[0].owner);
       },
       (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufslisten konnten nicht geladen werden!')
+        this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufslisten konnten nicht geladen werden!');
       }
     );
   }
 
   createShoppinglist() {
-    if(this.validateInputService.validateStringInput(this.name!)){
-      if(this.validateInputService.validateStringInput(this.description!)){
-        const new_shoppinglist = {name: this.name, description: this.description}
-        this.listOverviewService
-          .postShoppinglist(new_shoppinglist)
-          .subscribe(
-            (res: any) => {
-              this.getShoppinglists();
-              this.display = false;
-              this.showSuccessMsg('Einkaufsliste erfolgreich erstellt!')
-            },
-            err => {
-              this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Einkaufsliste konnte nicht erstellt werden!')
-            }
-          );
-      }else{
-        this.showWarnMsg('Bitte geben Sie eine Beschreibung ein!')
+    if (this.validateInputService.validateStringInput(this.name!)) {
+      if (this.validateInputService.validateStringInput(this.description!)) {
+        const new_shoppinglist = { name: this.name, description: this.description };
+        this.listOverviewService.postShoppinglist(new_shoppinglist).subscribe(
+          (res: any) => {
+            this.getShoppinglists();
+            this.display = false;
+            this.showSuccessMsg('Einkaufsliste erfolgreich erstellt!');
+          },
+          err => {
+            this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufsliste konnte nicht erstellt werden!');
+          }
+        );
+      } else {
+        this.showWarnMsg('Bitte geben Sie eine Beschreibung ein!');
       }
-    }else{
-      this.showWarnMsg('Bitte geben Sie einen Namen ein!')
+    } else {
+      this.showWarnMsg('Bitte geben Sie einen Namen ein!');
     }
   }
 
@@ -99,8 +97,20 @@ export class ListOverviewComponent{
   }
 
   logout() {
-    localStorage.clear();
-    this.router.navigate(['login']);
+    this.confirmationService.confirm({
+      message: 'Benutzer abmelden?',
+      icon: 'pi pi-exclamation-triangle',
+      key: 'logout',
+      accept: () => {
+        //confirm action
+        localStorage.clear();
+        this.router.navigate(['login']);
+      },
+      reject: () => {
+        //reject action
+        this.messageService.add({ key: 'tc', severity: 'info', summary: 'Abgebrochen!', detail: 'Abmeldung abgebrochen!' });
+      },
+    });
   }
 
   showDialog() {
@@ -137,7 +147,7 @@ export class ListOverviewComponent{
             this.getShoppinglists();
           },
           (err: any) => {
-            this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufsliste konnte nicht gelöscht werden!')
+            this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufsliste konnte nicht gelöscht werden!');
           }
         );
       },
@@ -160,7 +170,7 @@ export class ListOverviewComponent{
             this.getShoppinglists();
           },
           (err: any) => {
-            this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufsliste konnte nicht verlassen werden!')
+            this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Einkaufsliste konnte nicht verlassen werden!');
           }
         );
       },
@@ -178,15 +188,15 @@ export class ListOverviewComponent{
     this.router.navigate(['shoppinglist', id]);
   }
 
-  getFriendRequests(){
+  getFriendRequests() {
     this.friendlistService.getFriendRequests().subscribe(
       (res: any) => {
-        this.friendRequests = res
+        this.friendRequests = res;
       },
       (err: any) => {
-        this.showErrorMsg(this.errorHandlerService.handleError(err)+' - Freundschaftsanfragen an Sie konnten nicht geladen werden!')
+        this.showErrorMsg(this.errorHandlerService.handleError(err) + ' - Freundschaftsanfragen an Sie konnten nicht geladen werden!');
       }
     );
-    this.friendRequests = [...this.friendRequests!]
+    this.friendRequests = [...this.friendRequests!];
   }
 }
