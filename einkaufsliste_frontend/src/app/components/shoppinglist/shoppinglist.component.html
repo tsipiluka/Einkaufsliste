@@ -54,8 +54,8 @@
         <div class="col-12 editCard">
             <p-card header="Einkaufsliste bearbeiten">
                 <div class="menu">
-                    <div class="btn-menu" *ngIf="checkIfSignedInUserIsOwner()">
-                        <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger"><em class="pi pi-trash"></em></button>
+                    <div class="btn-menu">
+                        <button pButton pRipple type="button" (click)="loadEntries()" class="p-button-rounded p-button-help"><em class="pi pi-refresh"></em></button>
                     </div>
                     <div class="btn-menu">
                         <button pButton pRipple [ngClass]="{'p-button-outlined': this.edit_checked === true}" type="button" (click)="changeEditBtn()" class="p-button-rounded p-button-secondary"><em class="pi pi-pencil"></em></button>
@@ -67,7 +67,7 @@
             </p-card>   
         </div>
         <div class="col-12 activeCard">
-            <p-card header="Muss gekauft werden:">
+            <p-card header="Muss gekauft werden">
                 <div *ngFor="let entry of this.shoppinglistEntries" class="row">
                     <div *ngIf="entry.assignee && !entry.status" class="entry">
                         <div class="col-1 field-checkbox">
@@ -103,7 +103,7 @@
             </p-card>   
         </div>
         <div class="col-12 recentCard">
-            <p-card header="Bereits gekauft:">
+            <p-card header="Bereits gekauft">
                 <div *ngFor="let entry of this.shoppinglistEntries" class="row">
                     <div *ngIf="entry.assignee && entry.status" class="entry">
                         <div class="col-1 field-checkbox">
@@ -139,7 +139,7 @@
             </p-card>   
         </div>
         <div class="col-12 marketCard">
-            <p-card header="Nächster Supermarkt:">
+            <p-card header="Nächster Supermarkt">
                 <span (click)="routeToShoppingplace()" class="gmaplink">{{this.shoppingplace!.candidates[0].name}}</span>
                 <div class="address">
                     <span>{{this.shoppingplace!.candidates[0].formatted_address}}</span>
