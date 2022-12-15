@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST", "*")]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,10 +52,12 @@ INSTALLED_APPS = [
     'friends',
     'drf_yasg', # Swagger
     'places',
-    'custom_auth'
+    'custom_auth',
+    'django_prometheus'
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -65,6 +67,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware'
+
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://wh0cares.live", "https://shoppinglist.wh0cares.live"]
@@ -255,12 +259,12 @@ sentry_sdk.init(
     release="myapp@1.0.0",
 )
 
-from django.urls import path
+from django.urls import path, include, re_path
+# from django.conf.urls import url
 
 def trigger_error(request):
     division_by_zero = 1 / 0
 
 urlpatterns = [
     path('sentry-debug/', trigger_error),
-    # ...
 ]
