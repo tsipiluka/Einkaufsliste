@@ -1,5 +1,6 @@
 .container {
     background-color: #18526535;
+    min-height: 100vh;
 }
 
 .menubar {
