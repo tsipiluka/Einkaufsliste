@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
 
   email: string | undefined
   password: string | undefined
@@ -24,9 +24,6 @@ export class LoginComponent implements OnInit {
     }else{
       this.googleApiService.checkWithBackend()
     }
-  }
-
-  ngOnInit(): void {
   }
 
   googleLogin() {

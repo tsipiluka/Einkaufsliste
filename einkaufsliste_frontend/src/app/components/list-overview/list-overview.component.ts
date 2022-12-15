@@ -14,7 +14,7 @@ import { ValidateInputService } from 'src/app/services/validate-input/validate-i
   styleUrls: ['./list-overview.component.css'],
   providers: [MessageService, ConfirmationService],
 })
-export class ListOverviewComponent implements OnInit {
+export class ListOverviewComponent{
   events: string[] = [];
   opened: boolean = false;
   lists: any[] = [];
@@ -93,8 +93,6 @@ export class ListOverviewComponent implements OnInit {
       this.showWarnMsg('Bitte geben Sie einen Namen ein!')
     }
   }
-
-  ngOnInit(): void {}
 
   displayFriendlistSidebar() {
     this.visibleSidebar = true;

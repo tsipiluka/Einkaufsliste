@@ -11,7 +11,7 @@ import { RegistrationService } from './service/registration.service';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent{
 
   email: string | undefined
   username: string | undefined
@@ -23,9 +23,6 @@ export class RegistrationComponent implements OnInit {
     if(localStorage.getItem('access_token')){
       this.router.navigate(['list-overview'])
     }
-  }
-
-  ngOnInit(): void {
   }
 
   showWarnMsg(msg: string) {
