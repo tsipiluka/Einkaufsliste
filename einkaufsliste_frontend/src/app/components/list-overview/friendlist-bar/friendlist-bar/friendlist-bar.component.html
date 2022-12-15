@@ -1,5 +1,5 @@
 <div class="profil">
-    <h3>{{this.user.username}}</h3>
+    <h3 *ngIf="this.user !== undefined">{{this.user.username}}</h3>
     <p-divider></p-divider>
 </div>
 <h3>Freundesliste</h3>
