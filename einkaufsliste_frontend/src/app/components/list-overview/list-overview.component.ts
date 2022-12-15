@@ -19,7 +19,7 @@ export class ListOverviewComponent implements OnInit {
   lists: any[] = [];
   display: boolean = false;
   visibleSidebar: boolean = false;
-  friendRequests: any[] | undefined
+  friendRequests: any[] = [];
   // user: User = new User(0, '', '', '', new Date(), '');
   user: User | undefined
 
