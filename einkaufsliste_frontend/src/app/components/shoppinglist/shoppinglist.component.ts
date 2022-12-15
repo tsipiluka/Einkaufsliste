@@ -5,7 +5,7 @@ import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 import { ShoppinglistService } from './service/shoppinglist.service';
 import { IUser, User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
-import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
+import { IShoppinglist, Shoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';
 import { MessageService } from 'primeng/api';
@@ -87,7 +87,7 @@ export class ShoppinglistComponent implements OnInit {
     this.routeSub = this.route.params.subscribe(params => {
       this.shoppinglistService.getShoppinglist(params['id']).subscribe(
         (res: any) => {
-          this.shoppingList = res;
+          this.shoppingList = res!;
           this.shoppingList!.owner = <IUser>{ id: res.owner };
           if (this.checkIfSignedInUserIsOwner()) {
             this.loadFriends();
@@ -255,8 +255,8 @@ export class ShoppinglistComponent implements OnInit {
     this.dislaySettings = true;
   }
 
-  checkIfSignedInUserIsOwner(): boolean {
-    return this.shoppingList!.owner.id === this.signedInUser!.id;
+  checkIfSignedInUserIsOwner(): boolean{
+    return this.shoppingList!==undefined ? this.shoppingList.owner.id === this.signedInUser!.id : false;
   }
 
   loadFriends() {
