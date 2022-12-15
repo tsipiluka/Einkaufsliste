@@ -1,5 +1,6 @@
 .container {
     background-color: #18526535;
+    min-height: 100vh;
 }
 
 .shoppinglistName {
@@ -23,7 +24,7 @@
     text-align: center;
     color: white;
     display: flex;
-    margin-bottom: 5px;
+    margin-bottom: 1rem;
 }
 
 .entry {
@@ -117,6 +118,7 @@ div.editField.col-4 {
 
 .marketCard {
     margin-top: 20px;
+    margin-bottom: 1rem;
 }
 
 .gmaplink {
@@ -155,3 +157,4 @@ div.editField.col-4 {
 .delete-contributor-btn {
     text-align: right;
 }
+

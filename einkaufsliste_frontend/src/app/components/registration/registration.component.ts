@@ -11,7 +11,7 @@ import { RegistrationService } from './service/registration.service';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent{
 
   email: string | undefined
   username: string | undefined
@@ -23,9 +23,6 @@ export class RegistrationComponent implements OnInit {
     if(localStorage.getItem('access_token')){
       this.router.navigate(['list-overview'])
     }
-  }
-
-  ngOnInit(): void {
   }
 
   showWarnMsg(msg: string) {
@@ -42,7 +39,7 @@ export class RegistrationComponent implements OnInit {
 
   signUp() {
     if(this.validateInputService.validateEmail(this.email!)){
-      if(this.validateStringInput(this.username!)){
+      if(this.validateInputService.validateStringInput(this.username!)){
         if(this.validateInputService.validatePassword(this.new_password1!)){
           if(this.new_password1 === this.new_password2){
             const user_credentials = {... new UserRegistration(this.email!, this.username!, this.new_password1!)}
@@ -68,10 +65,6 @@ export class RegistrationComponent implements OnInit {
     }else{
       this.showWarnMsg('Bitte geben Sie eine gültige E-Mail Adresse ein!')
     }
-  }
-
-  validateStringInput(str: string) {
-    return str !== '' && str !== undefined && str !== null;
   }
 
   delay(ms: number) {

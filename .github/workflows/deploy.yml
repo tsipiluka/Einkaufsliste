@@ -5,7 +5,36 @@ on:
     branches: [ main ]
 
 jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: "./einkaufsliste_frontend/package-lock.json"
+    - name: Install Dependencies
+      run: cd einkaufsliste_frontend && npm ci
+
+    - name: Lint
+      run: cd einkaufsliste_frontend && npm run lint
+
+    - name: Test
+      run: cd einkaufsliste_frontend && npm run test:ci
+    
+    - name: Build
+      run: cd einkaufsliste_frontend && npm run build
+
+
   sonarqube-scanner:
+    needs: [frontend-test]
     name: Sonarqube Scan
     runs-on: ubuntu-latest
     steps:
@@ -16,13 +45,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
       - uses: sonarsource/sonarqube-quality-gate-action@master
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
   deploy:
     needs: [sonarqube-scanner]
     name: Deploy to Server

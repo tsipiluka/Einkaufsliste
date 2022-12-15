@@ -5,10 +5,12 @@ import { ShoppinglistEntry } from 'src/app/entities/shoppinglistEntry.model';
 import { ShoppinglistService } from './service/shoppinglist.service';
 import { IUser, User } from 'src/app/entities/user.model';
 import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
-import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
+import { IShoppinglist, Shoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';
 import { MessageService } from 'primeng/api';
+import { FriendlistService } from '../list-overview/friendlist-bar/service/friendlist-api.service';
+import { ValidateInputService } from 'src/app/services/validate-input/validate-input.service';
 
 export class Entry {
   constructor(public checked: boolean, public name: string, public assignee: User) {}
@@ -61,7 +63,9 @@ export class ShoppinglistComponent implements OnInit {
     private route: ActivatedRoute,
     private handleError: ErrorHandlerService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private friendlistService: FriendlistService,
+    private validateInputService: ValidateInputService
   ) {
     this.shoppingplace.candidates = [{ name: '', formatted_address: '' }];
   }
@@ -83,7 +87,7 @@ export class ShoppinglistComponent implements OnInit {
     this.routeSub = this.route.params.subscribe(params => {
       this.shoppinglistService.getShoppinglist(params['id']).subscribe(
         (res: any) => {
-          this.shoppingList = res;
+          this.shoppingList = res!;
           this.shoppingList!.owner = <IUser>{ id: res.owner };
           if (this.checkIfSignedInUserIsOwner()) {
             this.loadFriends();
@@ -217,25 +221,33 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   addEntry() {
-    let newEntry =
+    if(this.validateInputService.validateStringInput(this.addEntryName)) {
+      let newEntry =
       this.addEntryAssignee !== null
         ? <ShoppinglistEntry>{ name: this.addEntryName, assignee: this.addEntryAssignee!.id }
         : <ShoppinglistEntry>{ name: this.addEntryName };
-    this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe(
-      (res: any) => {
-        this.addEntryName = '';
-        this.addEntryAssignee = <IUser>{};
-        this.displayAddEntrySwitch = false;
-        this.loadEntries();
-      },
-      (error: any) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Fehler',
-          detail: this.handleError.handleError(error) + ' - Eintrag konnte nicht hinzugefügt werden',
-        });
-      }
-    );
+      this.shoppinglistService.addEntry(this.shoppingList!.id, newEntry).subscribe(
+        (res: any) => {
+          this.addEntryName = '';
+          this.addEntryAssignee = <IUser>{};
+          this.displayAddEntrySwitch = false;
+          this.loadEntries();
+        },
+        (error: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Fehler',
+            detail: this.handleError.handleError(error) + ' - Eintrag konnte nicht hinzugefügt werden',
+          });
+        }
+      );
+    }else{
+      this.showWarnMsg('Bitte geben Sie einen Namen ein');
+    }
+  }
+
+  showWarnMsg(msg: string) {
+    this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Warn', detail: msg });
   }
 
   openSettings() {
@@ -243,15 +255,19 @@ export class ShoppinglistComponent implements OnInit {
     this.dislaySettings = true;
   }
 
-  checkIfSignedInUserIsOwner(): boolean {
-    return this.shoppingList!.owner.id === this.signedInUser!.id;
+  checkIfSignedInUserIsOwner(): boolean{
+    return this.shoppingList!==undefined ? this.shoppingList.owner.id === this.signedInUser!.id : false;
   }
 
   loadFriends() {
-    this.shoppinglistService.getFriendlist().subscribe(
+    this.friendlistService.getFriendlist().subscribe(
       (friendlist: any[]) => {
-        for (let friend of friendlist) {
-          this.friendlist.push(<IUser>{ id: friend.id, username: friend.username });
+        for (let friendship of friendlist) {
+          if(friendship.friend.id === this.signedInUser!.id){
+            this.friendlist.push(<IUser>{ id: friendship.initiator.id, username: friendship.initiator.username });
+          } else {
+            this.friendlist.push(<IUser>{ id: friendship.friend.id, username: friendship.friend.username });
+          }
         }
       },
       err => {

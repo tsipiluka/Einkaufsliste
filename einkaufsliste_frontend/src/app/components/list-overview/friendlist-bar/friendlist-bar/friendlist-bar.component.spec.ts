@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { FriendlistBarComponent } from './friendlist-bar.component';
 
@@ -8,7 +10,9 @@ describe('FriendlistBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FriendlistBarComponent ]
+      imports: [HttpClientTestingModule],
+      declarations: [ FriendlistBarComponent ],
+      providers: [MessageService, ConfirmationService],
     })
     .compileComponents();
 

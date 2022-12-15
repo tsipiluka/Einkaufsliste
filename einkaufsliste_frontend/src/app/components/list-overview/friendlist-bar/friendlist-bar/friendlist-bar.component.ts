@@ -1,6 +1,7 @@
 import { Component, ErrorHandler, Input, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ErrorHandlerService } from 'src/app/core/error-handler/error-handler.service';
+import { ValidateInputService } from 'src/app/services/validate-input/validate-input.service';
 import { FriendlistService } from '../service/friendlist-api.service';
 
 @Component({
@@ -15,22 +16,19 @@ export class FriendlistBarComponent implements OnInit {
   pendingFriends: any[] = [];
   friendname: string | undefined;
 
-  @Input() friendRequests: any[] | undefined
+  @Input() friendRequests: any[] = [];
   @Input() user: any | undefined
 
   constructor(private friendlistService: FriendlistService, private messageService: MessageService,
-    private errorHandlerService: ErrorHandlerService, private confirmationService: ConfirmationService) { }
+    private errorHandlerService: ErrorHandlerService, private confirmationService: ConfirmationService,
+    private validateInputService: ValidateInputService) { }
 
   ngOnInit(): void {
     this.getAcceptedFriends();
   }
 
-  validateStringInput(str: string) {
-    return str !== '' && str !== undefined && str !== null;
-  }
-
   addFriend() {
-    if(this.validateStringInput(this.friendname!)){
+    if(this.validateInputService.validateStringInput(this.friendname!)){
       this.friendlistService.addFriend(this.friendname!).subscribe(
         (res: any) => {
           this.getPendingFriends();
