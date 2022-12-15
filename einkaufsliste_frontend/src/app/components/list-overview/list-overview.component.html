@@ -55,7 +55,7 @@
                 <div class="shoppinglist-body">
                     <span class="list-span">Beschreibung: {{list.description}}</span>
                 </div>
-                <ng-component *ngIf="this.list.owner == this.user!.id; then deleteBlock else leaveBlock" ></ng-component>
+                <ng-component *ngIf="this.list.owner === this.user!.id; then deleteBlock else leaveBlock" ></ng-component>
                 <ng-template #deleteBlock>
                     <button pButton pRipple type="button" (click)="confirmDelete($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><em class="pi pi-trash"></em></button>
                 </ng-template>
