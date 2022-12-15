@@ -6,8 +6,13 @@ describe('ServerUrlService', () => {
   let service: ServerUrlService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: 'BACKEND_URL', useValue: 'http://localhost:8080' }
+      ]
+    });
     service = TestBed.inject(ServerUrlService);
+
   });
 
   it('should be created', () => {

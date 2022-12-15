@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { environment } from 'src/environments/environment.prod';
 
 import { ShoppinglistComponent } from './shoppinglist.component';
 
@@ -13,7 +14,9 @@ describe('ShoppinglistComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterModule.forRoot([])],
       declarations: [ ShoppinglistComponent ],
-      providers: [MessageService, ConfirmationService]
+      providers: [MessageService, ConfirmationService,
+        {provide: 'BACKEND_URL', useValue: environment.BACKEND_URL},
+      ],
     })
     .compileComponents();
 
