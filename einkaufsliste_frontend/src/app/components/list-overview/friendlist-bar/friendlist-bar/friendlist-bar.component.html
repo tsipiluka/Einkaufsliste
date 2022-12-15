@@ -1,13 +1,17 @@
+<div class="profil">
+    <h3>{{this.user.username}}</h3>
+    <p-divider></p-divider>
+</div>
 <h3>Freundesliste</h3>
 <div class="col-12 md:col-4 add-user">
-    <h5>Füge einen Freund hinzu:</h5>
+    <h5 class="friends">Füge einen Freund hinzu:</h5>
     <div class="p-inputgroup">
         <input type="text" pInputText placeholder="Username" id="friendname" [(ngModel)]="friendname">   
         <button type="button" (click)="addFriend()" pButton pRipple icon="pi pi-user-plus" styleClass="p-button-warn"></button>      
     </div>
 </div>
 <div class="friendlist">
-    <h5>Deine Freunde:</h5>
+    <h5 class="friends">Deine Freunde:</h5>
     <p-table [value]="friendRequests!" styleClass="p-datatable-striped">
         <ng-template pTemplate="body" let-friends>  
             <tr>

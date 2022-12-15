@@ -130,7 +130,8 @@ div.editField.col-4 {
 
 .btn-menu {
     display: inline-block;
-    margin-left: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .editCard {
@@ -158,3 +159,6 @@ div.editField.col-4 {
     text-align: right;
 }
 
+.del-btn {
+    margin-left: 70px;
+}
