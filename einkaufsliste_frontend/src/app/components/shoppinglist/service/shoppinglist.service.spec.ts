@@ -9,6 +9,9 @@ describe('ShoppinglistService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [
+        { provide: 'BACKEND_URL', useValue: 'http://localhost:8080' }
+      ]
     });
     service = TestBed.inject(ShoppinglistService);
   });
