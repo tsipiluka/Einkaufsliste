@@ -6,7 +6,7 @@ on:
 
 jobs:
   sonarqube-scanner:
-    name: Build
+    name: Sonarqube Scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
