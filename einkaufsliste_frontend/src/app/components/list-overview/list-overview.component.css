@@ -20,10 +20,6 @@
     margin-bottom: 10px;
 }
 
-.activeCard {
-    margin-bottom: 20px;
-}
-
 .header {
     background-color: #185265;
     margin-bottom: 1rem;
@@ -34,6 +30,12 @@
 
 .activeCard {
     text-align: center;
+    margin-bottom: 20px;
+}
+
+.new {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .dialog-element {
@@ -74,6 +76,12 @@ table thead td:nth-child(0) {
     padding-top: 0;
 }
 
+/* only change backround on hover where the card is not active */
+:host >>> .activeCard .p-card:hover {
+    background-color: rgba(245, 245, 245, 0.937);
+    cursor: pointer;
+}
+
 .btn-add {
     width: 50%;
     display: inline-block;
@@ -84,9 +92,6 @@ table thead td:nth-child(0) {
     display: inline-block;
 }
 
-.list-span {
-    margin-bottom: 150px;
-}
 
 
 
