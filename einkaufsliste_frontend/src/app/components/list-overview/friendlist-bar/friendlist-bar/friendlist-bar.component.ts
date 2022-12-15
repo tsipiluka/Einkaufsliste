@@ -15,7 +15,7 @@ export class FriendlistBarComponent implements OnInit {
   pendingFriends: any[] = [];
   friendname: string | undefined;
 
-  @Input() friendRequests: any[] | undefined
+  @Input() friendRequests: any[] = [];
   @Input() user: any | undefined
 
   constructor(private friendlistService: FriendlistService, private messageService: MessageService,
