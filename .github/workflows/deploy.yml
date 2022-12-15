@@ -28,10 +28,6 @@ jobs:
 
     - name: Test
       run: cd einkaufsliste_frontend && npm run test:ci
-    
-    - name: Build
-      run: cd einkaufsliste_frontend && npm run build
-
 
   sonarqube-scanner:
     needs: [frontend-test]
@@ -49,8 +45,40 @@ jobs:
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  deploy:
+
+  codeql:
     needs: [sonarqube-scanner]
+    name: CodeQL Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: javascript, python
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+  fossa:
+    needs: [codeql]
+    name: FOSSA Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: FOSSA Scan
+        uses: fossas/fossa-action@v1
+        with:
+          fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
+      - name: FOSSA Test
+        uses: fossas/fossa-action@v1
+        with:
+          fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
+          run-test: true
+
+  deploy:
+    needs: [fossa]
     name: Deploy to Server
     runs-on: ubuntu-latest
     steps:
