@@ -32,12 +32,15 @@ Check by running `docker --version` in your terminal. If the command is not foun
 1. Providing all backend functionalities uncluding:
    - [x] [Django Python](https://www.djangoproject.com/) backend
    - [x] [PostgreSQL](https://www.postgresql.org/) database
-   - [x] [PGAdmin](https://www.pgadmin.org/) database management
 
 2. Providing all frontend functionalities uncluding:
    - [x] [Node](https://nodejs.org/en/) frontend
    - [x] [Angular](https://reactjs.org/) framework
    - [x] [Nginx](https://www.nginx.com/) web server
+
+3. Providing all Monitoring functionalities uncluding:
+   - [x] [Prometheus](https://prometheus.io/) monitoring
+   - [x] [Grafana](https://grafana.com/) visualization
 
 The Django Application files are mounted into the container, so they can easily be edited during development and be seen in realtime. Therefore there is no need to rebuild the container after every change. The development can fully be done in the container.+
 
@@ -60,7 +63,7 @@ DB_HOST
 DB_PORT
 DJANGO_APP_CLIENT_ID
 DJANGO_APP_CLIENT_SECRET
-DJANGO_SECRET_KEY=
+DJANGO_SECRET_KEY
 DJANGO_SECRET_KEY
 FRONTEND_URL
 GOOGLE_API_KEY_CLIENT_ID
@@ -96,12 +99,13 @@ The components are now running on the following ports:
 | Page | URL |
 | --- | --- |
 | Backend | http://localhost:8000 |
-| pgAdmin4 | http://localhost:5050 |
 | Frontend | http://localhost:4200 |
+| Prometheus | http://localhost:9090 |
+| Grafana | http://localhost:3000 |
 
 The OAUTH Toolkit requires a client id and a client secret. Using a fresh database requires to create a new application. To do so, we provide a script which creates a new application in the context of a generated user within the docker container. To run the script, run the following command:
 ```bash
-docker exec -it einkaufsliste_web bash -c "python manage.py createauthconfig"
+docker exec -it backend bash -c "python manage.py createauthconfig"
 ```
 The script will output the client id and the client secret. These values must be set in the ```.env``` file.
 
