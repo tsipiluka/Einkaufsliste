@@ -4,6 +4,7 @@
     <p-sidebar [(visible)]="dislaySettings" position="right" [baseZIndex]="10000">
         <div class="sidebar-header">
             <h2>Einstellungen</h2>
+            <button pButton pRipple type="button" (click)="deleteCurrentShoppinglist($event)" class="p-button-rounded p-button-danger del-btn"><i class="pi pi-trash"></i></button>
         </div>
         <p-divider></p-divider>
         <h5>Teilnehmerliste</h5>
