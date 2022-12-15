@@ -24,9 +24,9 @@
                 </button>
             </div>
         </div>
-        <div class="col-12 activeCard">
-            <p-card header="Neue Einkaufsliste erstellen">
-                <p-dialog header="Neue Einkaufsliste:" [(visible)]="display" [modal]="true">
+        <div class="col-12 new">
+            <p-card header="Neue Einkaufsliste erstellen" class="new">
+                <p-dialog header="Neue Einkaufsliste:" [(visible)]="display" [modal]="true" class="new">
                         <div class="col-12 md:col-4">
                             <div class="p-inputgroup">
                                 <span class="p-inputgroup-addon"><em class="pi pi-pencil"></em></span>
@@ -51,17 +51,10 @@
             </p-card>   
         </div>
         <div class="col-12 activeCard" *ngFor="let list of lists">
-            <p-card header="{{list.name}}">
+            <p-card header="{{list.name}}" (click)="toShoppinglist(list.id)" class="lists">
                 <div class="shoppinglist-body">
                     <span class="list-span">Beschreibung: {{list.description}}</span>
                 </div>
-                <ng-component *ngIf="this.list.owner === this.user!.id; then deleteBlock else leaveBlock" ></ng-component>
-                <ng-template #deleteBlock>
-                    <button pButton pRipple type="button" (click)="confirmDelete($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><em class="pi pi-trash"></em></button>
-                </ng-template>
-                <ng-template #leaveBlock>
-                    <button pButton pRipple type="button" (click)="confirmLeave($event, list.id)" class="p-button-rounded p-button-danger delete-btn"><em class="pi pi-sign-out"></em></button>
-                </ng-template>
                 <button pButton pRipple type="button" (click)="toShoppinglist(list.id)" class="p-button-rounded p-button-secondary delete-btn"><em class="pi pi-arrow-right"></em></button>
             </p-card>   
         </div>
