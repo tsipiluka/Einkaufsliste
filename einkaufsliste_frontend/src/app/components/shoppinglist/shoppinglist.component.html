@@ -77,7 +77,7 @@
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
                             <p-avatar shape="circle" class="p-avatar p-component p-avatar-circle"
-                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><b style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</strong></p-avatar>
+                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><strong style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</strong></p-avatar>
                             <button pButton pRipple type="button" icon="pi pi-user-edit" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
                         </div>     
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
@@ -113,7 +113,7 @@
                         </div>
                         <div *ngIf="!edit_checked" class="col-4 assigneeField">
                             <p-avatar shape="circle" class="p-avatar p-component p-avatar-circle"
-                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><b style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</strong></p-avatar>
+                            pTooltip="{{entry.assignee.username}}" [style]="{'background-color':'darkgrey'}" tooltipPosition="top" tabindex="0" tooltipEvent="focus"><strong style="color:white">{{this.getFirstCharFromString(entry.assignee.username!)}}</strong></p-avatar>
                             <button pButton pRipple type="button" icon="pi pi-user-edit" (click)="loadContributors(entry)" style="height:40px;width: 40px;" class="p-button-rounded p-button-help assigneeAddBtn"></button> 
                         </div>        
                         <div *ngIf="edit_checked" class="col-4 assigneeField">
