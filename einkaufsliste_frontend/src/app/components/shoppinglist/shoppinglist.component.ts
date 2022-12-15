@@ -9,6 +9,7 @@ import { IShoppinglist } from 'src/app/entities/shoppinglist.model';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Shoppingplace } from 'src/app/entities/shoppingplace.model';
 import { MessageService } from 'primeng/api';
+import { FriendlistService } from '../list-overview/friendlist-bar/service/friendlist-api.service';
 
 export class Entry {
   constructor(public checked: boolean, public name: string, public assignee: User) {}
@@ -61,7 +62,8 @@ export class ShoppinglistComponent implements OnInit {
     private route: ActivatedRoute,
     private handleError: ErrorHandlerService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private friendlistService: FriendlistService
   ) {
     this.shoppingplace.candidates = [{ name: '', formatted_address: '' }];
   }
@@ -248,10 +250,14 @@ export class ShoppinglistComponent implements OnInit {
   }
 
   loadFriends() {
-    this.shoppinglistService.getFriendlist().subscribe(
+    this.friendlistService.getFriendlist().subscribe(
       (friendlist: any[]) => {
-        for (let friend of friendlist) {
-          this.friendlist.push(<IUser>{ id: friend.id, username: friend.username });
+        for (let friendship of friendlist) {
+          if(friendship.friend.id === this.signedInUser!.id){
+            this.friendlist.push(<IUser>{ id: friendship.initiator.id, username: friendship.initiator.username });
+          } else {
+            this.friendlist.push(<IUser>{ id: friendship.friend.id, username: friendship.friend.username });
+          }
         }
       },
       err => {
