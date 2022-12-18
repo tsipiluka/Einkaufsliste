@@ -5,9 +5,10 @@ services:
     container_name: backend
     build: 'einkaufsliste_backend/'
     command: >
-      sh -c "python /code/manage.py makemigrations && python /code/manage.py migrate &&
-              python /code/manage.py collectstatic runserver 0.0.0.0:8000"
+      sh -c "python /code/manage.py collectstatic --no-input && python /code/manage.py makemigrations && python /code/manage.py migrate &&
+              python /code/manage.py runserver 0.0.0.0:8000"
     volumes:
+      - /static:/static
       - ./einkaufsliste_backend/:/code
     ports:
       - 8000:8000
