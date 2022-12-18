@@ -44,11 +44,9 @@ export class RegistrationComponent{
           if(this.new_password1 === this.new_password2){
             const user_credentials = {... new UserRegistration(this.email!, this.username!, this.new_password1!)}
             this.registrationService.signUpUser(user_credentials).subscribe(async (res: any) => {
-              this.showSuccessMsg('Die Registrierung war erfolgreich! Sie werden weitergeleitet')
-              localStorage.setItem('access_token', res.access_token)
-              localStorage.setItem('refresh_token', res.refresh_token)
+              this.showSuccessMsg('Die Registrierung war erfolgreich!')
               await this.delay(1000)
-              this.router.navigate(['list-overview'])
+              this.router.navigate(['login'])
             },
             err => {
               this.showWarnMsg('Die Registrierung ist fehlgeschlagen!')
