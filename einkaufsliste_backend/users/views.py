@@ -130,15 +130,17 @@ class CustomUserCreate(APIView):
         if serializer.is_valid():
             user = serializer.save()
             if user:
-                # json = serializer.data
-                r = requests.post('http://localhost:8000/auth/token', data={
-                    'grant_type': 'password',
-                    'username': user.email,
-                    'password': request.data['password'],
-                    'client_id': os.environ.get('DJANGO_APP_CLIENT_ID'),
-                    'client_secret': os.environ.get('DJANGO_APP_CLIENT_SECRET'),
-                })
-                # return Response(json, status=status.HTTP_201_CREATED)
+                try:
+                    r = requests.post(os.environ.get('BACKEND_URL') + 'auth/token' , data={
+                        'grant_type': 'password',
+                        'username': user.email,
+                        'password': request.data['password'],
+                        'client_id': os.environ.get('DJANGO_APP_CLIENT_ID'),
+                        'client_secret': os.environ.get('DJANGO_APP_CLIENT_SECRET'),
+                    })
+                except requests.exceptions.RequestException as e:
+                    capture_exception(e)
+                    return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 return Response(r.json(), status=status.HTTP_201_CREATED)
         capture_exception(Exception(serializer.errors))
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
